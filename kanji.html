@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漢字 500</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Noto Serif JP','Hiragino Mincho ProN',Georgia,serif;background:#1a1612;min-height:100vh;color:#e8dcc8}
+  ::-webkit-scrollbar{width:6px;height:6px}
+  ::-webkit-scrollbar-track{background:#1a1612}
+  ::-webkit-scrollbar-thumb{background:#5c4a2a;border-radius:3px}
+  #header{background:linear-gradient(180deg,#0f0d0a 0%,#1a1612 100%);border-bottom:1px solid #3a2e1a;padding:32px 24px 24px;text-align:center}
+  #header .sub{font-size:11px;letter-spacing:0.3em;color:#5c4a2a;text-transform:uppercase;margin-bottom:8px}
+  #header h1{font-size:32px;font-weight:300;color:#f0d080;letter-spacing:0.05em}
+  #header .desc{font-size:13px;color:#706050;margin-top:6px;font-style:italic;font-family:'Crimson Pro',serif}
+  #header .count{font-size:12px;color:#5c4a2a;margin-top:4px}
+  #controls{padding:20px 24px}
+  #search{background:#0f0d0a;border:1px solid #5c4a2a;color:#e8dcc8;padding:10px 16px;border-radius:6px;font-size:14px;font-family:inherit;width:100%;outline:none;margin-bottom:16px}
+  #search:focus{border-color:#8b6914;box-shadow:0 0 0 2px rgba(139,105,20,0.2)}
+  #cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+  .cat-btn{border:1px solid #5c4a2a;background:transparent;color:#a08060;cursor:pointer;padding:4px 10px;border-radius:20px;font-size:11px;font-family:inherit;transition:all 0.2s;white-space:nowrap}
+  .cat-btn:hover{background:#5c4a2a;color:#e8dcc8}
+  .cat-btn.active{background:#8b6914;border-color:#8b6914;color:#fff1d0}
+  #results-info{font-size:11px;color:#5c4a2a;margin-bottom:12px;letter-spacing:0.05em}
+  #table-wrap{overflow-x:auto;border-radius:8px;border:1px solid #3a2e1a}
+  table{width:100%;border-collapse:collapse}
+  th{background:#0f0d0a;color:#8b6914;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:10px 14px;border-bottom:1px solid #3a2e1a;position:sticky;top:0;z-index:2}
+  td{padding:9px 14px;border-bottom:1px solid #2a2218;font-size:13px;vertical-align:middle}
+  tr:hover td{background:rgba(255,220,150,0.07)}
+  .num{color:#5c4a2a;font-size:11px;font-family:'Crimson Pro',serif}
+  .kanji{font-size:22px;font-family:'Noto Serif JP',serif;color:#f0d080;font-weight:300}
+  .hira{font-size:20px;color:#c0a060;letter-spacing:0.05em}
+  .roma{font-size:24px;color:#908070;font-style:italic;font-family:'Crimson Pro',Georgia,serif}
+  .zh{font-size:15px;color:#d4b896}
+  .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-family:'Crimson Pro',serif;font-style:italic;letter-spacing:0.03em}
+  #pagination{display:flex;align-items:center;gap:8px;margin-top:16px;justify-content:center;flex-wrap:wrap}
+  .pg-btn{background:transparent;border:1px solid #5c4a2a;color:#a08060;cursor:pointer;padding:5px 12px;border-radius:4px;font-family:inherit;font-size:12px;transition:all 0.2s}
+  .pg-btn:hover:not(:disabled){background:#5c4a2a;color:#e8dcc8}
+  .pg-btn:disabled{opacity:0.3;cursor:default}
+  .pg-btn.active{background:#8b6914;border-color:#8b6914;color:#fff1d0}
+  .speak-btn{background:transparent;border:1px solid #5c4a2a;color:#a08060;cursor:pointer;
+    padding:4px 8px;border-radius:6px;font-size:16px;line-height:1;transition:all 0.2s}
+  .speak-btn:hover{background:#5c4a2a;color:#f0d080;transform:scale(1.1)}
+  .speak-btn.speaking{color:#f0d080;border-color:#8b6914;animation:pulse 0.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="sub">Japanese · Chinese · Reference</div>
+  <h1>漢字 500</h1>
+  <div class="desc">500 kanji words with hiragana, rōmaji &amp; Chinese</div>
+  <div class="count">500 entries · 19 categories</div>
+</div>
+
+<div id="controls">
+  <input id="search" type="text" placeholder="Search kanji, hiragana, rōmaji, or Chinese…" oninput="handleSearch(this.value)">
+  <div id="cats"></div>
+  <div id="results-info"></div>
+  <div id="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>漢字</th>
+          <th>ひらがな</th>
+          <th>Rōmaji</th>
+          <th>中文</th>
+          <th>Category</th>
+          <th>▶</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div id="pagination"></div>
+</div>
+
+<script>
+const CAT_COLORS = {
+  Numbers:"#e8d5b7",Nature:"#c8e6c9",Body:"#f8bbd0",Family:"#ffe0b2",
+  Colors:"#e1bee7",Direction:"#b3e5fc",Verbs:"#c5cae9",Adjectives:"#f0f4c3",
+  Places:"#dcedc8",Food:"#ffccbc",Transport:"#b2dfdb",Time:"#cfd8dc",
+  Education:"#d1c4e9",Emotions:"#fce4ec",Economy:"#fff9c4",Health:"#d7ccc8",
+  Arts:"#f3e5f5",Science:"#e0f7fa",General:"#eceff1"
+};
+
+const DATA = [
+  {id:1,kanji:"一",hira:"いち",roma:"ichi",zh:"一",cat:"Numbers"},
+  {id:2,kanji:"二",hira:"に",roma:"ni",zh:"二",cat:"Numbers"},
+  {id:3,kanji:"三",hira:"さん",roma:"san",zh:"三",cat:"Numbers"},
+  {id:4,kanji:"四",hira:"し・よん",roma:"shi / yon",zh:"四",cat:"Numbers"},
+  {id:5,kanji:"五",hira:"ご",roma:"go",zh:"五",cat:"Numbers"},
+  {id:6,kanji:"六",hira:"ろく",roma:"roku",zh:"六",cat:"Numbers"},
+  {id:7,kanji:"七",hira:"しち・なな",roma:"shichi / nana",zh:"七",cat:"Numbers"},
+  {id:8,kanji:"八",hira:"はち",roma:"hachi",zh:"八",cat:"Numbers"},
+  {id:9,kanji:"九",hira:"く・きゅう",roma:"ku / kyū",zh:"九",cat:"Numbers"},
+  {id:10,kanji:"十",hira:"じゅう",roma:"jū",zh:"十",cat:"Numbers"},
+  {id:11,kanji:"山",hira:"やま",roma:"yama",zh:"山",cat:"Nature"},
+  {id:12,kanji:"川",hira:"かわ",roma:"kawa",zh:"河川",cat:"Nature"},
+  {id:13,kanji:"海",hira:"うみ",roma:"umi",zh:"海",cat:"Nature"},
+  {id:14,kanji:"空",hira:"そら",roma:"sora",zh:"天空",cat:"Nature"},
+  {id:15,kanji:"雨",hira:"あめ",roma:"ame",zh:"雨",cat:"Nature"},
+  {id:16,kanji:"雪",hira:"ゆき",roma:"yuki",zh:"雪",cat:"Nature"},
+  {id:17,kanji:"風",hira:"かぜ",roma:"kaze",zh:"风",cat:"Nature"},
+  {id:18,kanji:"花",hira:"はな",roma:"hana",zh:"花",cat:"Nature"},
+  {id:19,kanji:"木",hira:"き",roma:"ki",zh:"树木",cat:"Nature"},
+  {id:20,kanji:"草",hira:"くさ",roma:"kusa",zh:"草",cat:"Nature"},
+  {id:21,kanji:"石",hira:"いし",roma:"ishi",zh:"石头",cat:"Nature"},
+  {id:22,kanji:"土",hira:"つち",roma:"tsuchi",zh:"土",cat:"Nature"},
+  {id:23,kanji:"火",hira:"ひ",roma:"hi",zh:"火",cat:"Nature"},
+  {id:24,kanji:"水",hira:"みず",roma:"mizu",zh:"水",cat:"Nature"},
+  {id:25,kanji:"光",hira:"ひかり",roma:"hikari",zh:"光",cat:"Nature"},
+  {id:26,kanji:"星",hira:"ほし",roma:"hoshi",zh:"星星",cat:"Nature"},
+  {id:27,kanji:"月",hira:"つき",roma:"tsuki",zh:"月",cat:"Nature"},
+  {id:28,kanji:"太陽",hira:"たいよう",roma:"taiyō",zh:"太阳",cat:"Nature"},
+  {id:29,kanji:"雲",hira:"くも",roma:"kumo",zh:"云",cat:"Nature"},
+  {id:30,kanji:"森",hira:"もり",roma:"mori",zh:"森林",cat:"Nature"},
+  {id:31,kanji:"林",hira:"はやし",roma:"hayashi",zh:"树林",cat:"Nature"},
+  {id:32,kanji:"野",hira:"の",roma:"no",zh:"原野",cat:"Nature"},
+  {id:33,kanji:"原",hira:"はら",roma:"hara",zh:"原野",cat:"Nature"},
+  {id:34,kanji:"島",hira:"しま",roma:"shima",zh:"岛",cat:"Nature"},
+  {id:35,kanji:"池",hira:"いけ",roma:"ike",zh:"池塘",cat:"Nature"},
+  {id:36,kanji:"湖",hira:"みずうみ",roma:"mizuumi",zh:"湖",cat:"Nature"},
+  {id:37,kanji:"谷",hira:"たに",roma:"tani",zh:"山谷",cat:"Nature"},
+  {id:38,kanji:"砂",hira:"すな",roma:"suna",zh:"沙子",cat:"Nature"},
+  {id:39,kanji:"岩",hira:"いわ",roma:"iwa",zh:"岩石",cat:"Nature"},
+  {id:40,kanji:"波",hira:"なみ",roma:"nami",zh:"波浪",cat:"Nature"},
+  {id:41,kanji:"虹",hira:"にじ",roma:"niji",zh:"彩虹",cat:"Nature"},
+  {id:42,kanji:"霧",hira:"きり",roma:"kiri",zh:"雾",cat:"Nature"},
+  {id:43,kanji:"露",hira:"つゆ",roma:"tsuyu",zh:"露水",cat:"Nature"},
+  {id:44,kanji:"氷",hira:"こおり",roma:"kōri",zh:"冰",cat:"Nature"},
+  {id:45,kanji:"泥",hira:"どろ",roma:"doro",zh:"泥",cat:"Nature"},
+  {id:46,kanji:"丘",hira:"おか",roma:"oka",zh:"丘陵",cat:"Nature"},
+  {id:47,kanji:"崖",hira:"がけ",roma:"gake",zh:"悬崖",cat:"Nature"},
+  {id:48,kanji:"滝",hira:"たき",roma:"taki",zh:"瀑布",cat:"Nature"},
+  {id:49,kanji:"砂漠",hira:"さばく",roma:"sabaku",zh:"沙漠",cat:"Nature"},
+  {id:50,kanji:"大地",hira:"だいち",roma:"daichi",zh:"大地",cat:"Nature"},
+  {id:51,kanji:"頭",hira:"あたま",roma:"atama",zh:"头",cat:"Body"},
+  {id:52,kanji:"顔",hira:"かお",roma:"kao",zh:"脸",cat:"Body"},
+  {id:53,kanji:"目",hira:"め",roma:"me",zh:"眼睛",cat:"Body"},
+  {id:54,kanji:"耳",hira:"みみ",roma:"mimi",zh:"耳朵",cat:"Body"},
+  {id:55,kanji:"鼻",hira:"はな",roma:"hana",zh:"鼻子",cat:"Body"},
+  {id:56,kanji:"口",hira:"くち",roma:"kuchi",zh:"嘴",cat:"Body"},
+  {id:57,kanji:"歯",hira:"は",roma:"ha",zh:"牙齿",cat:"Body"},
+  {id:58,kanji:"手",hira:"て",roma:"te",zh:"手",cat:"Body"},
+  {id:59,kanji:"足",hira:"あし",roma:"ashi",zh:"脚",cat:"Body"},
+  {id:60,kanji:"体",hira:"からだ",roma:"karada",zh:"身体",cat:"Body"},
+  {id:61,kanji:"腕",hira:"うで",roma:"ude",zh:"手臂",cat:"Body"},
+  {id:62,kanji:"指",hira:"ゆび",roma:"yubi",zh:"手指",cat:"Body"},
+  {id:63,kanji:"胸",hira:"むね",roma:"mune",zh:"胸",cat:"Body"},
+  {id:64,kanji:"腹",hira:"はら",roma:"hara",zh:"腹/肚子",cat:"Body"},
+  {id:65,kanji:"背",hira:"せ",roma:"se",zh:"背",cat:"Body"},
+  {id:66,kanji:"首",hira:"くび",roma:"kubi",zh:"脖子",cat:"Body"},
+  {id:67,kanji:"髪",hira:"かみ",roma:"kami",zh:"头发",cat:"Body"},
+  {id:68,kanji:"肩",hira:"かた",roma:"kata",zh:"肩膀",cat:"Body"},
+  {id:69,kanji:"腰",hira:"こし",roma:"koshi",zh:"腰",cat:"Body"},
+  {id:70,kanji:"膝",hira:"ひざ",roma:"hiza",zh:"膝盖",cat:"Body"},
+  {id:71,kanji:"肘",hira:"ひじ",roma:"hiji",zh:"肘",cat:"Body"},
+  {id:72,kanji:"爪",hira:"つめ",roma:"tsume",zh:"指甲",cat:"Body"},
+  {id:73,kanji:"舌",hira:"した",roma:"shita",zh:"舌头",cat:"Body"},
+  {id:74,kanji:"血",hira:"ち",roma:"chi",zh:"血",cat:"Body"},
+  {id:75,kanji:"皮膚",hira:"ひふ",roma:"hifu",zh:"皮肤",cat:"Body"},
+  {id:76,kanji:"人",hira:"ひと",roma:"hito",zh:"人",cat:"Family"},
+  {id:77,kanji:"父",hira:"ちち",roma:"chichi",zh:"父亲",cat:"Family"},
+  {id:78,kanji:"母",hira:"はは",roma:"haha",zh:"母亲",cat:"Family"},
+  {id:79,kanji:"兄",hira:"あに",roma:"ani",zh:"兄/哥哥",cat:"Family"},
+  {id:80,kanji:"姉",hira:"あね",roma:"ane",zh:"姐姐",cat:"Family"},
+  {id:81,kanji:"弟",hira:"おとうと",roma:"otōto",zh:"弟弟",cat:"Family"},
+  {id:82,kanji:"妹",hira:"いもうと",roma:"imōto",zh:"妹妹",cat:"Family"},
+  {id:83,kanji:"子",hira:"こ",roma:"ko",zh:"孩子",cat:"Family"},
+  {id:84,kanji:"親",hira:"おや",roma:"oya",zh:"父母",cat:"Family"},
+  {id:85,kanji:"祖父",hira:"そふ",roma:"sofu",zh:"祖父",cat:"Family"},
+  {id:86,kanji:"祖母",hira:"そぼ",roma:"sobo",zh:"祖母",cat:"Family"},
+  {id:87,kanji:"夫",hira:"おっと",roma:"otto",zh:"丈夫",cat:"Family"},
+  {id:88,kanji:"妻",hira:"つま",roma:"tsuma",zh:"妻子",cat:"Family"},
+  {id:89,kanji:"友",hira:"とも",roma:"tomo",zh:"朋友",cat:"Family"},
+  {id:90,kanji:"男",hira:"おとこ",roma:"otoko",zh:"男",cat:"Family"},
+  {id:91,kanji:"女",hira:"おんな",roma:"onna",zh:"女",cat:"Family"},
+  {id:92,kanji:"老人",hira:"ろうじん",roma:"rōjin",zh:"老人",cat:"Family"},
+  {id:93,kanji:"若者",hira:"わかもの",roma:"wakamono",zh:"年轻人",cat:"Family"},
+  {id:94,kanji:"家族",hira:"かぞく",roma:"kazoku",zh:"家人",cat:"Family"},
+  {id:95,kanji:"恋人",hira:"こいびと",roma:"koibito",zh:"恋人",cat:"Family"},
+  {id:96,kanji:"赤",hira:"あか",roma:"aka",zh:"红",cat:"Colors"},
+  {id:97,kanji:"青",hira:"あお",roma:"ao",zh:"蓝/青",cat:"Colors"},
+  {id:98,kanji:"白",hira:"しろ",roma:"shiro",zh:"白",cat:"Colors"},
+  {id:99,kanji:"黒",hira:"くろ",roma:"kuro",zh:"黑",cat:"Colors"},
+  {id:100,kanji:"黄",hira:"き",roma:"ki",zh:"黄",cat:"Colors"},
+  {id:101,kanji:"緑",hira:"みどり",roma:"midori",zh:"绿",cat:"Colors"},
+  {id:102,kanji:"茶",hira:"ちゃ",roma:"cha",zh:"棕色",cat:"Colors"},
+  {id:103,kanji:"紫",hira:"むらさき",roma:"murasaki",zh:"紫",cat:"Colors"},
+  {id:104,kanji:"橙",hira:"だいだい",roma:"daidai",zh:"橙",cat:"Colors"},
+  {id:105,kanji:"灰",hira:"はい",roma:"hai",zh:"灰",cat:"Colors"},
+  {id:106,kanji:"上",hira:"うえ",roma:"ue",zh:"上",cat:"Direction"},
+  {id:107,kanji:"下",hira:"した",roma:"shita",zh:"下",cat:"Direction"},
+  {id:108,kanji:"左",hira:"ひだり",roma:"hidari",zh:"左",cat:"Direction"},
+  {id:109,kanji:"右",hira:"みぎ",roma:"migi",zh:"右",cat:"Direction"},
+  {id:110,kanji:"前",hira:"まえ",roma:"mae",zh:"前",cat:"Direction"},
+  {id:111,kanji:"後",hira:"うしろ",roma:"ushiro",zh:"后",cat:"Direction"},
+  {id:112,kanji:"東",hira:"ひがし",roma:"higashi",zh:"东",cat:"Direction"},
+  {id:113,kanji:"西",hira:"にし",roma:"nishi",zh:"西",cat:"Direction"},
+  {id:114,kanji:"南",hira:"みなみ",roma:"minami",zh:"南",cat:"Direction"},
+  {id:115,kanji:"北",hira:"きた",roma:"kita",zh:"北",cat:"Direction"},
+  {id:116,kanji:"中",hira:"なか",roma:"naka",zh:"中",cat:"Direction"},
+  {id:117,kanji:"外",hira:"そと",roma:"soto",zh:"外",cat:"Direction"},
+  {id:118,kanji:"内",hira:"うち",roma:"uchi",zh:"内",cat:"Direction"},
+  {id:119,kanji:"横",hira:"よこ",roma:"yoko",zh:"横",cat:"Direction"},
+  {id:120,kanji:"縦",hira:"たて",roma:"tate",zh:"纵/竖",cat:"Direction"},
+  {id:121,kanji:"行く",hira:"いく",roma:"iku",zh:"去",cat:"Verbs"},
+  {id:122,kanji:"来る",hira:"くる",roma:"kuru",zh:"来",cat:"Verbs"},
+  {id:123,kanji:"見る",hira:"みる",roma:"miru",zh:"看",cat:"Verbs"},
+  {id:124,kanji:"聞く",hira:"きく",roma:"kiku",zh:"听/问",cat:"Verbs"},
+  {id:125,kanji:"食べる",hira:"たべる",roma:"taberu",zh:"吃",cat:"Verbs"},
+  {id:126,kanji:"飲む",hira:"のむ",roma:"nomu",zh:"喝",cat:"Verbs"},
+  {id:127,kanji:"読む",hira:"よむ",roma:"yomu",zh:"读",cat:"Verbs"},
+  {id:128,kanji:"書く",hira:"かく",roma:"kaku",zh:"写",cat:"Verbs"},
+  {id:129,kanji:"話す",hira:"はなす",roma:"hanasu",zh:"说",cat:"Verbs"},
+  {id:130,kanji:"思う",hira:"おもう",roma:"omou",zh:"想/思",cat:"Verbs"},
+  {id:131,kanji:"知る",hira:"しる",roma:"shiru",zh:"知道",cat:"Verbs"},
+  {id:132,kanji:"待つ",hira:"まつ",roma:"matsu",zh:"等待",cat:"Verbs"},
+  {id:133,kanji:"会う",hira:"あう",roma:"au",zh:"见面",cat:"Verbs"},
+  {id:134,kanji:"立つ",hira:"たつ",roma:"tatsu",zh:"站立",cat:"Verbs"},
+  {id:135,kanji:"座る",hira:"すわる",roma:"suwaru",zh:"坐",cat:"Verbs"},
+  {id:136,kanji:"走る",hira:"はしる",roma:"hashiru",zh:"跑",cat:"Verbs"},
+  {id:137,kanji:"歩く",hira:"あるく",roma:"aruku",zh:"走路",cat:"Verbs"},
+  {id:138,kanji:"飛ぶ",hira:"とぶ",roma:"tobu",zh:"飞",cat:"Verbs"},
+  {id:139,kanji:"泳ぐ",hira:"およぐ",roma:"oyogu",zh:"游泳",cat:"Verbs"},
+  {id:140,kanji:"歌う",hira:"うたう",roma:"utau",zh:"唱歌",cat:"Verbs"},
+  {id:141,kanji:"踊る",hira:"おどる",roma:"odoru",zh:"跳舞",cat:"Verbs"},
+  {id:142,kanji:"笑う",hira:"わらう",roma:"warau",zh:"笑",cat:"Verbs"},
+  {id:143,kanji:"泣く",hira:"なく",roma:"naku",zh:"哭",cat:"Verbs"},
+  {id:144,kanji:"寝る",hira:"ねる",roma:"neru",zh:"睡觉",cat:"Verbs"},
+  {id:145,kanji:"起きる",hira:"おきる",roma:"okiru",zh:"起床",cat:"Verbs"},
+  {id:146,kanji:"開く",hira:"ひらく",roma:"hiraku",zh:"打开",cat:"Verbs"},
+  {id:147,kanji:"閉じる",hira:"とじる",roma:"tojiru",zh:"关闭",cat:"Verbs"},
+  {id:148,kanji:"出る",hira:"でる",roma:"deru",zh:"出",cat:"Verbs"},
+  {id:149,kanji:"入る",hira:"はいる",roma:"hairu",zh:"进入",cat:"Verbs"},
+  {id:150,kanji:"持つ",hira:"もつ",roma:"motsu",zh:"拿/持有",cat:"Verbs"},
+  {id:151,kanji:"使う",hira:"つかう",roma:"tsukau",zh:"使用",cat:"Verbs"},
+  {id:152,kanji:"作る",hira:"つくる",roma:"tsukuru",zh:"制作",cat:"Verbs"},
+  {id:153,kanji:"買う",hira:"かう",roma:"kau",zh:"买",cat:"Verbs"},
+  {id:154,kanji:"売る",hira:"うる",roma:"uru",zh:"卖",cat:"Verbs"},
+  {id:155,kanji:"教える",hira:"おしえる",roma:"oshieru",zh:"教",cat:"Verbs"},
+  {id:156,kanji:"習う",hira:"ならう",roma:"narau",zh:"学习",cat:"Verbs"},
+  {id:157,kanji:"働く",hira:"はたらく",roma:"hataraku",zh:"工作",cat:"Verbs"},
+  {id:158,kanji:"遊ぶ",hira:"あそぶ",roma:"asobu",zh:"玩",cat:"Verbs"},
+  {id:159,kanji:"休む",hira:"やすむ",roma:"yasumu",zh:"休息",cat:"Verbs"},
+  {id:160,kanji:"帰る",hira:"かえる",roma:"kaeru",zh:"回去",cat:"Verbs"},
+  {id:161,kanji:"乗る",hira:"のる",roma:"noru",zh:"乘坐",cat:"Verbs"},
+  {id:162,kanji:"降りる",hira:"おりる",roma:"oriru",zh:"下车",cat:"Verbs"},
+  {id:163,kanji:"押す",hira:"おす",roma:"osu",zh:"推",cat:"Verbs"},
+  {id:164,kanji:"引く",hira:"ひく",roma:"hiku",zh:"拉",cat:"Verbs"},
+  {id:165,kanji:"切る",hira:"きる",roma:"kiru",zh:"切",cat:"Verbs"},
+  {id:166,kanji:"洗う",hira:"あらう",roma:"arau",zh:"洗",cat:"Verbs"},
+  {id:167,kanji:"着る",hira:"きる",roma:"kiru",zh:"穿(衣服)",cat:"Verbs"},
+  {id:168,kanji:"脱ぐ",hira:"ぬぐ",roma:"nugu",zh:"脱(衣服)",cat:"Verbs"},
+  {id:169,kanji:"投げる",hira:"なげる",roma:"nageru",zh:"投/扔",cat:"Verbs"},
+  {id:170,kanji:"取る",hira:"とる",roma:"toru",zh:"取/拿",cat:"Verbs"},
+  {id:171,kanji:"始める",hira:"はじめる",roma:"hajimeru",zh:"开始",cat:"Verbs"},
+  {id:172,kanji:"終わる",hira:"おわる",roma:"owaru",zh:"结束",cat:"Verbs"},
+  {id:173,kanji:"続ける",hira:"つづける",roma:"tsuzukeru",zh:"继续",cat:"Verbs"},
+  {id:174,kanji:"変える",hira:"かえる",roma:"kaeru",zh:"改变",cat:"Verbs"},
+  {id:175,kanji:"増える",hira:"ふえる",roma:"fueru",zh:"增加",cat:"Verbs"},
+  {id:176,kanji:"減る",hira:"へる",roma:"heru",zh:"减少",cat:"Verbs"},
+  {id:177,kanji:"集める",hira:"あつめる",roma:"atsumeru",zh:"收集",cat:"Verbs"},
+  {id:178,kanji:"分ける",hira:"わける",roma:"wakeru",zh:"分开",cat:"Verbs"},
+  {id:179,kanji:"上げる",hira:"あげる",roma:"ageru",zh:"给/提升",cat:"Verbs"},
+  {id:180,kanji:"下げる",hira:"さげる",roma:"sageru",zh:"降低",cat:"Verbs"},
+  {id:181,kanji:"大きい",hira:"おおきい",roma:"ōkii",zh:"大",cat:"Adjectives"},
+  {id:182,kanji:"小さい",hira:"ちいさい",roma:"chīsai",zh:"小",cat:"Adjectives"},
+  {id:183,kanji:"高い",hira:"たかい",roma:"takai",zh:"高/贵",cat:"Adjectives"},
+  {id:184,kanji:"低い",hira:"ひくい",roma:"hikui",zh:"低",cat:"Adjectives"},
+  {id:185,kanji:"長い",hira:"ながい",roma:"nagai",zh:"长",cat:"Adjectives"},
+  {id:186,kanji:"短い",hira:"みじかい",roma:"mijikai",zh:"短",cat:"Adjectives"},
+  {id:187,kanji:"広い",hira:"ひろい",roma:"hiroi",zh:"宽广",cat:"Adjectives"},
+  {id:188,kanji:"狭い",hira:"せまい",roma:"semai",zh:"狭窄",cat:"Adjectives"},
+  {id:189,kanji:"多い",hira:"おおい",roma:"ōi",zh:"多",cat:"Adjectives"},
+  {id:190,kanji:"少ない",hira:"すくない",roma:"sukunai",zh:"少",cat:"Adjectives"},
+  {id:191,kanji:"新しい",hira:"あたらしい",roma:"atarashii",zh:"新",cat:"Adjectives"},
+  {id:192,kanji:"古い",hira:"ふるい",roma:"furui",zh:"旧",cat:"Adjectives"},
+  {id:193,kanji:"良い",hira:"よい",roma:"yoi",zh:"好",cat:"Adjectives"},
+  {id:194,kanji:"悪い",hira:"わるい",roma:"warui",zh:"坏",cat:"Adjectives"},
+  {id:195,kanji:"強い",hira:"つよい",roma:"tsuyoi",zh:"强",cat:"Adjectives"},
+  {id:196,kanji:"弱い",hira:"よわい",roma:"yowai",zh:"弱",cat:"Adjectives"},
+  {id:197,kanji:"速い",hira:"はやい",roma:"hayai",zh:"快",cat:"Adjectives"},
+  {id:198,kanji:"遅い",hira:"おそい",roma:"osoi",zh:"慢",cat:"Adjectives"},
+  {id:199,kanji:"暑い",hira:"あつい",roma:"atsui",zh:"热(天气)",cat:"Adjectives"},
+  {id:200,kanji:"寒い",hira:"さむい",roma:"samui",zh:"冷(天气)",cat:"Adjectives"},
+  {id:201,kanji:"熱い",hira:"あつい",roma:"atsui",zh:"烫/热",cat:"Adjectives"},
+  {id:202,kanji:"冷たい",hira:"つめたい",roma:"tsumetai",zh:"冷/凉",cat:"Adjectives"},
+  {id:203,kanji:"重い",hira:"おもい",roma:"omoi",zh:"重",cat:"Adjectives"},
+  {id:204,kanji:"軽い",hira:"かるい",roma:"karui",zh:"轻",cat:"Adjectives"},
+  {id:205,kanji:"硬い",hira:"かたい",roma:"katai",zh:"硬",cat:"Adjectives"},
+  {id:206,kanji:"柔らかい",hira:"やわらかい",roma:"yawarakai",zh:"软",cat:"Adjectives"},
+  {id:207,kanji:"明るい",hira:"あかるい",roma:"akarui",zh:"明亮",cat:"Adjectives"},
+  {id:208,kanji:"暗い",hira:"くらい",roma:"kurai",zh:"暗",cat:"Adjectives"},
+  {id:209,kanji:"美しい",hira:"うつくしい",roma:"utsukushii",zh:"美丽",cat:"Adjectives"},
+  {id:210,kanji:"醜い",hira:"みにくい",roma:"minikui",zh:"丑",cat:"Adjectives"},
+  {id:211,kanji:"家",hira:"いえ",roma:"ie",zh:"家",cat:"Places"},
+  {id:212,kanji:"学校",hira:"がっこう",roma:"gakkō",zh:"学校",cat:"Places"},
+  {id:213,kanji:"会社",hira:"かいしゃ",roma:"kaisha",zh:"公司",cat:"Places"},
+  {id:214,kanji:"病院",hira:"びょういん",roma:"byōin",zh:"医院",cat:"Places"},
+  {id:215,kanji:"駅",hira:"えき",roma:"eki",zh:"车站",cat:"Places"},
+  {id:216,kanji:"店",hira:"みせ",roma:"mise",zh:"店",cat:"Places"},
+  {id:217,kanji:"道",hira:"みち",roma:"michi",zh:"路",cat:"Places"},
+  {id:218,kanji:"橋",hira:"はし",roma:"hashi",zh:"桥",cat:"Places"},
+  {id:219,kanji:"公園",hira:"こうえん",roma:"kōen",zh:"公园",cat:"Places"},
+  {id:220,kanji:"図書館",hira:"としょかん",roma:"toshokan",zh:"图书馆",cat:"Places"},
+  {id:221,kanji:"映画館",hira:"えいがかん",roma:"eigakan",zh:"电影院",cat:"Places"},
+  {id:222,kanji:"寺",hira:"てら",roma:"tera",zh:"寺庙",cat:"Places"},
+  {id:223,kanji:"神社",hira:"じんじゃ",roma:"jinja",zh:"神社",cat:"Places"},
+  {id:224,kanji:"城",hira:"しろ",roma:"shiro",zh:"城堡",cat:"Places"},
+  {id:225,kanji:"空港",hira:"くうこう",roma:"kūkō",zh:"机场",cat:"Places"},
+  {id:226,kanji:"港",hira:"みなと",roma:"minato",zh:"港口",cat:"Places"},
+  {id:227,kanji:"市",hira:"し",roma:"shi",zh:"市",cat:"Places"},
+  {id:228,kanji:"町",hira:"まち",roma:"machi",zh:"街/镇",cat:"Places"},
+  {id:229,kanji:"村",hira:"むら",roma:"mura",zh:"村庄",cat:"Places"},
+  {id:230,kanji:"国",hira:"くに",roma:"kuni",zh:"国",cat:"Places"},
+  {id:231,kanji:"部屋",hira:"へや",roma:"heya",zh:"房间",cat:"Places"},
+  {id:232,kanji:"台所",hira:"だいどころ",roma:"daidokoro",zh:"厨房",cat:"Places"},
+  {id:233,kanji:"庭",hira:"にわ",roma:"niwa",zh:"庭院",cat:"Places"},
+  {id:234,kanji:"窓",hira:"まど",roma:"mado",zh:"窗户",cat:"Places"},
+  {id:235,kanji:"門",hira:"もん",roma:"mon",zh:"门",cat:"Places"},
+  {id:236,kanji:"壁",hira:"かべ",roma:"kabe",zh:"墙",cat:"Places"},
+  {id:237,kanji:"床",hira:"ゆか",roma:"yuka",zh:"地板",cat:"Places"},
+  {id:238,kanji:"天井",hira:"てんじょう",roma:"tenjō",zh:"天花板",cat:"Places"},
+  {id:239,kanji:"階段",hira:"かいだん",roma:"kaidan",zh:"楼梯",cat:"Places"},
+  {id:240,kanji:"広場",hira:"ひろば",roma:"hiroba",zh:"广场",cat:"Places"},
+  {id:241,kanji:"米",hira:"こめ",roma:"kome",zh:"米",cat:"Food"},
+  {id:242,kanji:"麦",hira:"むぎ",roma:"mugi",zh:"麦",cat:"Food"},
+  {id:243,kanji:"肉",hira:"にく",roma:"niku",zh:"肉",cat:"Food"},
+  {id:244,kanji:"魚",hira:"さかな",roma:"sakana",zh:"鱼",cat:"Food"},
+  {id:245,kanji:"野菜",hira:"やさい",roma:"yasai",zh:"蔬菜",cat:"Food"},
+  {id:246,kanji:"果物",hira:"くだもの",roma:"kudamono",zh:"水果",cat:"Food"},
+  {id:247,kanji:"卵",hira:"たまご",roma:"tamago",zh:"鸡蛋",cat:"Food"},
+  {id:248,kanji:"豆",hira:"まめ",roma:"mame",zh:"豆",cat:"Food"},
+  {id:249,kanji:"茶",hira:"ちゃ",roma:"cha",zh:"茶",cat:"Food"},
+  {id:250,kanji:"酒",hira:"さけ",roma:"sake",zh:"酒",cat:"Food"},
+  {id:251,kanji:"牛乳",hira:"ぎゅうにゅう",roma:"gyūnyū",zh:"牛奶",cat:"Food"},
+  {id:252,kanji:"ご飯",hira:"ごはん",roma:"gohan",zh:"米饭",cat:"Food"},
+  {id:253,kanji:"麺",hira:"めん",roma:"men",zh:"面条",cat:"Food"},
+  {id:254,kanji:"味噌",hira:"みそ",roma:"miso",zh:"味噌",cat:"Food"},
+  {id:255,kanji:"塩",hira:"しお",roma:"shio",zh:"盐",cat:"Food"},
+  {id:256,kanji:"砂糖",hira:"さとう",roma:"satō",zh:"砂糖",cat:"Food"},
+  {id:257,kanji:"醤油",hira:"しょうゆ",roma:"shōyu",zh:"酱油",cat:"Food"},
+  {id:258,kanji:"油",hira:"あぶら",roma:"abura",zh:"油",cat:"Food"},
+  {id:259,kanji:"酢",hira:"す",roma:"su",zh:"醋",cat:"Food"},
+  {id:260,kanji:"味",hira:"あじ",roma:"aji",zh:"味道",cat:"Food"},
+  {id:261,kanji:"甘い",hira:"あまい",roma:"amai",zh:"甜",cat:"Food"},
+  {id:262,kanji:"辛い",hira:"からい",roma:"karai",zh:"辣",cat:"Food"},
+  {id:263,kanji:"苦い",hira:"にがい",roma:"nigai",zh:"苦",cat:"Food"},
+  {id:264,kanji:"酸っぱい",hira:"すっぱい",roma:"suppai",zh:"酸",cat:"Food"},
+  {id:265,kanji:"旨い",hira:"うまい",roma:"umai",zh:"好吃",cat:"Food"},
+  {id:266,kanji:"食事",hira:"しょくじ",roma:"shokuji",zh:"饮食/用餐",cat:"Food"},
+  {id:267,kanji:"料理",hira:"りょうり",roma:"ryōri",zh:"料理",cat:"Food"},
+  {id:268,kanji:"栄養",hira:"えいよう",roma:"eiyō",zh:"营养",cat:"Food"},
+  {id:269,kanji:"空腹",hira:"くうふく",roma:"kūfuku",zh:"饥饿",cat:"Food"},
+  {id:270,kanji:"満腹",hira:"まんぷく",roma:"manpuku",zh:"饱",cat:"Food"},
+  {id:271,kanji:"車",hira:"くるま",roma:"kuruma",zh:"车",cat:"Transport"},
+  {id:272,kanji:"電車",hira:"でんしゃ",roma:"densha",zh:"电车",cat:"Transport"},
+  {id:273,kanji:"飛行機",hira:"ひこうき",roma:"hikōki",zh:"飞机",cat:"Transport"},
+  {id:274,kanji:"船",hira:"ふね",roma:"fune",zh:"船",cat:"Transport"},
+  {id:275,kanji:"自転車",hira:"じてんしゃ",roma:"jitensha",zh:"自行车",cat:"Transport"},
+  {id:276,kanji:"道路",hira:"どうろ",roma:"dōro",zh:"道路",cat:"Transport"},
+  {id:277,kanji:"信号",hira:"しんごう",roma:"shingō",zh:"信号灯",cat:"Transport"},
+  {id:278,kanji:"交差点",hira:"こうさてん",roma:"kōsaten",zh:"十字路口",cat:"Transport"},
+  {id:279,kanji:"地下鉄",hira:"ちかてつ",roma:"chikatetsu",zh:"地铁",cat:"Transport"},
+  {id:280,kanji:"新幹線",hira:"しんかんせん",roma:"shinkansen",zh:"新干线",cat:"Transport"},
+  {id:281,kanji:"乗り物",hira:"のりもの",roma:"norimono",zh:"交通工具",cat:"Transport"},
+  {id:282,kanji:"運転",hira:"うんてん",roma:"unten",zh:"驾驶",cat:"Transport"},
+  {id:283,kanji:"旅行",hira:"りょこう",roma:"ryokō",zh:"旅行",cat:"Transport"},
+  {id:284,kanji:"出発",hira:"しゅっぱつ",roma:"shuppatsu",zh:"出发",cat:"Transport"},
+  {id:285,kanji:"到着",hira:"とうちゃく",roma:"tōchaku",zh:"到达",cat:"Transport"},
+  {id:286,kanji:"今",hira:"いま",roma:"ima",zh:"现在",cat:"Time"},
+  {id:287,kanji:"昨日",hira:"きのう",roma:"kinō",zh:"昨天",cat:"Time"},
+  {id:288,kanji:"明日",hira:"あした",roma:"ashita",zh:"明天",cat:"Time"},
+  {id:289,kanji:"毎日",hira:"まいにち",roma:"mainichi",zh:"每天",cat:"Time"},
+  {id:290,kanji:"来週",hira:"らいしゅう",roma:"raishū",zh:"下周",cat:"Time"},
+  {id:291,kanji:"去年",hira:"きょねん",roma:"kyonen",zh:"去年",cat:"Time"},
+  {id:292,kanji:"朝",hira:"あさ",roma:"asa",zh:"早晨",cat:"Time"},
+  {id:293,kanji:"昼",hira:"ひる",roma:"hiru",zh:"中午",cat:"Time"},
+  {id:294,kanji:"夜",hira:"よる",roma:"yoru",zh:"夜晚",cat:"Time"},
+  {id:295,kanji:"週",hira:"しゅう",roma:"shū",zh:"周",cat:"Time"},
+  {id:296,kanji:"春",hira:"はる",roma:"haru",zh:"春",cat:"Time"},
+  {id:297,kanji:"夏",hira:"なつ",roma:"natsu",zh:"夏",cat:"Time"},
+  {id:298,kanji:"秋",hira:"あき",roma:"aki",zh:"秋",cat:"Time"},
+  {id:299,kanji:"冬",hira:"ふゆ",roma:"fuyu",zh:"冬",cat:"Time"},
+  {id:300,kanji:"午前",hira:"ごぜん",roma:"gozen",zh:"上午",cat:"Time"},
+  {id:301,kanji:"午後",hira:"ごご",roma:"gogo",zh:"下午",cat:"Time"},
+  {id:302,kanji:"今日",hira:"きょう",roma:"kyō",zh:"今天",cat:"Time"},
+  {id:303,kanji:"先週",hira:"せんしゅう",roma:"senshū",zh:"上周",cat:"Time"},
+  {id:304,kanji:"来年",hira:"らいねん",roma:"rainen",zh:"明年",cat:"Time"},
+  {id:305,kanji:"今年",hira:"ことし",roma:"kotoshi",zh:"今年",cat:"Time"},
+  {id:306,kanji:"学生",hira:"がくせい",roma:"gakusei",zh:"学生",cat:"Education"},
+  {id:307,kanji:"先生",hira:"せんせい",roma:"sensei",zh:"老师",cat:"Education"},
+  {id:308,kanji:"教室",hira:"きょうしつ",roma:"kyōshitsu",zh:"教室",cat:"Education"},
+  {id:309,kanji:"試験",hira:"しけん",roma:"shiken",zh:"考试",cat:"Education"},
+  {id:310,kanji:"合格",hira:"ごうかく",roma:"gōkaku",zh:"合格",cat:"Education"},
+  {id:311,kanji:"失敗",hira:"しっぱい",roma:"shippai",zh:"失败",cat:"Education"},
+  {id:312,kanji:"仕事",hira:"しごと",roma:"shigoto",zh:"工作",cat:"Education"},
+  {id:313,kanji:"給料",hira:"きゅうりょう",roma:"kyūryō",zh:"工资",cat:"Education"},
+  {id:314,kanji:"職業",hira:"しょくぎょう",roma:"shokugyō",zh:"职业",cat:"Education"},
+  {id:315,kanji:"研究",hira:"けんきゅう",roma:"kenkyū",zh:"研究",cat:"Education"},
+  {id:316,kanji:"発見",hira:"はっけん",roma:"hakken",zh:"发现",cat:"Education"},
+  {id:317,kanji:"科学",hira:"かがく",roma:"kagaku",zh:"科学",cat:"Education"},
+  {id:318,kanji:"数学",hira:"すうがく",roma:"sūgaku",zh:"数学",cat:"Education"},
+  {id:319,kanji:"大学",hira:"だいがく",roma:"daigaku",zh:"大学",cat:"Education"},
+  {id:320,kanji:"卒業",hira:"そつぎょう",roma:"sotsugyō",zh:"毕业",cat:"Education"},
+  {id:321,kanji:"勉強",hira:"べんきょう",roma:"benkyō",zh:"学习",cat:"Education"},
+  {id:322,kanji:"授業",hira:"じゅぎょう",roma:"jugyō",zh:"上课",cat:"Education"},
+  {id:323,kanji:"宿題",hira:"しゅくだい",roma:"shukudai",zh:"作业",cat:"Education"},
+  {id:324,kanji:"知識",hira:"ちしき",roma:"chishiki",zh:"知识",cat:"Education"},
+  {id:325,kanji:"経験",hira:"けいけん",roma:"keiken",zh:"经验",cat:"Education"},
+  {id:326,kanji:"技術",hira:"ぎじゅつ",roma:"gijutsu",zh:"技术",cat:"Education"},
+  {id:327,kanji:"能力",hira:"のうりょく",roma:"nōryoku",zh:"能力",cat:"Education"},
+  {id:328,kanji:"成績",hira:"せいせき",roma:"seiseki",zh:"成绩",cat:"Education"},
+  {id:329,kanji:"問題",hira:"もんだい",roma:"mondai",zh:"问题",cat:"Education"},
+  {id:330,kanji:"入学",hira:"にゅうがく",roma:"nyūgaku",zh:"入学",cat:"Education"},
+  {id:331,kanji:"愛",hira:"あい",roma:"ai",zh:"爱",cat:"Emotions"},
+  {id:332,kanji:"心",hira:"こころ",roma:"kokoro",zh:"心",cat:"Emotions"},
+  {id:333,kanji:"夢",hira:"ゆめ",roma:"yume",zh:"梦",cat:"Emotions"},
+  {id:334,kanji:"希望",hira:"きぼう",roma:"kibō",zh:"希望",cat:"Emotions"},
+  {id:335,kanji:"平和",hira:"へいわ",roma:"heiwa",zh:"和平",cat:"Emotions"},
+  {id:336,kanji:"自由",hira:"じゆう",roma:"jiyū",zh:"自由",cat:"Emotions"},
+  {id:337,kanji:"正義",hira:"せいぎ",roma:"seigi",zh:"正义",cat:"Emotions"},
+  {id:338,kanji:"真実",hira:"しんじつ",roma:"shinjitsu",zh:"真实",cat:"Emotions"},
+  {id:339,kanji:"知恵",hira:"ちえ",roma:"chie",zh:"智慧",cat:"Emotions"},
+  {id:340,kanji:"意志",hira:"いし",roma:"ishi",zh:"意志",cat:"Emotions"},
+  {id:341,kanji:"勇気",hira:"ゆうき",roma:"yūki",zh:"勇气",cat:"Emotions"},
+  {id:342,kanji:"信頼",hira:"しんらい",roma:"shinrai",zh:"信赖",cat:"Emotions"},
+  {id:343,kanji:"感謝",hira:"かんしゃ",roma:"kansha",zh:"感谢",cat:"Emotions"},
+  {id:344,kanji:"幸福",hira:"こうふく",roma:"kōfuku",zh:"幸福",cat:"Emotions"},
+  {id:345,kanji:"悲しみ",hira:"かなしみ",roma:"kanashimi",zh:"悲伤",cat:"Emotions"},
+  {id:346,kanji:"苦しみ",hira:"くるしみ",roma:"kurushimi",zh:"痛苦",cat:"Emotions"},
+  {id:347,kanji:"怒り",hira:"いかり",roma:"ikari",zh:"愤怒",cat:"Emotions"},
+  {id:348,kanji:"喜び",hira:"よろこび",roma:"yorokobi",zh:"喜悦",cat:"Emotions"},
+  {id:349,kanji:"恐れ",hira:"おそれ",roma:"osore",zh:"恐惧",cat:"Emotions"},
+  {id:350,kanji:"嫉妬",hira:"しっと",roma:"shitto",zh:"嫉妒",cat:"Emotions"},
+  {id:351,kanji:"誇り",hira:"ほこり",roma:"hokori",zh:"骄傲",cat:"Emotions"},
+  {id:352,kanji:"謙虚",hira:"けんきょ",roma:"kenkyo",zh:"谦虚",cat:"Emotions"},
+  {id:353,kanji:"恥",hira:"はじ",roma:"haji",zh:"羞耻",cat:"Emotions"},
+  {id:354,kanji:"誠実",hira:"せいじつ",roma:"seijitsu",zh:"诚实",cat:"Emotions"},
+  {id:355,kanji:"友情",hira:"ゆうじょう",roma:"yūjō",zh:"友情",cat:"Emotions"},
+  {id:356,kanji:"絆",hira:"きずな",roma:"kizuna",zh:"纽带",cat:"Emotions"},
+  {id:357,kanji:"運命",hira:"うんめい",roma:"unmei",zh:"命运",cat:"Emotions"},
+  {id:358,kanji:"記憶",hira:"きおく",roma:"kioku",zh:"记忆",cat:"Emotions"},
+  {id:359,kanji:"想像",hira:"そうぞう",roma:"sōzō",zh:"想象",cat:"Emotions"},
+  {id:360,kanji:"孤独",hira:"こどく",roma:"kodoku",zh:"孤独",cat:"Emotions"},
+  {id:361,kanji:"憧れ",hira:"あこがれ",roma:"akogare",zh:"憧憬",cat:"Emotions"},
+  {id:362,kanji:"後悔",hira:"こうかい",roma:"kōkai",zh:"后悔",cat:"Emotions"},
+  {id:363,kanji:"安心",hira:"あんしん",roma:"anshin",zh:"安心",cat:"Emotions"},
+  {id:364,kanji:"不安",hira:"ふあん",roma:"fuan",zh:"不安",cat:"Emotions"},
+  {id:365,kanji:"寂しい",hira:"さびしい",roma:"sabishii",zh:"寂寞",cat:"Emotions"},
+  {id:366,kanji:"金",hira:"かね",roma:"kane",zh:"钱/金",cat:"Economy"},
+  {id:367,kanji:"銀行",hira:"ぎんこう",roma:"ginkō",zh:"银行",cat:"Economy"},
+  {id:368,kanji:"価格",hira:"かかく",roma:"kakaku",zh:"价格",cat:"Economy"},
+  {id:369,kanji:"税金",hira:"ぜいきん",roma:"zeikin",zh:"税金",cat:"Economy"},
+  {id:370,kanji:"利益",hira:"りえき",roma:"rieki",zh:"利益",cat:"Economy"},
+  {id:371,kanji:"損失",hira:"そんしつ",roma:"sonshitsu",zh:"损失",cat:"Economy"},
+  {id:372,kanji:"資本",hira:"しほん",roma:"shihon",zh:"资本",cat:"Economy"},
+  {id:373,kanji:"投資",hira:"とうし",roma:"tōshi",zh:"投资",cat:"Economy"},
+  {id:374,kanji:"株",hira:"かぶ",roma:"kabu",zh:"股票",cat:"Economy"},
+  {id:375,kanji:"債券",hira:"さいけん",roma:"saiken",zh:"债券",cat:"Economy"},
+  {id:376,kanji:"経済",hira:"けいざい",roma:"keizai",zh:"经济",cat:"Economy"},
+  {id:377,kanji:"市場",hira:"しじょう",roma:"shijō",zh:"市场",cat:"Economy"},
+  {id:378,kanji:"政治",hira:"せいじ",roma:"seiji",zh:"政治",cat:"Economy"},
+  {id:379,kanji:"法律",hira:"ほうりつ",roma:"hōritsu",zh:"法律",cat:"Economy"},
+  {id:380,kanji:"社会",hira:"しゃかい",roma:"shakai",zh:"社会",cat:"Economy"},
+  {id:381,kanji:"文化",hira:"ぶんか",roma:"bunka",zh:"文化",cat:"Economy"},
+  {id:382,kanji:"歴史",hira:"れきし",roma:"rekishi",zh:"历史",cat:"Economy"},
+  {id:383,kanji:"貿易",hira:"ぼうえき",roma:"bōeki",zh:"贸易",cat:"Economy"},
+  {id:384,kanji:"物価",hira:"ぶっか",roma:"bukka",zh:"物价",cat:"Economy"},
+  {id:385,kanji:"雇用",hira:"こよう",roma:"koyō",zh:"雇用",cat:"Economy"},
+  {id:386,kanji:"人口",hira:"じんこう",roma:"jinkō",zh:"人口",cat:"Economy"},
+  {id:387,kanji:"環境",hira:"かんきょう",roma:"kankyō",zh:"环境",cat:"Economy"},
+  {id:388,kanji:"革命",hira:"かくめい",roma:"kakumei",zh:"革命",cat:"Economy"},
+  {id:389,kanji:"戦争",hira:"せんそう",roma:"sensō",zh:"战争",cat:"Economy"},
+  {id:390,kanji:"外交",hira:"がいこう",roma:"gaikō",zh:"外交",cat:"Economy"},
+  {id:391,kanji:"病気",hira:"びょうき",roma:"byōki",zh:"疾病",cat:"Health"},
+  {id:392,kanji:"薬",hira:"くすり",roma:"kusuri",zh:"药",cat:"Health"},
+  {id:393,kanji:"医者",hira:"いしゃ",roma:"isha",zh:"医生",cat:"Health"},
+  {id:394,kanji:"治療",hira:"ちりょう",roma:"chiryō",zh:"治疗",cat:"Health"},
+  {id:395,kanji:"健康",hira:"けんこう",roma:"kenkō",zh:"健康",cat:"Health"},
+  {id:396,kanji:"痛み",hira:"いたみ",roma:"itami",zh:"疼痛",cat:"Health"},
+  {id:397,kanji:"傷",hira:"きず",roma:"kizu",zh:"伤",cat:"Health"},
+  {id:398,kanji:"熱",hira:"ねつ",roma:"netsu",zh:"发烧",cat:"Health"},
+  {id:399,kanji:"骨",hira:"ほね",roma:"hone",zh:"骨头",cat:"Health"},
+  {id:400,kanji:"筋肉",hira:"きんにく",roma:"kinniku",zh:"肌肉",cat:"Health"},
+  {id:401,kanji:"脳",hira:"のう",roma:"nō",zh:"脑",cat:"Health"},
+  {id:402,kanji:"心臓",hira:"しんぞう",roma:"shinzō",zh:"心脏",cat:"Health"},
+  {id:403,kanji:"肺",hira:"はい",roma:"hai",zh:"肺",cat:"Health"},
+  {id:404,kanji:"胃",hira:"い",roma:"i",zh:"胃",cat:"Health"},
+  {id:405,kanji:"血圧",hira:"けつあつ",roma:"ketsuatsu",zh:"血压",cat:"Health"},
+  {id:406,kanji:"手術",hira:"しゅじゅつ",roma:"shujutsu",zh:"手术",cat:"Health"},
+  {id:407,kanji:"注射",hira:"ちゅうしゃ",roma:"chūsha",zh:"注射",cat:"Health"},
+  {id:408,kanji:"診断",hira:"しんだん",roma:"shindan",zh:"诊断",cat:"Health"},
+  {id:409,kanji:"症状",hira:"しょうじょう",roma:"shōjō",zh:"症状",cat:"Health"},
+  {id:410,kanji:"回復",hira:"かいふく",roma:"kaifuku",zh:"恢复",cat:"Health"},
+  {id:411,kanji:"音楽",hira:"おんがく",roma:"ongaku",zh:"音乐",cat:"Arts"},
+  {id:412,kanji:"絵",hira:"え",roma:"e",zh:"图画",cat:"Arts"},
+  {id:413,kanji:"詩",hira:"し",roma:"shi",zh:"诗",cat:"Arts"},
+  {id:414,kanji:"歌",hira:"うた",roma:"uta",zh:"歌",cat:"Arts"},
+  {id:415,kanji:"踊り",hira:"おどり",roma:"odori",zh:"舞蹈",cat:"Arts"},
+  {id:416,kanji:"劇",hira:"げき",roma:"geki",zh:"戏剧",cat:"Arts"},
+  {id:417,kanji:"映画",hira:"えいが",roma:"eiga",zh:"电影",cat:"Arts"},
+  {id:418,kanji:"写真",hira:"しゃしん",roma:"shashin",zh:"照片",cat:"Arts"},
+  {id:419,kanji:"本",hira:"ほん",roma:"hon",zh:"书",cat:"Arts"},
+  {id:420,kanji:"文字",hira:"もじ",roma:"moji",zh:"文字",cat:"Arts"},
+  {id:421,kanji:"書道",hira:"しょどう",roma:"shodō",zh:"书道",cat:"Arts"},
+  {id:422,kanji:"茶道",hira:"さどう",roma:"sadō",zh:"茶道",cat:"Arts"},
+  {id:423,kanji:"武道",hira:"ぶどう",roma:"budō",zh:"武道",cat:"Arts"},
+  {id:424,kanji:"伝統",hira:"でんとう",roma:"dentō",zh:"传统",cat:"Arts"},
+  {id:425,kanji:"芸術",hira:"げいじゅつ",roma:"geijutsu",zh:"艺术",cat:"Arts"},
+  {id:426,kanji:"建築",hira:"けんちく",roma:"kenchiku",zh:"建筑",cat:"Arts"},
+  {id:427,kanji:"彫刻",hira:"ちょうこく",roma:"chōkoku",zh:"雕刻",cat:"Arts"},
+  {id:428,kanji:"陶芸",hira:"とうげい",roma:"tōgei",zh:"陶艺",cat:"Arts"},
+  {id:429,kanji:"俳句",hira:"はいく",roma:"haiku",zh:"俳句",cat:"Arts"},
+  {id:430,kanji:"神話",hira:"しんわ",roma:"shinwa",zh:"神话",cat:"Arts"},
+  {id:431,kanji:"宇宙",hira:"うちゅう",roma:"uchū",zh:"宇宙",cat:"Science"},
+  {id:432,kanji:"地球",hira:"ちきゅう",roma:"chikyū",zh:"地球",cat:"Science"},
+  {id:433,kanji:"原子",hira:"げんし",roma:"genshi",zh:"原子",cat:"Science"},
+  {id:434,kanji:"分子",hira:"ぶんし",roma:"bunshi",zh:"分子",cat:"Science"},
+  {id:435,kanji:"電気",hira:"でんき",roma:"denki",zh:"电",cat:"Science"},
+  {id:436,kanji:"磁気",hira:"じき",roma:"jiki",zh:"磁",cat:"Science"},
+  {id:437,kanji:"化学",hira:"かがく",roma:"kagaku",zh:"化学",cat:"Science"},
+  {id:438,kanji:"生物",hira:"せいぶつ",roma:"seibutsu",zh:"生物",cat:"Science"},
+  {id:439,kanji:"物理",hira:"ぶつり",roma:"butsuri",zh:"物理",cat:"Science"},
+  {id:440,kanji:"計算",hira:"けいさん",roma:"keisan",zh:"计算",cat:"Science"},
+  {id:441,kanji:"発明",hira:"はつめい",roma:"hatsumei",zh:"发明",cat:"Science"},
+  {id:442,kanji:"実験",hira:"じっけん",roma:"jikken",zh:"实验",cat:"Science"},
+  {id:443,kanji:"観察",hira:"かんさつ",roma:"kansatsu",zh:"观察",cat:"Science"},
+  {id:444,kanji:"理論",hira:"りろん",roma:"riron",zh:"理论",cat:"Science"},
+  {id:445,kanji:"進化",hira:"しんか",roma:"shinka",zh:"进化",cat:"Science"},
+  {id:446,kanji:"重力",hira:"じゅうりょく",roma:"jūryoku",zh:"重力",cat:"Science"},
+  {id:447,kanji:"温度",hira:"おんど",roma:"ondo",zh:"温度",cat:"Science"},
+  {id:448,kanji:"速度",hira:"そくど",roma:"sokudo",zh:"速度",cat:"Science"},
+  {id:449,kanji:"エネルギー",hira:"えねるぎー",roma:"enerugī",zh:"能量",cat:"Science"},
+  {id:450,kanji:"人工知能",hira:"じんこうちのう",roma:"jinkō chinō",zh:"人工智能",cat:"Science"},
+  {id:451,kanji:"物",hira:"もの",roma:"mono",zh:"物/东西",cat:"General"},
+  {id:452,kanji:"事",hira:"こと",roma:"koto",zh:"事情",cat:"General"},
+  {id:453,kanji:"所",hira:"ところ",roma:"tokoro",zh:"地方",cat:"General"},
+  {id:454,kanji:"名前",hira:"なまえ",roma:"namae",zh:"名字",cat:"General"},
+  {id:455,kanji:"形",hira:"かたち",roma:"katachi",zh:"形状",cat:"General"},
+  {id:456,kanji:"声",hira:"こえ",roma:"koe",zh:"声音",cat:"General"},
+  {id:457,kanji:"気持ち",hira:"きもち",roma:"kimochi",zh:"心情",cat:"General"},
+  {id:458,kanji:"世界",hira:"せかい",roma:"sekai",zh:"世界",cat:"General"},
+  {id:459,kanji:"言葉",hira:"ことば",roma:"kotoba",zh:"话语/语言",cat:"General"},
+  {id:460,kanji:"答え",hira:"こたえ",roma:"kotae",zh:"答案",cat:"General"},
+  {id:461,kanji:"質問",hira:"しつもん",roma:"shitsumon",zh:"提问",cat:"General"},
+  {id:462,kanji:"理由",hira:"りゆう",roma:"riyū",zh:"理由",cat:"General"},
+  {id:463,kanji:"目的",hira:"もくてき",roma:"mokuteki",zh:"目的",cat:"General"},
+  {id:464,kanji:"結果",hira:"けっか",roma:"kekka",zh:"结果",cat:"General"},
+  {id:465,kanji:"原因",hira:"げんいん",roma:"gen'in",zh:"原因",cat:"General"},
+  {id:466,kanji:"関係",hira:"かんけい",roma:"kankei",zh:"关系",cat:"General"},
+  {id:467,kanji:"影響",hira:"えいきょう",roma:"eikyō",zh:"影响",cat:"General"},
+  {id:468,kanji:"変化",hira:"へんか",roma:"henka",zh:"变化",cat:"General"},
+  {id:469,kanji:"成長",hira:"せいちょう",roma:"seichō",zh:"成长",cat:"General"},
+  {id:470,kanji:"発展",hira:"はってん",roma:"hatten",zh:"发展",cat:"General"},
+  {id:471,kanji:"進歩",hira:"しんぽ",roma:"shinpo",zh:"进步",cat:"General"},
+  {id:472,kanji:"解決",hira:"かいけつ",roma:"kaiketsu",zh:"解决",cat:"General"},
+  {id:473,kanji:"計画",hira:"けいかく",roma:"keikaku",zh:"计划",cat:"General"},
+  {id:474,kanji:"準備",hira:"じゅんび",roma:"junbi",zh:"准备",cat:"General"},
+  {id:475,kanji:"決定",hira:"けってい",roma:"kettei",zh:"决定",cat:"General"},
+  {id:476,kanji:"選択",hira:"せんたく",roma:"sentaku",zh:"选择",cat:"General"},
+  {id:477,kanji:"機会",hira:"きかい",roma:"kikai",zh:"机会",cat:"General"},
+  {id:478,kanji:"危険",hira:"きけん",roma:"kiken",zh:"危险",cat:"General"},
+  {id:479,kanji:"安全",hira:"あんぜん",roma:"anzen",zh:"安全",cat:"General"},
+  {id:480,kanji:"自然",hira:"しぜん",roma:"shizen",zh:"自然",cat:"General"},
+  {id:481,kanji:"神",hira:"かみ",roma:"kami",zh:"神",cat:"General"},
+  {id:482,kanji:"命",hira:"いのち",roma:"inochi",zh:"生命",cat:"General"},
+  {id:483,kanji:"死",hira:"し",roma:"shi",zh:"死",cat:"General"},
+  {id:484,kanji:"生",hira:"せい",roma:"sei",zh:"生",cat:"General"},
+  {id:485,kanji:"永遠",hira:"えいえん",roma:"eien",zh:"永远",cat:"General"},
+  {id:486,kanji:"全て",hira:"すべて",roma:"subete",zh:"全部",cat:"General"},
+  {id:487,kanji:"同じ",hira:"おなじ",roma:"onaji",zh:"相同",cat:"General"},
+  {id:488,kanji:"違う",hira:"ちがう",roma:"chigau",zh:"不同",cat:"General"},
+  {id:489,kanji:"本当",hira:"ほんとう",roma:"hontō",zh:"真的",cat:"General"},
+  {id:490,kanji:"嘘",hira:"うそ",roma:"uso",zh:"谎言",cat:"General"},
+  {id:491,kanji:"大切",hira:"たいせつ",roma:"taisetsu",zh:"重要/珍贵",cat:"General"},
+  {id:492,kanji:"必要",hira:"ひつよう",roma:"hitsuyō",zh:"必要",cat:"General"},
+  {id:493,kanji:"自分",hira:"じぶん",roma:"jibun",zh:"自己",cat:"General"},
+  {id:494,kanji:"一緒",hira:"いっしょ",roma:"issho",zh:"一起",cat:"General"},
+  {id:495,kanji:"別れ",hira:"わかれ",roma:"wakare",zh:"别离",cat:"General"},
+  {id:496,kanji:"出会い",hira:"であい",roma:"deai",zh:"相遇",cat:"General"},
+  {id:497,kanji:"未来",hira:"みらい",roma:"mirai",zh:"未来",cat:"General"},
+  {id:498,kanji:"過去",hira:"かこ",roma:"kako",zh:"过去",cat:"General"},
+  {id:499,kanji:"現在",hira:"げんざい",roma:"genzai",zh:"现在",cat:"General"},
+  {id:500,kanji:"時間",hira:"じかん",roma:"jikan",zh:"时间",cat:"General"},
+];
+
+const CATEGORIES = [...new Set(DATA.map(d=>d.cat))];
+const PER_PAGE = 50;
+let currentSearch = "", currentCat = "All", currentPage = 1;
+let filtered = [...DATA];
+
+function buildCats() {
+  const wrap = document.getElementById("cats");
+  const allBtn = document.createElement("button");
+  allBtn.className = "cat-btn active";
+  allBtn.textContent = `All (${DATA.length})`;
+  allBtn.onclick = () => setCat("All");
+  wrap.appendChild(allBtn);
+  CATEGORIES.forEach(c => {
+    const count = DATA.filter(d=>d.cat===c).length;
+    const btn = document.createElement("button");
+    btn.className = "cat-btn";
+    btn.textContent = `${c} (${count})`;
+    btn.dataset.cat = c;
+    btn.onclick = () => setCat(c);
+    wrap.appendChild(btn);
+  });
+}
+
+function setCat(c) {
+  currentCat = c; currentPage = 1;
+  document.querySelectorAll(".cat-btn").forEach(b => {
+    b.classList.toggle("active", (b.dataset.cat||"All") === c);
+  });
+  render();
+}
+
+function handleSearch(v) {
+  currentSearch = v; currentPage = 1; render();
+}
+
+function getFiltered() {
+  const q = currentSearch.toLowerCase();
+  return DATA.filter(w => {
+    const mc = currentCat === "All" || w.cat === currentCat;
+    const mq = !q || w.kanji.includes(currentSearch) || w.hira.includes(q) ||
+      w.roma.toLowerCase().includes(q) || w.zh.includes(currentSearch);
+    return mc && mq;
+  });
+}
+
+function render() {
+  filtered = getFiltered();
+  const total = filtered.length;
+  const totalPages = Math.ceil(total / PER_PAGE);
+  if (currentPage > totalPages) currentPage = 1;
+  const start = (currentPage-1)*PER_PAGE;
+  const visible = filtered.slice(start, start+PER_PAGE);
+
+  document.getElementById("results-info").textContent =
+    `${total} results · showing ${total===0?0:start+1}–${Math.min(start+PER_PAGE,total)}`;
+
+  const tbody = document.getElementById("tbody");
+  tbody.innerHTML = "";
+  visible.forEach(w => {
+    const c = CAT_COLORS[w.cat]||"#ccc";
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="num">${w.id}</td>
+      <td class="kanji">${w.kanji}</td>
+      <td class="hira">${w.hira}</td>
+      <td class="roma">${w.roma}</td>
+      <td class="zh">${w.zh}</td>
+      <td><span class="badge" style="background:${c}22;color:${c};border:1px solid ${c}44">${w.cat}</span></td>
+      <td><button class="speak-btn" onclick="speak(this,'${w.kanji.replace(/'/g,"\\'")}')">🔊</button></td>`;
+    tbody.appendChild(tr);
+  });
+
+  const pg = document.getElementById("pagination");
+  pg.innerHTML = "";
+  if (totalPages <= 1) return;
+
+  const prev = document.createElement("button");
+  prev.className = "pg-btn"; prev.textContent = "← Prev";
+  prev.disabled = currentPage===1;
+  prev.onclick = () => { currentPage--; render(); };
+  pg.appendChild(prev);
+
+  for (let p=1; p<=totalPages; p++) {
+    const btn = document.createElement("button");
+    btn.className = "pg-btn" + (p===currentPage?" active":"");
+    btn.textContent = p;
+    btn.onclick = (()=>{ const pp=p; return ()=>{ currentPage=pp; render(); }; })();
+    pg.appendChild(btn);
+  }
+
+  const next = document.createElement("button");
+  next.className = "pg-btn"; next.textContent = "Next →";
+  next.disabled = currentPage===totalPages;
+  next.onclick = () => { currentPage++; render(); };
+  pg.appendChild(next);
+}
+
+function speak(btn, text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  document.querySelectorAll(".speak-btn.speaking").forEach(b => b.classList.remove("speaking"));
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = "ja-JP";
+  utt.rate = 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const jpVoice = voices.find(v => v.lang.startsWith("ja"));
+  if (jpVoice) utt.voice = jpVoice;
+  btn.classList.add("speaking");
+  utt.onend = () => btn.classList.remove("speaking");
+  utt.onerror = () => btn.classList.remove("speaking");
+  window.speechSynthesis.speak(utt);
+}
+
+// Preload voices
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+buildCats();
+render();
+</script>
+</body>
+</html>
