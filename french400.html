@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Français B2/C1 — 100 mots</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Crimson Pro',Georgia,serif;background:#0e1218;min-height:100vh;color:#d8cfc4}
+  ::-webkit-scrollbar{width:6px;height:6px}
+  ::-webkit-scrollbar-track{background:#0e1218}
+  ::-webkit-scrollbar-thumb{background:#2a3a52;border-radius:3px}
+
+  #header{background:linear-gradient(180deg,#080c12 0%,#0e1218 100%);
+    border-bottom:1px solid #1e2d42;padding:36px 24px 26px;text-align:center}
+  .sub{font-size:11px;letter-spacing:0.35em;color:#2a4a6a;text-transform:uppercase;margin-bottom:10px}
+  h1{font-family:'Playfair Display',serif;font-size:34px;font-weight:400;
+    color:#a8c8e8;letter-spacing:0.03em;font-style:italic}
+  .desc{font-size:14px;color:#506070;margin-top:8px;font-family:'Crimson Pro',serif}
+  .count{font-size:11px;color:#2a4a6a;margin-top:4px}
+
+  #controls{padding:20px 24px}
+  #search{background:#080c12;border:1px solid #1e2d42;color:#d8cfc4;
+    padding:10px 16px;border-radius:6px;font-size:15px;font-family:inherit;
+    width:100%;outline:none;margin-bottom:16px}
+  #search:focus{border-color:#3a6a9a;box-shadow:0 0 0 2px rgba(58,106,154,0.2)}
+  #cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+  .cat-btn{border:1px solid #1e2d42;background:transparent;color:#607080;cursor:pointer;
+    padding:4px 12px;border-radius:20px;font-size:11px;font-family:inherit;
+    transition:all 0.2s;white-space:nowrap;letter-spacing:0.05em}
+  .cat-btn:hover{background:#1e2d42;color:#d8cfc4}
+  .cat-btn.active{background:#1e4a7a;border-color:#3a6a9a;color:#a8d8f8}
+
+  #results-info{font-size:11px;color:#2a4a6a;margin-bottom:12px;letter-spacing:0.05em}
+  #table-wrap{overflow-x:auto;border-radius:8px;border:1px solid #1e2d42}
+  table{width:100%;border-collapse:collapse}
+  th{background:#080c12;color:#3a6a9a;font-weight:600;font-size:10px;
+    letter-spacing:0.12em;text-transform:uppercase;padding:11px 14px;
+    border-bottom:1px solid #1e2d42;position:sticky;top:0;z-index:2}
+  td{padding:10px 14px;border-bottom:1px solid #141e2a;vertical-align:top}
+  tr:hover td{background:rgba(80,140,200,0.05)}
+
+  .num{color:#2a4a6a;font-size:11px;font-family:'Crimson Pro',serif;padding-top:14px}
+  .word{font-family:'Playfair Display',serif;font-size:22px;color:#a8c8e8;
+    font-weight:400;line-height:1.2}
+  .pos{font-size:11px;color:#3a6a9a;font-style:italic;margin-top:3px;
+    font-family:'Crimson Pro',serif;letter-spacing:0.05em}
+  .english{font-size:26px;color:#c8b890;font-style:italic}
+  .example{font-size:26px;color:#607888;line-height:1.5;margin-top:4px;
+    font-style:italic;border-left:2px solid #1e2d42;padding-left:10px}
+  .example em{color:#3a6a9a;font-style:normal}
+  .badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:10px;
+    font-family:'Crimson Pro',serif;font-style:italic;letter-spacing:0.03em}
+
+  .speak-btn{background:transparent;border:1px solid #1e2d42;color:#607080;
+    cursor:pointer;padding:5px 9px;border-radius:6px;font-size:15px;
+    line-height:1;transition:all 0.2s;display:block;margin-top:6px}
+  .speak-btn:hover{background:#1e2d42;color:#a8c8e8;transform:scale(1.1)}
+  .speak-btn.speaking{color:#a8c8e8;border-color:#3a6a9a;animation:pulse 0.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+  #pagination{display:flex;align-items:center;gap:8px;margin-top:16px;
+    justify-content:center;flex-wrap:wrap}
+  .pg-btn{background:transparent;border:1px solid #1e2d42;color:#607080;cursor:pointer;
+    padding:5px 12px;border-radius:4px;font-family:inherit;font-size:12px;transition:all 0.2s}
+  .pg-btn:hover:not(:disabled){background:#1e2d42;color:#d8cfc4}
+  .pg-btn:disabled{opacity:0.3;cursor:default}
+  .pg-btn.active{background:#1e4a7a;border-color:#3a6a9a;color:#a8d8f8}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="sub">Vocabulaire · B2 / C1</div>
+  <h1>Cent mots essentiels</h1>
+  <div class="desc">200 advanced French words with English & example sentences</div>
+  <div class="count">200 entries · 6 categories · click 🔊 to hear pronunciation</div>
+</div>
+
+<div id="controls">
+  <input id="search" type="text" placeholder="Search French, English, or example…" oninput="handleSearch(this.value)">
+  <div id="cats"></div>
+  <div id="results-info"></div>
+  <div id="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Mot</th>
+          <th>English</th>
+          <th>Exemple</th>
+          <th>▶</th>
+          <th>Cat.</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div id="pagination"></div>
+</div>
+
+<script>
+const CAT_COLORS = {
+  Verbes:"#b2dfdb", Noms:"#c5cae9", Adjectifs:"#f8bbd0",
+  Adverbes:"#fff9c4", Expressions:"#ffe0b2", Nuances:"#dcedc8"
+};
+
+const DATA = [
+  // VERBES
+  {id:1,fr:"aboutir",en:"to lead to, result in",pos:"v.",ex:"Ses années de recherche ont finalement abouti à une découverte majeure.",cat:"Verbes"},
+  {id:2,fr:"appréhender",en:"to dread; to apprehend",pos:"v.",ex:"Elle appréhende les examens oraux depuis son enfance.",cat:"Verbes"},
+  {id:3,fr:"atermoyer",en:"to procrastinate, temporize",pos:"v.",ex:"Il atermoie sans jamais prendre de décision ferme.",cat:"Verbes"},
+  {id:4,fr:"cautionner",en:"to endorse, sanction",pos:"v.",ex:"Je ne peux pas cautionner un tel comportement irresponsable.",cat:"Verbes"},
+  {id:5,fr:"corroborer",en:"to corroborate, confirm",pos:"v.",ex:"Les faits corroborent entièrement cette théorie scientifique.",cat:"Verbes"},
+  {id:6,fr:"déceler",en:"to detect, uncover",pos:"v.",ex:"L'expert a décelé une anomalie dans les données financières.",cat:"Verbes"},
+  {id:7,fr:"dénouer",en:"to untangle, resolve",pos:"v.",ex:"La diplomatie a réussi à dénouer une situation très tendue.",cat:"Verbes"},
+  {id:8,fr:"désavouer",en:"to disavow, repudiate",pos:"v.",ex:"Le parti a officiellement désavoué les propos de son candidat.",cat:"Verbes"},
+  {id:9,fr:"dissiper",en:"to dispel, dissipate",pos:"v.",ex:"Il faut dissiper tout malentendu avant d'aller plus loin.",cat:"Verbes"},
+  {id:10,fr:"ébranler",en:"to shake, undermine",pos:"v.",ex:"Ce scandale a profondément ébranlé ses convictions politiques.",cat:"Verbes"},
+  {id:11,fr:"effleurer",en:"to graze, touch lightly on",pos:"v.",ex:"Il a effleuré le sujet sans jamais l'approfondir vraiment.",cat:"Verbes"},
+  {id:12,fr:"étayer",en:"to support, substantiate",pos:"v.",ex:"Il a étayé son argument avec des preuves irréfutables.",cat:"Verbes"},
+  {id:13,fr:"fléchir",en:"to bend, weaken, give way",pos:"v.",ex:"Sa détermination n'a pas fléchi malgré les obstacles.",cat:"Verbes"},
+  {id:14,fr:"foisonner",en:"to abound, teem with",pos:"v.",ex:"Les idées foisonnent dans ce roman d'une richesse extraordinaire.",cat:"Verbes"},
+  {id:15,fr:"infléchir",en:"to alter, bend, influence",pos:"v.",ex:"Cet événement a profondément infléchi le cours de l'histoire.",cat:"Verbes"},
+  {id:16,fr:"jalonner",en:"to mark, punctuate, dot",pos:"v.",ex:"De nombreux succès jalonnent sa brillante carrière.",cat:"Verbes"},
+  {id:17,fr:"nuancer",en:"to nuance, qualify",pos:"v.",ex:"Il convient de nuancer cette affirmation trop généralisatrice.",cat:"Verbes"},
+  {id:18,fr:"omettre",en:"to omit, leave out",pos:"v.",ex:"Il a omis de mentionner ce détail pourtant crucial.",cat:"Verbes"},
+  {id:19,fr:"outrepasser",en:"to overstep, exceed",pos:"v.",ex:"En agissant ainsi, il a clairement outrepassé ses attributions.",cat:"Verbes"},
+  {id:20,fr:"parachever",en:"to complete, perfect, finish off",pos:"v.",ex:"Il a parachevé son œuvre en ajoutant un épilogue émouvant.",cat:"Verbes"},
+  {id:21,fr:"préconiser",en:"to advocate, recommend",pos:"v.",ex:"Les médecins préconisent une alimentation équilibrée et variée.",cat:"Verbes"},
+  {id:22,fr:"prévaloir",en:"to prevail, take precedence",pos:"v.",ex:"La raison doit toujours prévaloir sur les émotions dans ce métier.",cat:"Verbes"},
+  {id:23,fr:"réfuter",en:"to refute, disprove",pos:"v.",ex:"Elle a réfuté chacun de ses arguments avec une précision redoutable.",cat:"Verbes"},
+  {id:24,fr:"remédier",en:"to remedy, fix",pos:"v.",ex:"Il faut remédier à cette lacune structurelle sans tarder.",cat:"Verbes"},
+  {id:25,fr:"revendiquer",en:"to claim, demand, assert",pos:"v.",ex:"Les syndicats revendiquent de meilleures conditions de travail.",cat:"Verbes"},
+  {id:26,fr:"rétorquer",en:"to retort, reply sharply",pos:"v.",ex:"Elle lui a rétorqué qu'il avait eu tort depuis le début.",cat:"Verbes"},
+  {id:27,fr:"s'avérer",en:"to turn out, prove to be",pos:"v.",ex:"Ses craintes se sont avérées totalement fondées.",cat:"Verbes"},
+  {id:28,fr:"susciter",en:"to arouse, provoke, give rise to",pos:"v.",ex:"Cette décision controversée a suscité de vives réactions.",cat:"Verbes"},
+  {id:29,fr:"trancher",en:"to settle, cut through decisively",pos:"v.",ex:"Il faut trancher cette question une bonne fois pour toutes.",cat:"Verbes"},
+  {id:30,fr:"usurper",en:"to usurp, seize unlawfully",pos:"v.",ex:"Il a usurpé le pouvoir en profitant du chaos ambiant.",cat:"Verbes"},
+  // NOMS
+  {id:31,fr:"acuité",en:"acuity, sharpness",pos:"n.f.",ex:"Il a analysé la situation avec une acuité remarquable.",cat:"Noms"},
+  {id:32,fr:"amalgame",en:"amalgam, confusion between",pos:"n.m.",ex:"Il ne faut pas faire d'amalgame entre ces deux concepts distincts.",cat:"Noms"},
+  {id:33,fr:"ardeur",en:"ardor, eagerness, zeal",pos:"n.f.",ex:"Il s'est consacré à ce projet avec une ardeur infatigable.",cat:"Noms"},
+  {id:34,fr:"conjoncture",en:"economic situation, juncture",pos:"n.f.",ex:"La conjoncture économique mondiale reste extrêmement incertaine.",cat:"Noms"},
+  {id:35,fr:"déférence",en:"deference, respect",pos:"n.f.",ex:"Il s'est exprimé avec déférence envers ses aînés.",cat:"Noms"},
+  {id:36,fr:"démarche",en:"approach, process, steps taken",pos:"n.f.",ex:"Sa démarche innovante a séduit l'ensemble du jury.",cat:"Noms"},
+  {id:37,fr:"discernement",en:"discernment, judgment",pos:"n.m.",ex:"Elle fait preuve d'un discernement rare pour son âge.",cat:"Noms"},
+  {id:38,fr:"effroi",en:"terror, dread, fright",pos:"n.m.",ex:"L'effroi s'empara de lui lorsqu'il vit l'étendue des dégâts.",cat:"Noms"},
+  {id:39,fr:"épanouissement",en:"blossoming, fulfillment",pos:"n.m.",ex:"L'école doit favoriser l'épanouissement de chaque enfant.",cat:"Noms"},
+  {id:40,fr:"incidence",en:"impact, effect, bearing",pos:"n.f.",ex:"Cette réforme aura une incidence directe sur les petites entreprises.",cat:"Noms"},
+  {id:41,fr:"lacune",en:"gap, shortcoming, deficiency",pos:"n.f.",ex:"Il y a des lacunes importantes dans son argumentation.",cat:"Noms"},
+  {id:42,fr:"méfiance",en:"mistrust, wariness, suspicion",pos:"n.f.",ex:"Il regardait les inconnus avec une méfiance instinctive.",cat:"Noms"},
+  {id:43,fr:"prétexte",en:"pretext, excuse",pos:"n.m.",ex:"Il a utilisé le mauvais temps comme prétexte pour ne pas venir.",cat:"Noms"},
+  {id:44,fr:"recrudescence",en:"resurgence, upsurge, increase",pos:"n.f.",ex:"On observe une recrudescence inquiétante des cas de grippe.",cat:"Noms"},
+  {id:45,fr:"résilience",en:"resilience",pos:"n.f.",ex:"La résilience est une qualité précieuse face à l'adversité.",cat:"Noms"},
+  {id:46,fr:"ténacité",en:"tenacity, perseverance",pos:"n.f.",ex:"C'est grâce à sa ténacité qu'elle a finalement réussi.",cat:"Noms"},
+  {id:47,fr:"ubiquité",en:"ubiquity, omnipresence",pos:"n.f.",ex:"Il semble avoir le don d'ubiquité tant on le voit partout.",cat:"Noms"},
+  {id:48,fr:"véracité",en:"veracity, truthfulness",pos:"n.f.",ex:"On peut légitimement douter de la véracité de ses propos.",cat:"Noms"},
+  {id:49,fr:"volubilité",en:"volubility, talkativeness",pos:"n.f.",ex:"Elle s'exprime avec une volubilité qui charme son auditoire.",cat:"Noms"},
+  {id:50,fr:"acrimonie",en:"acrimony, bitterness",pos:"n.f.",ex:"Le débat s'est terminé dans l'acrimonie et les reproches.",cat:"Noms"},
+  // ADJECTIFS
+  {id:51,fr:"acerbe",en:"acerbic, sharp, biting",pos:"adj.",ex:"Ses critiques acerbes ont profondément blessé ses collègues.",cat:"Adjectifs"},
+  {id:52,fr:"altruiste",en:"altruistic, selfless",pos:"adj.",ex:"Son comportement altruiste force l'admiration de son entourage.",cat:"Adjectifs"},
+  {id:53,fr:"ambivalent",en:"ambivalent, mixed",pos:"adj.",ex:"Il nourrit des sentiments ambivalents envers son ancien employeur.",cat:"Adjectifs"},
+  {id:54,fr:"assidu",en:"assiduous, diligent, regular",pos:"adj.",ex:"Elle est assidue dans ses études et ne rate jamais un cours.",cat:"Adjectifs"},
+  {id:55,fr:"bienveillant",en:"benevolent, kind, well-meaning",pos:"adj.",ex:"Son regard bienveillant mettait immédiatement les gens à l'aise.",cat:"Adjectifs"},
+  {id:56,fr:"circonspect",en:"circumspect, cautious, wary",pos:"adj.",ex:"Il faut être circonspect avant de prendre une telle décision.",cat:"Adjectifs"},
+  {id:57,fr:"délibéré",en:"deliberate, intentional",pos:"adj.",ex:"C'était un choix pleinement délibéré de sa part.",cat:"Adjectifs"},
+  {id:58,fr:"désuet",en:"obsolete, outdated, archaic",pos:"adj.",ex:"Ce terme est désormais désuet dans le français contemporain.",cat:"Adjectifs"},
+  {id:59,fr:"désinvolte",en:"casual, offhand, flippant",pos:"adj.",ex:"Son attitude désinvolte lors de la réunion a choqué tout le monde.",cat:"Adjectifs"},
+  {id:60,fr:"empreint",en:"imbued with, marked by",pos:"adj.",ex:"Son discours d'adieu était empreint d'une profonde nostalgie.",cat:"Adjectifs"},
+  {id:61,fr:"épineux",en:"thorny, tricky, delicate",pos:"adj.",ex:"La question de la répartition des ressources est particulièrement épineuse.",cat:"Adjectifs"},
+  {id:62,fr:"étanche",en:"watertight; hermetically sealed",pos:"adj.",ex:"Ces deux domaines ne sont pas totalement étanches l'un à l'autre.",cat:"Adjectifs"},
+  {id:63,fr:"flagrant",en:"flagrant, blatant, glaring",pos:"adj.",ex:"C'est un mensonge flagrant que personne ne peut ignorer.",cat:"Adjectifs"},
+  {id:64,fr:"furtif",en:"furtive, stealthy",pos:"adj.",ex:"Il lui a lancé un regard furtif avant de quitter la salle.",cat:"Adjectifs"},
+  {id:65,fr:"incontournable",en:"unavoidable, essential, key",pos:"adj.",ex:"Ce roman est incontournable pour quiconque s'intéresse à la littérature.",cat:"Adjectifs"},
+  {id:66,fr:"inéluctable",en:"ineluctable, inevitable",pos:"adj.",ex:"Sa chute semblait inéluctable dès le début de l'affaire.",cat:"Adjectifs"},
+  {id:67,fr:"ingénieux",en:"ingenious, clever",pos:"adj.",ex:"Sa solution ingénieuse a résolu un problème vieux de dix ans.",cat:"Adjectifs"},
+  {id:68,fr:"intransigeant",en:"uncompromising, intransigent",pos:"adj.",ex:"Il est intransigeant sur toutes les questions d'éthique professionnelle.",cat:"Adjectifs"},
+  {id:69,fr:"irréfutable",en:"irrefutable, undeniable",pos:"adj.",ex:"Les preuves présentées sont absolument irréfutables.",cat:"Adjectifs"},
+  {id:70,fr:"laborieux",en:"laborious, painstaking; hardworking",pos:"adj.",ex:"Ce fut un travail laborieux mais le résultat en valait la peine.",cat:"Adjectifs"},
+  {id:71,fr:"louable",en:"praiseworthy, laudable, commendable",pos:"adj.",ex:"Ses efforts sont louables même si le résultat est décevant.",cat:"Adjectifs"},
+  {id:72,fr:"morose",en:"morose, gloomy, sullen",pos:"adj.",ex:"Il était d'humeur morose et ne voulait voir personne.",cat:"Adjectifs"},
+  {id:73,fr:"opportun",en:"opportune, timely, appropriate",pos:"adj.",ex:"Sa remarque était particulièrement opportune dans ce contexte.",cat:"Adjectifs"},
+  {id:74,fr:"pérenne",en:"perennial, lasting, sustainable",pos:"adj.",ex:"Ils cherchent une solution pérenne et non un simple palliatif.",cat:"Adjectifs"},
+  {id:75,fr:"périlleux",en:"perilous, dangerous, precarious",pos:"adj.",ex:"La traversée du col en hiver est périlleuse sans équipement adapté.",cat:"Adjectifs"},
+  {id:76,fr:"perspicace",en:"perspicacious, shrewd, sharp",pos:"adj.",ex:"Son regard perspicace ne laissait rien passer inaperçu.",cat:"Adjectifs"},
+  {id:77,fr:"plausible",en:"plausible, credible",pos:"adj.",ex:"Cette explication est tout à fait plausible étant donné les circonstances.",cat:"Adjectifs"},
+  {id:78,fr:"prépondérant",en:"predominant, overriding",pos:"adj.",ex:"Son rôle est prépondérant dans le succès de cette entreprise.",cat:"Adjectifs"},
+  {id:79,fr:"récurrent",en:"recurrent, recurring",pos:"adj.",ex:"C'est un problème récurrent que personne n'a encore su résoudre.",cat:"Adjectifs"},
+  {id:80,fr:"sinueux",en:"winding, tortuous, meandering",pos:"adj.",ex:"Le chemin sinueux menait à travers la forêt jusqu'au lac.",cat:"Adjectifs"},
+  {id:81,fr:"subtil",en:"subtle, nuanced",pos:"adj.",ex:"Sa réponse était subtile et laissait place à plusieurs interprétations.",cat:"Adjectifs"},
+  {id:82,fr:"tangible",en:"tangible, concrete",pos:"adj.",ex:"Les résultats tangibles de ses efforts sont désormais visibles.",cat:"Adjectifs"},
+  {id:83,fr:"ténu",en:"tenuous, faint, slender",pos:"adj.",ex:"Il existe un lien ténu entre ces deux phénomènes apparemment distincts.",cat:"Adjectifs"},
+  {id:84,fr:"véhément",en:"vehement, passionate, forceful",pos:"adj.",ex:"Il a protesté de manière véhémente contre cette décision injuste.",cat:"Adjectifs"},
+  {id:85,fr:"vétuste",en:"dilapidated, antiquated, decrepit",pos:"adj.",ex:"Le bâtiment vétuste nécessite des travaux de rénovation urgents.",cat:"Adjectifs"},
+  {id:86,fr:"volubile",en:"voluble, talkative, glib",pos:"adj.",ex:"Elle devient très volubile dès qu'on aborde sa passion.",cat:"Adjectifs"},
+  {id:87,fr:"bénin",en:"benign, minor, harmless",pos:"adj.",ex:"Le médecin a confirmé que la tumeur était tout à fait bénigne.",cat:"Adjectifs"},
+  // ADVERBES
+  {id:88,fr:"néanmoins",en:"nevertheless, nonetheless, yet",pos:"adv.",ex:"Il était épuisé ; néanmoins, il a continué à travailler.",cat:"Adverbes"},
+  {id:89,fr:"certes",en:"certainly, admittedly, granted",pos:"adv.",ex:"Certes, il a des défauts, mais ses qualités sont indéniables.",cat:"Adverbes"},
+  {id:90,fr:"à l'envi",en:"to one's heart's content, repeatedly",pos:"adv.",ex:"Les médias répètent ces arguments à l'envi sans les questionner.",cat:"Adverbes"},
+  {id:91,fr:"de surcroît",en:"moreover, in addition, on top of that",pos:"adv.",ex:"Il est compétent et, de surcroît, d'une honnêteté exemplaire.",cat:"Adverbes"},
+  {id:92,fr:"à dessein",en:"deliberately, on purpose, by design",pos:"adv.",ex:"Il a omis ce détail à dessein pour ne pas alarmer ses collègues.",cat:"Adverbes"},
+  // EXPRESSIONS & LOCUTIONS
+  {id:93,fr:"faire fi de",en:"to disregard, pay no heed to",pos:"expr.",ex:"Il a fait fi des conseils de ses proches et a tout perdu.",cat:"Expressions"},
+  {id:94,fr:"au demeurant",en:"for the rest, otherwise, besides",pos:"expr.",ex:"Il est exigeant, mais au demeurant très juste envers son équipe.",cat:"Expressions"},
+  {id:95,fr:"en l'occurrence",en:"in this case, as it happens",pos:"expr.",ex:"Cette règle s'applique à tous, et en l'occurrence à toi aussi.",cat:"Expressions"},
+  {id:96,fr:"à cet égard",en:"in this regard, in this respect",pos:"expr.",ex:"À cet égard, les résultats obtenus sont tout à fait satisfaisants.",cat:"Expressions"},
+  {id:97,fr:"dans la mesure où",en:"insofar as, to the extent that",pos:"expr.",ex:"Je t'aiderai dans la mesure où cela ne compromettra pas mon travail.",cat:"Expressions"},
+  // NUANCES DE SENS
+  {id:98,fr:"primordial",en:"primordial, essential, paramount",pos:"adj.",ex:"Il est primordial d'agir rapidement avant que la situation n'empire.",cat:"Nuances"},
+  {id:99,fr:"intrinsèque",en:"intrinsic, inherent",pos:"adj.",ex:"La valeur intrinsèque de cet objet dépasse largement sa valeur marchande.",cat:"Nuances"},
+  {id:100,fr:"vraisemblable",en:"plausible, likely, probable",pos:"adj.",ex:"Cette hypothèse est vraisemblable, mais elle reste à démontrer.",cat:"Nuances"},
+  // VERBES 101–124
+  {id:101,fr:"accabler",en:"to overwhelm, burden",pos:"v.",ex:"Les mauvaises nouvelles l'ont accablé au point qu'il ne pouvait plus parler.",cat:"Verbes"},
+  {id:102,fr:"amoindrir",en:"to diminish, weaken",pos:"v.",ex:"La fatigue prolongée a amoindri ses capacités de concentration.",cat:"Verbes"},
+  {id:103,fr:"s'acharner",en:"to persist relentlessly, not give up",pos:"v.",ex:"Il s'acharne à trouver une solution malgré les échecs répétés.",cat:"Verbes"},
+  {id:104,fr:"contrecarrer",en:"to thwart, frustrate, foil",pos:"v.",ex:"Ses opposants ont tout tenté pour contrecarrer ses projets ambitieux.",cat:"Verbes"},
+  {id:105,fr:"concéder",en:"to concede, grant, admit",pos:"v.",ex:"Il a finalement concédé que son adversaire avait raison sur ce point.",cat:"Verbes"},
+  {id:106,fr:"déplorer",en:"to deplore, lament, regret",pos:"v.",ex:"On déplore le manque criant de ressources allouées à ce projet.",cat:"Verbes"},
+  {id:107,fr:"entraver",en:"to hinder, hamper, shackle",pos:"v.",ex:"La bureaucratie excessive entrave le développement économique du pays.",cat:"Verbes"},
+  {id:108,fr:"exacerber",en:"to exacerbate, intensify",pos:"v.",ex:"La crise sanitaire a exacerbé les tensions sociales préexistantes.",cat:"Verbes"},
+  {id:109,fr:"légitimer",en:"to legitimize, justify",pos:"v.",ex:"Rien ne peut légitimer un tel acte de violence envers autrui.",cat:"Verbes"},
+  {id:110,fr:"pallier",en:"to palliate, compensate for",pos:"v.",ex:"Ces mesures ne font que pallier le problème sans le résoudre durablement.",cat:"Verbes"},
+  {id:111,fr:"prémunir",en:"to protect, guard against",pos:"v.",ex:"Il faut se prémunir contre ce genre de risque financier imprévisible.",cat:"Verbes"},
+  {id:112,fr:"présager",en:"to presage, foreshadow, augur",pos:"v.",ex:"Ces signaux inquiétants présagent un changement de cap majeur.",cat:"Verbes"},
+  {id:113,fr:"prodiguer",en:"to lavish, bestow, give freely",pos:"v.",ex:"Elle lui a prodigué des conseils précieux tout au long de sa carrière.",cat:"Verbes"},
+  {id:114,fr:"réprimer",en:"to repress, suppress, curb",pos:"v.",ex:"Il peine à réprimer sa colère face à une telle injustice.",cat:"Verbes"},
+  {id:115,fr:"stigmatiser",en:"to stigmatize, brand",pos:"v.",ex:"Il ne faut pas stigmatiser les personnes en situation de précarité.",cat:"Verbes"},
+  {id:116,fr:"tempérer",en:"to temper, moderate, tone down",pos:"v.",ex:"Il convient de tempérer cet enthousiasme avant d'aller trop loin.",cat:"Verbes"},
+  {id:117,fr:"tergiverser",en:"to prevaricate, shilly-shally",pos:"v.",ex:"Cessez de tergiverser et prenez enfin une décision claire.",cat:"Verbes"},
+  {id:118,fr:"transiger",en:"to compromise, make concessions",pos:"v.",ex:"Sur ce principe fondamental, il n'est absolument pas prêt à transiger.",cat:"Verbes"},
+  {id:119,fr:"admonester",en:"to admonish, reprimand",pos:"v.",ex:"Le directeur a admonesté l'employé pour son comportement inadmissible.",cat:"Verbes"},
+  {id:120,fr:"récuser",en:"to challenge, recuse, reject",pos:"v.",ex:"L'avocat a récusé ce témoin en raison d'un conflit d'intérêts évident.",cat:"Verbes"},
+  {id:121,fr:"méditer",en:"to meditate on, ponder, consider",pos:"v.",ex:"Il a longuement médité avant de prendre cette décision capitale.",cat:"Verbes"},
+  {id:122,fr:"vociférer",en:"to vociferate, yell, shout",pos:"v.",ex:"Il vociférait des protestations dans le couloir sans que personne l'écoute.",cat:"Verbes"},
+  {id:123,fr:"différer",en:"to defer, postpone; to differ",pos:"v.",ex:"Cette problématique diffère fondamentalement de celle abordée précédemment.",cat:"Verbes"},
+  {id:124,fr:"concourir",en:"to contribute to, work towards",pos:"v.",ex:"Tous ces facteurs concourent à expliquer la crise actuelle.",cat:"Verbes"},
+  // NOMS 125–152
+  {id:125,fr:"acception",en:"meaning, sense, acceptation",pos:"n.f.",ex:"Dans l'acception la plus large du terme, cela inclut tous les citoyens.",cat:"Noms"},
+  {id:126,fr:"ambiguïté",en:"ambiguity, vagueness",pos:"n.f.",ex:"L'ambiguïté de ses propos a semé une grande confusion dans l'assemblée.",cat:"Noms"},
+  {id:127,fr:"ascendant",en:"influence, hold, ascendancy",pos:"n.m.",ex:"Elle exerce un grand ascendant sur ses collègues par sa seule présence.",cat:"Noms"},
+  {id:128,fr:"aversion",en:"aversion, strong dislike",pos:"n.f.",ex:"Il a une aversion profonde et viscérale pour toute forme de mensonge.",cat:"Noms"},
+  {id:129,fr:"bévue",en:"blunder, gaffe, mistake",pos:"n.f.",ex:"Cette bévue diplomatique a eu des conséquences graves sur les relations bilatérales.",cat:"Noms"},
+  {id:130,fr:"carence",en:"deficiency, lack, shortcoming",pos:"n.f.",ex:"Une grave carence en ressources humaines handicape l'ensemble du service.",cat:"Noms"},
+  {id:131,fr:"clairvoyance",en:"clear-sightedness, perceptiveness",pos:"n.f.",ex:"Sa clairvoyance lui a permis d'anticiper la crise bien avant les autres.",cat:"Noms"},
+  {id:132,fr:"contretemps",en:"setback, hitch, mishap",pos:"n.m.",ex:"Un contretemps de dernière minute a retardé le lancement du projet.",cat:"Noms"},
+  {id:133,fr:"désarroi",en:"disarray, distress, confusion",pos:"n.m.",ex:"L'annonce soudaine l'a plongé dans un profond désarroi.",cat:"Noms"},
+  {id:134,fr:"entrave",en:"hindrance, obstacle, shackle",pos:"n.f.",ex:"Ces réglementations constituent une entrave à la liberté d'entreprendre.",cat:"Noms"},
+  {id:135,fr:"équivoque",en:"ambiguity, misunderstanding",pos:"n.f.",ex:"Il faut lever toute équivoque sur ce sujet délicat avant d'aller plus loin.",cat:"Noms"},
+  {id:136,fr:"fléau",en:"scourge, plague, bane",pos:"n.m.",ex:"Le chômage de longue durée est un véritable fléau pour la cohésion sociale.",cat:"Noms"},
+  {id:137,fr:"indigence",en:"indigence, poverty; (fig.) poorness",pos:"n.f.",ex:"L'indigence de son argumentation a profondément déçu le jury.",cat:"Noms"},
+  {id:138,fr:"méprise",en:"misunderstanding, mistake",pos:"n.f.",ex:"Tout ce conflit n'était en réalité qu'une regrettable méprise.",cat:"Noms"},
+  {id:139,fr:"outrage",en:"outrage, offense, affront",pos:"n.m.",ex:"Cet acte constitue un outrage manifeste à la dignité humaine.",cat:"Noms"},
+  {id:140,fr:"quiproquo",en:"mix-up, misunderstanding",pos:"n.m.",ex:"Tout ce malentendu n'était finalement qu'un simple quiproquo.",cat:"Noms"},
+  {id:141,fr:"rancœur",en:"rancor, resentment, bitterness",pos:"n.f.",ex:"Il garde une rancœur tenace envers son ancien associé.",cat:"Noms"},
+  {id:142,fr:"revirement",en:"turnaround, reversal, U-turn",pos:"n.m.",ex:"Ce revirement de position spectaculaire a surpris jusqu'à ses propres partisans.",cat:"Noms"},
+  {id:143,fr:"velléité",en:"vague desire, half-hearted attempt",pos:"n.f.",ex:"Il a des velléités de changement mais ne passe jamais à l'action.",cat:"Noms"},
+  {id:144,fr:"vénération",en:"veneration, deep reverence",pos:"n.f.",ex:"Il voue une vénération sans bornes à ce grand philosophe.",cat:"Noms"},
+  {id:145,fr:"méandre",en:"meander; (fig.) complexity, winding",pos:"n.m.",ex:"Les méandres de la procédure administrative découragent beaucoup de candidats.",cat:"Noms"},
+  {id:146,fr:"ingratitude",en:"ingratitude, thanklessness",pos:"n.f.",ex:"Son ingratitude a profondément blessé ceux qui l'avaient soutenu.",cat:"Noms"},
+  {id:147,fr:"préséance",en:"precedence, priority",pos:"n.f.",ex:"La question de la préséance lors des cérémonies officielles est codifiée.",cat:"Noms"},
+  {id:148,fr:"tergiversation",en:"prevarication, dithering",pos:"n.f.",ex:"Ses tergiversations incessantes ont fini par lasser l'ensemble de l'équipe.",cat:"Noms"},
+  {id:149,fr:"esclandre",en:"scene, scandal, public outburst",pos:"n.m.",ex:"Il a fait un esclandre retentissant en plein milieu du restaurant.",cat:"Noms"},
+  {id:150,fr:"dépit",en:"spite, vexation, chagrin",pos:"n.m.",ex:"En dépit de tous ses efforts, il n'a pas obtenu le résultat escompté.",cat:"Noms"},
+  {id:151,fr:"concession",en:"concession, compromise",pos:"n.f.",ex:"Il a fait d'importantes concessions pour parvenir à un accord durable.",cat:"Noms"},
+  {id:152,fr:"dénouement",en:"outcome, resolution, denouement",pos:"n.m.",ex:"Le dénouement inattendu de cette affaire a surpris tous les observateurs.",cat:"Noms"},
+  // ADJECTIFS 153–190
+  {id:153,fr:"acrimonieux",en:"acrimonious, bitter",pos:"adj.",ex:"Les échanges acrimonieux entre les deux partis ont nui aux négociations.",cat:"Adjectifs"},
+  {id:154,fr:"affable",en:"affable, genial, approachable",pos:"adj.",ex:"Malgré sa haute position, il reste affable avec toutes les personnes qu'il rencontre.",cat:"Adjectifs"},
+  {id:155,fr:"anodin",en:"harmless, innocuous, trivial",pos:"adj.",ex:"Sa remarque en apparence anodine cachait en réalité une critique acerbe.",cat:"Adjectifs"},
+  {id:156,fr:"atone",en:"toneless, flat, expressionless",pos:"adj.",ex:"Il répondit d'une voix atone, sans la moindre trace d'émotion.",cat:"Adjectifs"},
+  {id:157,fr:"chimérique",en:"chimerical, fanciful, unrealistic",pos:"adj.",ex:"Ses projets sont chimériques et n'ont aucune chance d'aboutir.",cat:"Adjectifs"},
+  {id:158,fr:"concomitant",en:"concomitant, concurrent, simultaneous",pos:"adj.",ex:"Les deux phénomènes sont concomitants et semblent étroitement liés.",cat:"Adjectifs"},
+  {id:159,fr:"contrit",en:"contrite, remorseful, penitent",pos:"adj.",ex:"Il était sincèrement contrit de ses erreurs et le montrait clairement.",cat:"Adjectifs"},
+  {id:160,fr:"délétère",en:"deleterious, harmful, toxic",pos:"adj.",ex:"Cette atmosphère délétère nuit gravement à la productivité de l'équipe.",cat:"Adjectifs"},
+  {id:161,fr:"dérisoire",en:"derisory, laughably small, paltry",pos:"adj.",ex:"Le montant proposé est dérisoire au regard de l'ampleur du travail fourni.",cat:"Adjectifs"},
+  {id:162,fr:"fallacieux",en:"fallacious, misleading, specious",pos:"adj.",ex:"Son raisonnement fallacieux a malheureusement trompé beaucoup de gens.",cat:"Adjectifs"},
+  {id:163,fr:"foncier",en:"fundamental, deep-seated, thorough",pos:"adj.",ex:"Il possède une honnêteté foncière qui ne se dément jamais.",cat:"Adjectifs"},
+  {id:164,fr:"implacable",en:"implacable, relentless, inexorable",pos:"adj.",ex:"La logique implacable de son argumentation a convaincu l'ensemble du jury.",cat:"Adjectifs"},
+  {id:165,fr:"incongru",en:"incongruous, out of place, odd",pos:"adj.",ex:"Sa remarque incongrue a provoqué un silence gêné dans toute la salle.",cat:"Adjectifs"},
+  {id:166,fr:"indolent",en:"indolent, lazy, listless",pos:"adj.",ex:"Son attitude indolente contraste fortement avec l'énergie de ses collègues.",cat:"Adjectifs"},
+  {id:167,fr:"inexorable",en:"inexorable, unstoppable, relentless",pos:"adj.",ex:"La marche inexorable du temps ne s'arrête pour absolument personne.",cat:"Adjectifs"},
+  {id:168,fr:"insidieux",en:"insidious, sneaky, subtle",pos:"adj.",ex:"La désinformation se propage de manière insidieuse dans nos sociétés.",cat:"Adjectifs"},
+  {id:169,fr:"lapidaire",en:"terse, concise, incisive",pos:"adj.",ex:"Sa réponse lapidaire a définitivement clos le débat.",cat:"Adjectifs"},
+  {id:170,fr:"litigieux",en:"contentious, disputed, contentious",pos:"adj.",ex:"Ce point litigieux divise encore profondément les experts juridiques.",cat:"Adjectifs"},
+  {id:171,fr:"lucide",en:"lucid, clear-headed, clear-eyed",pos:"adj.",ex:"Elle porte un regard étonnamment lucide sur sa propre situation.",cat:"Adjectifs"},
+  {id:172,fr:"mitigé",en:"mixed, mitigated, lukewarm",pos:"adj.",ex:"Les résultats sont mitigés et méritent une analyse approfondie.",cat:"Adjectifs"},
+  {id:173,fr:"ostentatoire",en:"ostentatious, showy, flaunting",pos:"adj.",ex:"Il affiche une richesse ostentatoire qui met ses interlocuteurs mal à l'aise.",cat:"Adjectifs"},
+  {id:174,fr:"péremptoire",en:"peremptory, dogmatic, categorical",pos:"adj.",ex:"Il a répondu sur un ton péremptoire qui n'admettait aucune réplique.",cat:"Adjectifs"},
+  {id:175,fr:"pertinent",en:"pertinent, relevant, apt",pos:"adj.",ex:"Votre observation est tout à fait pertinente et mérite d'être approfondie.",cat:"Adjectifs"},
+  {id:176,fr:"pondéré",en:"measured, balanced, level-headed",pos:"adj.",ex:"Son approche pondérée lui permet généralement d'éviter les conflits inutiles.",cat:"Adjectifs"},
+  {id:177,fr:"précaire",en:"precarious, insecure, unstable",pos:"adj.",ex:"Sa situation financière est extrêmement précaire depuis la perte de son emploi.",cat:"Adjectifs"},
+  {id:178,fr:"probant",en:"convincing, conclusive, compelling",pos:"adj.",ex:"Les résultats de l'expérience sont suffisamment probants pour valider la théorie.",cat:"Adjectifs"},
+  {id:179,fr:"pusillanime",en:"pusillanimous, faint-hearted, timid",pos:"adj.",ex:"Sa réaction pusillanime face à la crise a profondément déçu ses partisans.",cat:"Adjectifs"},
+  {id:180,fr:"récalcitrant",en:"recalcitrant, stubborn, unruly",pos:"adj.",ex:"L'élève récalcitrant refusait catégoriquement de coopérer avec ses camarades.",cat:"Adjectifs"},
+  {id:181,fr:"redoutable",en:"formidable, fearsome, daunting",pos:"adj.",ex:"C'est un adversaire redoutable qu'il ne faut surtout pas sous-estimer.",cat:"Adjectifs"},
+  {id:182,fr:"rétrograde",en:"retrograde, backward-looking",pos:"adj.",ex:"Cette mesure rétrograde va manifestement à l'encontre du progrès social.",cat:"Adjectifs"},
+  {id:183,fr:"saugrenu",en:"absurd, preposterous, ridiculous",pos:"adj.",ex:"Il a eu une idée saugrenue que personne n'a prise au sérieux.",cat:"Adjectifs"},
+  {id:184,fr:"scrupuleux",en:"scrupulous, meticulous, conscientious",pos:"adj.",ex:"Elle est scrupuleuse dans l'exécution de ses tâches et ne laisse rien au hasard.",cat:"Adjectifs"},
+  {id:185,fr:"prégnant",en:"pervasive, powerful, striking",pos:"adj.",ex:"Une odeur prégnante de brûlé envahissait toutes les pièces de la maison.",cat:"Adjectifs"},
+  {id:186,fr:"diligent",en:"diligent, prompt, assiduous",pos:"adj.",ex:"Un avocat diligent défend toujours les intérêts de son client avec zèle.",cat:"Adjectifs"},
+  {id:187,fr:"équivoque",en:"equivocal, ambiguous, dubious",pos:"adj.",ex:"Sa réponse délibérément équivoque n'a satisfait strictement personne.",cat:"Adjectifs"},
+  {id:188,fr:"imprévu",en:"unforeseen, unexpected, unplanned",pos:"adj.",ex:"Un événement totalement imprévu a bouleversé l'ensemble de nos plans.",cat:"Adjectifs"},
+  {id:189,fr:"apte",en:"apt, fit, capable, suited",pos:"adj.",ex:"Il est parfaitement apte à remplir cette fonction exigeante.",cat:"Adjectifs"},
+  {id:190,fr:"insolite",en:"unusual, strange, out of the ordinary",pos:"adj.",ex:"Une rencontre insolite au détour d'une ruelle a changé le cours de sa vie.",cat:"Adjectifs"},
+  // ADVERBES & EXPRESSIONS 191–200
+  {id:191,fr:"en revanche",en:"on the other hand, however",pos:"expr.",ex:"Il est peu ponctuel ; en revanche, la qualité de son travail est impeccable.",cat:"Expressions"},
+  {id:192,fr:"à tort",en:"wrongly, mistakenly, unjustly",pos:"expr.",ex:"On l'a accusé à tort d'avoir commis cette erreur grossière.",cat:"Expressions"},
+  {id:193,fr:"en filigrane",en:"implicitly, in the background, between the lines",pos:"expr.",ex:"La critique sociale apparaît en filigrane tout au long du roman.",cat:"Expressions"},
+  {id:194,fr:"d'emblée",en:"straightaway, from the outset, right away",pos:"adv.",ex:"Il a d'emblée refusé toute forme de compromis sur ce sujet.",cat:"Adverbes"},
+  {id:195,fr:"en amont",en:"upstream; beforehand, at an earlier stage",pos:"adv.",ex:"Il faut régler ce problème en amont avant qu'il ne s'aggrave davantage.",cat:"Adverbes"},
+  {id:196,fr:"à l'instar de",en:"following the example of, like, in the manner of",pos:"expr.",ex:"À l'instar de ses prédécesseurs, il a entrepris de réformer profondément le système.",cat:"Expressions"},
+  {id:197,fr:"nonobstant",en:"notwithstanding, despite, in spite of",pos:"prép.",ex:"Nonobstant ces difficultés majeures, le projet a continué à avancer.",cat:"Adverbes"},
+  {id:198,fr:"par essence",en:"by its very nature, essentially, inherently",pos:"expr.",ex:"La liberté est par essence incompatible avec toute forme de contrainte.",cat:"Expressions"},
+  {id:199,fr:"en définitive",en:"ultimately, in the final analysis, all in all",pos:"expr.",ex:"En définitive, c'est lui qui a pris la décision la plus sage.",cat:"Expressions"},
+  {id:200,fr:"ipso facto",en:"ipso facto, automatically, by that very fact",pos:"expr.",ex:"En acceptant ce poste, il devient ipso facto responsable de tous les résultats.",cat:"Expressions"},
+];
+
+const CATEGORIES = [...new Set(DATA.map(d=>d.cat))];
+const PER_PAGE = 25;
+let currentSearch="", currentCat="All", currentPage=1, filtered=[...DATA];
+
+function speak(btn, text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  document.querySelectorAll(".speak-btn.speaking").forEach(b=>b.classList.remove("speaking"));
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = "fr-FR";
+  utt.rate = 0.82;
+  utt.pitch = 1.0;
+  const voices = window.speechSynthesis.getVoices();
+  const frVoice = voices.find(v=>v.lang==="fr-FR") || voices.find(v=>v.lang.startsWith("fr"));
+  if (frVoice) utt.voice = frVoice;
+  btn.classList.add("speaking");
+  utt.onend = ()=>btn.classList.remove("speaking");
+  utt.onerror = ()=>btn.classList.remove("speaking");
+  window.speechSynthesis.speak(utt);
+}
+
+window.speechSynthesis.onvoiceschanged = ()=>window.speechSynthesis.getVoices();
+
+function buildCats() {
+  const wrap = document.getElementById("cats");
+  const allBtn = document.createElement("button");
+  allBtn.className="cat-btn active";
+  allBtn.textContent=`Tout (${DATA.length})`;
+  allBtn.onclick=()=>setCat("All");
+  wrap.appendChild(allBtn);
+  CATEGORIES.forEach(c=>{
+    const count=DATA.filter(d=>d.cat===c).length;
+    const btn=document.createElement("button");
+    btn.className="cat-btn"; btn.textContent=`${c} (${count})`; btn.dataset.cat=c;
+    btn.onclick=()=>setCat(c);
+    wrap.appendChild(btn);
+  });
+}
+
+function setCat(c) {
+  currentCat=c; currentPage=1;
+  document.querySelectorAll(".cat-btn").forEach(b=>{
+    b.classList.toggle("active",(b.dataset.cat||"All")===c);
+  });
+  render();
+}
+
+function handleSearch(v){currentSearch=v;currentPage=1;render();}
+
+function getFiltered(){
+  const q=currentSearch.toLowerCase();
+  return DATA.filter(w=>{
+    const mc=currentCat==="All"||w.cat===currentCat;
+    const mq=!q||w.fr.toLowerCase().includes(q)||w.en.toLowerCase().includes(q)||
+      w.ex.toLowerCase().includes(q)||w.cat.toLowerCase().includes(q);
+    return mc&&mq;
+  });
+}
+
+function highlight(text, q) {
+  if (!q) return text;
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(re, '<em>$1</em>');
+}
+
+function render(){
+  filtered=getFiltered();
+  const total=filtered.length;
+  const totalPages=Math.max(1,Math.ceil(total/PER_PAGE));
+  if(currentPage>totalPages) currentPage=1;
+  const start=(currentPage-1)*PER_PAGE;
+  const visible=filtered.slice(start,start+PER_PAGE);
+  const q=currentSearch.toLowerCase();
+
+  document.getElementById("results-info").textContent=
+    `${total} résultats · affichage ${total===0?0:start+1}–${Math.min(start+PER_PAGE,total)}`;
+
+  const tbody=document.getElementById("tbody");
+  tbody.innerHTML="";
+  visible.forEach(w=>{
+    const c=CAT_COLORS[w.cat]||"#ccc";
+    const tr=document.createElement("tr");
+    const safeText=w.fr.replace(/'/g,"\\'");
+    tr.innerHTML=`
+      <td class="num">${w.id}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="word">${highlight(w.fr,q)}</div>
+          <button class="speak-btn" onclick="speak(this,'${safeText}')">🔊</button>
+        </div>
+        <div class="pos">${w.pos}</div>
+      </td>
+      <td class="english">${highlight(w.en,q)}</td>
+      <td><div class="example">${highlight(w.ex,q)}</div></td>
+      <td><button class="speak-btn" onclick="speak(this,'${w.ex.replace(/'/g,"\\'")}')">🔊</button></td>
+      <td><span class="badge" style="background:${c}18;color:${c};border:1px solid ${c}40">${w.cat}</span></td>`;
+    tbody.appendChild(tr);
+  });
+
+  const pg=document.getElementById("pagination");
+  pg.innerHTML="";
+  if(totalPages<=1) return;
+  const prev=document.createElement("button");
+  prev.className="pg-btn"; prev.textContent="← Préc."; prev.disabled=currentPage===1;
+  prev.onclick=()=>{currentPage--;render();};
+  pg.appendChild(prev);
+  for(let p=1;p<=totalPages;p++){
+    const btn=document.createElement("button");
+    btn.className="pg-btn"+(p===currentPage?" active":"");
+    btn.textContent=p;
+    btn.onclick=(()=>{const pp=p;return()=>{currentPage=pp;render();};})();
+    pg.appendChild(btn);
+  }
+  const next=document.createElement("button");
+  next.className="pg-btn"; next.textContent="Suiv. →"; next.disabled=currentPage===totalPages;
+  next.onclick=()=>{currentPage++;render();};
+  pg.appendChild(next);
+}
+
+buildCats();
+render();
+</script>
+</body>
+</html>
