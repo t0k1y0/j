@@ -32,7 +32,7 @@
       var(--paper);
     color: var(--ink);
     font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
-    font-size: 18px;
+    font-size: 30px;
     line-height: 1.7;
     min-height: 100vh;
   }
@@ -106,60 +106,7 @@
     font-size: 1rem;
   }
 
-  /* ---------- TOC (sticky) ---------- */
-  .toc {
-    position: fixed;
-    top: 50%;
-    left: 1.25rem;
-    transform: translateY(-50%);
-    z-index: 10;
-    background: rgba(246,239,223,0.75);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: .75rem .4rem;
-    box-shadow: 0 6px 24px var(--shadow);
-    max-height: 80vh;
-    overflow-y: auto;
-  }
-  .toc-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: .7rem;
-    letter-spacing: .3em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-align: center;
-    margin-bottom: .5rem;
-    padding: 0 .5rem;
-  }
-  .toc ol {
-    list-style: none;
-    margin: 0; padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px 6px;
-  }
-  .toc a {
-    display: block;
-    text-align: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: .78rem;
-    color: var(--ink-soft);
-    text-decoration: none;
-    padding: 3px 4px;
-    border-radius: 2px;
-    transition: all .15s ease;
-    min-width: 2.2rem;
-  }
-  .toc a:hover {
-    background: var(--gold);
-    color: var(--paper);
-  }
 
-  @media (max-width: 1100px) {
-    .toc { display: none; }
-  }
 
   /* ---------- Column labels ---------- */
   .column-labels {
@@ -329,7 +276,7 @@
   }
 
   @media print {
-    body::before, .toc { display: none !important; }
+    body::before { display: none !important; }
     body { background: white; }
     .chapter { page-break-inside: avoid; }
     .pair:hover { background: transparent; }
@@ -338,38 +285,6 @@
 </head>
 <body>
 
-<aside class="toc" aria-label="Chapters">
-  <div class="toc-title">Chapitres</div>
-  <ol>
-        <li><a href="#ch-1"><span class="toc-num">I</span></a></li>
-        <li><a href="#ch-2"><span class="toc-num">II</span></a></li>
-        <li><a href="#ch-3"><span class="toc-num">III</span></a></li>
-        <li><a href="#ch-4"><span class="toc-num">IV</span></a></li>
-        <li><a href="#ch-5"><span class="toc-num">V</span></a></li>
-        <li><a href="#ch-6"><span class="toc-num">VI</span></a></li>
-        <li><a href="#ch-7"><span class="toc-num">VII</span></a></li>
-        <li><a href="#ch-8"><span class="toc-num">VIII</span></a></li>
-        <li><a href="#ch-9"><span class="toc-num">IX</span></a></li>
-        <li><a href="#ch-10"><span class="toc-num">X</span></a></li>
-        <li><a href="#ch-11"><span class="toc-num">XI</span></a></li>
-        <li><a href="#ch-12"><span class="toc-num">XII</span></a></li>
-        <li><a href="#ch-13"><span class="toc-num">XIII</span></a></li>
-        <li><a href="#ch-14"><span class="toc-num">XIV</span></a></li>
-        <li><a href="#ch-15"><span class="toc-num">XV</span></a></li>
-        <li><a href="#ch-16"><span class="toc-num">XVI</span></a></li>
-        <li><a href="#ch-17"><span class="toc-num">XVII</span></a></li>
-        <li><a href="#ch-18"><span class="toc-num">XVIII</span></a></li>
-        <li><a href="#ch-19"><span class="toc-num">XIX</span></a></li>
-        <li><a href="#ch-20"><span class="toc-num">XX</span></a></li>
-        <li><a href="#ch-21"><span class="toc-num">XXI</span></a></li>
-        <li><a href="#ch-22"><span class="toc-num">XXII</span></a></li>
-        <li><a href="#ch-23"><span class="toc-num">XXIII</span></a></li>
-        <li><a href="#ch-24"><span class="toc-num">XXIV</span></a></li>
-        <li><a href="#ch-25"><span class="toc-num">XXV</span></a></li>
-        <li><a href="#ch-26"><span class="toc-num">XXVI</span></a></li>
-        <li><a href="#ch-27"><span class="toc-num">XXVII</span></a></li>
-  </ol>
-</aside>
 
 <section class="titlepage">
   <p class="tag">édition bilingue · bilingual edition</p>
