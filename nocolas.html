@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le petit Nicolas — Sempé & Goscinny</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&amp;display=swap');
+        
+        :root {
+            --page-bg: #f8f1e3;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.7;
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 40px 30px;
+            background: #fff;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            color: #222;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(248, 241, 227, 0.4) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .cover {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 3px solid #333;
+            padding-bottom: 30px;
+        }
+        
+        .cover h1 {
+            font-size: 2.8rem;
+            margin: 20px 0 10px;
+            letter-spacing: 2px;
+        }
+        
+        .cover .subtitle {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        
+        .folio {
+            font-family: 'Georgia', serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .title-page {
+            text-align: center;
+            margin: 60px 0;
+        }
+        
+        .title-page h2 {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+        
+        .title-page hr {
+            width: 200px;
+            margin: 30px auto;
+            border: none;
+            border-top: 2px solid #333;
+        }
+        
+        h1.main-title {
+            font-size: 3rem;
+            text-align: center;
+            margin: 40px 0 10px;
+            color: #222;
+        }
+        
+        .dedication {
+            text-align: center;
+            font-style: italic;
+            margin: 70px 0 90px;
+            font-size: 1.2rem;
+            padding: 20px;
+            border: 1px dashed #aaa;
+        }
+        
+        .story {
+            margin-bottom: 90px;
+            page-break-inside: avoid;
+        }
+        
+        .story h2 {
+            font-size: 2.1rem;
+            text-align: center;
+            margin: 60px 0 40px;
+            color: #222;
+            position: relative;
+        }
+        
+        .story h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #333;
+            margin: 15px auto 0;
+        }
+        
+        p {
+            text-align: justify;
+            margin-bottom: 1.1em;
+            font-size: 1.15rem;
+        }
+        
+        .illustration {
+            text-align: center;
+            margin: 50px 0;
+            padding: 15px;
+            background: #f8f1e3;
+            border: 8px solid #fff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .illustration img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+        
+        .illustration figcaption {
+            margin-top: 12px;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .page-break {
+            page-break-before: always;
+            margin: 80px 0 40px;
+            border-top: 1px dotted #ccc;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 100px;
+            padding-top: 30px;
+            border-top: 1px solid #ddd;
+            font-size: 0.95rem;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            body { margin: 20px; padding: 20px; }
+            h1.main-title { font-size: 2.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Page 1 – Couverture -->
+        <div class="cover">
+            <h1>Sempé-Goscinny</h1>
+            <h1 class="main-title">Le petit Nicolas</h1>
+            <div class="illustration">
+                <img src="data:image/jpeg;base64,..." alt="Couverture : Le petit Nicolas marchant avec son cartable" style="max-height: 420px;">
+                <figcaption>Couverture originale du Tome 1 (illustration de Sempé)</figcaption>
+            </div>
+            <p class="folio">folio</p>
+        </div>
+
+        <!-- Page 2 – Page de titre -->
+        <div class="title-page">
+            <h2>Sempé (et Goscinny)</h2>
+            <hr>
+            <h2>LE PETIT NICOLAS</h2>
+            <p><strong>TOME 1</strong></p>
+            <h2>LE PETIT NICOLAS</h2>
+            <p style="margin-top: 40px;">(1960)</p>
+        </div>
+    </header>
+
+    <!-- Page 4 – Dédicace -->
+    <section class="dedication">
+        <p>à Henri Amouroux, parrain de ce Nicolas.</p>
+    </section>
+
+    <!-- STORY 1 -->
+    <article class="story">
+        <h2>Un souvenir qu’on va chérir</h2>
+        
+        <p>Ce matin, nous sommes tous arrivés à l’école bien contents, parce qu’on va prendre une photo de la classe qui sera pour nous un souvenir que nous allons chérir toute notre vie, comme nous l’a dit la maîtresse. Elle nous a dit aussi de venir bien propres et bien coiffés.</p>
+        
+        <p>C’est avec plein de brillantine sur la tête que je suis entré dans la cour de récréation. Tous les copains étaient déjà là et la maîtresse était en train de gronder Geoffroy qui était venu habillé en martien. Geoffroy a un papa très riche qui lui achète tous les jouets qu’il veut. Geoffroy disait à la maîtresse qu’il voulait absolument être photographié en martien et que sinon il s’en irait.</p>
+        
+        <p>Le photographe était là, aussi, avec son appareil et la maîtresse lui a dit qu’il fallait faire vite, sinon, nous allions rater notre cours d’arithmétique. Agnan, qui est le premier de la classe et le chouchou de la maîtresse, a dit que ce serait dommage de ne pas avoir arithmétique, parce qu’il aimait ça et qu’il avait bien fait tous ses problèmes. Eudes, un copain qui est très fort, voulait donner un coup de poing sur le nez d’Agnan, mais Agnan a des lunettes et on ne peut pas taper sur lui aussi souvent qu’on le voudrait. La maîtresse s’est mise à crier que nous étions insupportables et que si ça continuait il n’y aurait pas de photo et qu’on irait en classe. Le photographe, alors, a dit : « Allons, allons, allons, du calme, du calme. Je sais comment il faut parler aux enfants, tout va se passer très bien. »</p>
+        
+        <p>Le photographe a décidé que nous devions nous mettre sur trois rangs ; le premier rang assis par terre, le deuxième, debout autour de la maîtresse qui serait assise sur une chaise et le troisième, debout sur des caisses. Il a vraiment des bonnes idées, le photographe.</p>
+        
+        <p>Les caisses, on est allés les chercher dans la cave de l’école. On a bien rigolé, parce qu’il n’y avait pas beaucoup de lumière dans la cave et Rufus s’était mis un vieux sac sur la tête et il criait « Hou ! Je suis le fantôme. » Et puis, on a vu arriver la maîtresse. Elle n’avait pas l’air contente, alors nous sommes vite partis avec les caisses. Le seul qui est resté, c’est Rufus. Avec son sac, il ne voyait pas ce qui se passait et il a continué à crier « Hou ! Je suis le fantôme », et c’est la maîtresse qui lui a enlevé le sac. Il a été drôlement étonné, Rufus.</p>
+        
+        <p>De retour dans la cour, la maîtresse a lâché l’oreille de Rufus et elle s’est frappé le front avec la main. « Mais vous êtes tout noirs », elle a dit. C’était vrai, en faisant les guignols dans la cave, on s’était un peu salis. La maîtresse n’était pas contente, mais le photographe lui a dit que ce n’était pas grave, on avait le temps de se laver pendant que lui disposait les caisses et la chaise pour la photo. A part Agnan, le seul qui avait la figure propre, c’était Geoffroy, parce qu’il avait la tête dans son casque de martien, qui ressemble à un bocal. « Vous voyez, a dit Geoffroy à la maîtresse, s’ils étaient venus tous habillés comme moi, il n’y aurait pas d’histoires. » J’ai vu que la maîtresse avait bien envie de tirer les oreilles de Geoffroy, mais il n’y avait pas de prise sur le bocal. C’est une combine épatante, ce costume de martien !</p>
+        
+        <p>Nous sommes revenus après nous être lavés et peignés. On était bien un peu mouillés, mais le photographe a dit que ça ne faisait rien, que sur la photo ça ne se verrait pas.</p>
+        
+        <p>« Bon, nous a dit le photographe, vous voulez faire plaisir à votre maîtresse ? » Nous avons répondu que oui, parce que nous l’aimons bien la maîtresse, elle est drôlement gentille quand nous ne la mettons pas en colère. « Alors, a dit le photographe, vous allez sagement prendre vos places pour la photo. Les plus grands sur les caisses, les moyens debout, les petits assis. » Nous on y est allés et le photographe était en train d’expliquer à la maîtresse qu’on obtenait tout des enfants quand on était patient, mais la maîtresse n’a pas pu l’écouter jusqu’au bout. Elle a dû nous séparer, parce que nous voulions être tous sur les caisses.</p>
+        
+        <p>« Il y a un seul grand ici, c’est moi ! » criait Eudes et il poussait ceux qui voulaient monter sur les caisses. Comme Geoffroy insistait, Eudes lui a donné un coup de poing sur le bocal et il s’est fait très mal. On a dû se mettre à plusieurs pour enlever le bocal de Geoffroy qui s’était coincé.</p>
+        
+        <p>La maîtresse a dit qu’elle nous donnait un dernier avertissement, après ce serait l’arithmétique, alors, on s’est dit qu’il fallait se tenir tranquilles et on a commencé à s’installer. Geoffroy s’est approché du photographe : « C’est quoi, votre appareil ? » il a demandé. Le photographe a souri et il a dit : « C’est une boîte d’où va sortir un petit oiseau, bonhomme. Il est vieux votre engin, a dit Geoffroy, mon papa il m’en a donné un avec para-soleil, objectif à courte focale, téléobjectif, et, bien sûr, des écrans...» Le photographe a paru surpris, il a cessé de sourire et il a dit à Geoffroy de retourner à sa place. « Est-ce que vous avez au moins une cellule photoélectrique ? » a demandé Geoffroy. « Pour la dernière fois, retourne à ta place ! » a crié le photographe qui, tout d’un coup, avait l’air très nerveux.</p>
+        
+        <p>On s’est installés. Moi, j’étais assis par terre, à côté d’Alceste. Alceste, c’est mon copain qui est très gros et qui mange tout le temps. Il était en train de mordre dans une tartine de confiture et le photographe lui a dit de cesser de manger, mais Alceste a répondu qu’il fallait bien qu’il se nourrisse. « Lâche cette tartine ! » a crié la maîtresse qui était assise juste derrière Alceste. Ça l’a tellement surpris, Alceste, qu’il a laissé tomber la tartine sur sa chemise. « C’est gagné », a dit Alceste, en essayant de racler la confiture avec son pain. La maîtresse a dit qu’il n’y avait plus qu’une chose à faire, c’était de mettre Alceste au dernier rang pour qu’on ne voie pas la tache sur sa chemise. « Eudes, a dit la maîtresse, laissez votre place à votre camarade. – Ce n’est pas mon camarade, a répondu Eudes, il n’aura pas ma place et il n’a qu’à se mettre de dos à la photo, comme ça on ne verra pas la tache, ni sa grosse figure. » La maîtresse s’est fâchée et elle a donné comme punition à Eudes la conjugaison du verbe : « Je ne dois pas refuser de céder ma place à un camarade qui a renversé sur sa chemise une tartine de confiture. » Eudes n’a rien dit, il est descendu de sa caisse et il est venu vers le premier rang, tandis qu’Alceste allait vers le dernier rang. Ça a fait un peu de désordre, surtout quand Eudes a croisé Alceste et lui a donné un coup de poing sur le nez. Alceste a voulu donner un coup de pied à Eudes, mais Eudes a esquivé, il est très agile, et c’est Agnan qui a reçu le pied, heureusement, là où il n’a pas de lunettes. Ça ne l’a pas empêché, Agnan, de se mettre à pleurer et à hurler qu’il ne voyait plus, que personne ne l’aimait et qu’il voulait mourir. La maîtresse l’a consolé, l’a mouché, l’a repeigné et a puni Alceste, il doit écrire cent fois : « Je ne dois pas battre un camarade qui ne me cherche pas noise et qui porte des lunettes. » « C’est bien fait », a dit Agnan. Alors, la maîtresse lui a donné des lignes à faire, à lui aussi. Agnan, il a été tellement étonné qu’il n’a même pas pleuré. La maîtresse a commencé à les distribuer drôlement, les punitions, on avait tous des tas de lignes à faire et finalement, la maîtresse nous a dit : « Maintenant, vous allez vous décider à vous tenir tranquilles. Si vous êtes très gentils, je lèverai toutes les punitions. Alors, vous allez bien prendre la pose, faire un joli sourire et le monsieur va nous prendre une belle photographie ! »</p>
+        
+        <p>Comme nous ne voulions pas faire de la peine à la maîtresse, on a obéi. Nous avons tous souri et on a pris la pose.</p>
+        
+        <p>Mais, pour le souvenir que nous allions chérir toute notre vie, c’est raté, parce qu’on s’est aperçu que le photographe n’était plus là. Il était parti, sans rien dire.</p>
+    </article>
+
+    <div class="page-break">— Fin de l’histoire « Un souvenir qu’on va chérir » —</div>
+
+    <!-- STORY 2 -->
+    <article class="story">
+        <h2>Les cow-boys</h2>
+        
+        <p>J’ai invité les copains à venir à la maison cet après-midi pour jouer aux cow-boys. Ils sont arrivés avec toutes leurs affaires. Rufus avait mis la panoplie d’agent de police que lui avait offerte son papa avec le képi, les menottes, le revolver, le bâton blanc et le sifflet à roulette ; Eudes portait le vieux chapeau boy-scout de son grand frère et un ceinturon avec des tas de cartouches en bois et deux étuis dans lesquels il y avait des revolvers terribles avec des crosses faites dans le même genre d’os que le poudrier que papa a acheté à maman après qu’ils se sont disputés à cause du rôti qui était trop cuit mais maman disait que c’était parce que papa était arrivé en retard. Alceste était en Indien, il avait une hache en bois et des plumes sur la tête, il ressemblait à un gros poulet ; Geoffroy, qui aime bien se déguiser et qui a un papa très riche qui lui donne tout ce qu’il veut, était habillé complètement en cow-boy, avec un pantalon en mouton, un gilet en cuir, une chemise à carreaux, un grand chapeau, des revolvers à capsules et des éperons avec des pointes terribles. Moi, j’avais un masque noir qu’on m’avait donné pour Mardi-Gras, mon fusil à flèches et un mouchoir rouge autour du cou qui est un vieux foulard à ma maman. On était chouettes !</p>
+        
+        <p>On était dans le jardin et maman nous avait dit qu’elle nous appellerait pour le goûter. « Bon, j’ai dit, alors voilà, moi je suis le jeune homme et j’ai un cheval blanc et vous, vous êtes les bandits, mais à la fin c’est moi qui gagne. »</p>
+        
+        <p>Les autres, ils n’étaient pas d’accord, c’est ça qui est embêtant, quand on joue tout seul, on ne s’amuse pas et quand on n’est pas tout seul, les autres font des tas de disputes. « Pourquoi est-ce que ce ne serait pas moi le jeune homme, a dit Eudes, et puis, pourquoi je n’aurais pas un cheval blanc, moi aussi ? – Avec une tête comme la tienne, tu peux pas être le jeune homme », a dit Alceste. « Toi, l’Indien, tais-toi ou je te donne un coup de pied dans le croupion ! » a dit Eudes qui est très fort et qui aime bien donner des coups de poing sur les nez des copains et le coup du croupion ça m’a étonné, mais c’est vrai qu’Alceste ressemblait à un gros poulet. « En tout cas, moi, a dit Rufus, je serai le shérif. – Le shérif ? a dit Geoffroy. Où est-ce que tu as vu un shérif avec un képi, tu me fais rigoler ! » Ça, ça n’a pas plu à Rufus, dont le papa est agent de police. « Mon papa, il a dit, il porte un képi et il ne fait rigoler personne ! – Il ferait rigoler tout le monde s’il s’habillait comme ça au Texas », a dit Geoffroy et Rufus lui a donné une gifle, alors, Geoffroy a sorti un revolver de l’étui et il a dit : « Tu le regretteras, Joe » et Rufus lui a donné une autre gifle et Geoffroy est tombé assis par terre en faisant pan ! avec son revolver ; alors Rufus s’est appuyé les mains sur le ventre, et il fait des tas de grimaces et il est tombé en disant : « Tu m’as eu coyote, mais je serai vengé ! »</p>
+        
+        <p>Moi je galopais dans le jardin en me donnant des tapes dans la culotte pour avancer plus vite et Eudes s’est approché de moi. « Descends de ce cheval, il a dit. Le cheval blanc, c’est moi qui l’ai ! – Non monsieur, je lui ai dit, ici je suis chez moi et le cheval blanc, c’est moi qui l’ai », et Eudes m’a donné un coup de poing sur le nez. Rufus a donné un grand coup de sifflet à roulette. « Tu es un voleur de chevaux, il a dit à Eudes, et à Kansas City, les voleurs de chevaux, on les pend ! » Alors, Alceste est venu en courant et il a dit : « Minute ! Tu peux pas le pendre, le shérif, c’est moi ! – Depuis quand, volaille ? » a demandé Rufus. Alceste, qui pourtant n’aime pas se battre, a pris sa hache en bois et avec le manche, toc ! il a donné un coup sur la tête de Rufus qui ne s’y attendait pas. Heureusement que sur la tête de Rufus il y avait le képi. « Mon képi ! Tu as cassé mon képi ! » il a crié Rufus et il s’est mis à courir après Alceste, tandis que moi je galopais de nouveau autour du jardin.</p>
+        
+        <p>« Eh, les gars, a dit Eudes, arrêtez ! J’ai une idée. Nous on sera les bons et Alceste la tribu des Indiens et il essaie de nous capturer et puis il prend un prisonnier, mais nous on arrive et on délivre le prisonnier et puis Alceste est vaincu ! » Nous on était tous pour cette idée qui était vraiment chouette, mais Alceste n’était pas d’accord. « Pourquoi est-ce que je ferais l’Indien ? » il a dit Alceste. « Parce que tu as des plumes sur la tête, idiot ! a répondu Geoffroy, et puis si ça ne te plaît pas, tu ne joues plus, c’est vrai ça, à la fin, tu nous embêtes ! – Eh bien, puisque c’est comme ça, je ne joue plus », a dit Alceste et il est allé dans un coin bouder et manger un petit pain au chocolat qu’il avait dans sa poche. « Il faut qu’il joue, a dit Eudes, c’est le seul indien que nous ayons d’ailleurs, s’il ne joue pas, je le plume ! » Alceste a dit que bon, qu’il voulait bien, mais à condition d’être un bon Indien à la fin. « D’accord, d’accord, a dit Geoffroy, ce que tu peux être contrariant, tout de même ! – Et le prisonnier, ce sera qui ? j’ai demandé – Ben, ça sera Geoffroy, a dit Eudes, on va l’attacher à l’arbre avec la corde à linge. – Ça va pas, non ? a demandé Geoffroy, pourquoi moi ? Je ne peux pas être le prisonnier, je suis le mieux habillé de tous ! – Ben quoi ? a répondu Eudes, ce n’est pas parce que j’ai un cheval blanc que je refuse de jouer ! – Le cheval blanc c’est moi qui l’ai ! » j’ai dit. Eudes s’est fâché, il a dit que le cheval blanc c’était lui et que si ça ne me plaisait pas il me donnerait un autre coup de poing sur le nez. « Essaie ! » j’ai dit et il a réussi.</p>
+        
+        <p>« Bouge pas, Oklahoma Kid ! » criait Geoffroy et il tirait des coups de revolver partout ; Rufus, lui, donnait du sifflet à roulette et il disait : « Ouais, je suis le shérif, ouais, je vous arrête tous ! » et Alceste lui a donné un coup de hache sur le képi en disant qu’il le faisait prisonnier et Rufus s’est fâché parce que son sifflet à roulette était tombé dans l’herbe, moi je pleurais et je disais à Eudes qu’ici j’étais chez moi et que je ne voulais plus le voir ; tout le monde criait, c’était chouette, on rigolait bien, terrible.</p>
+        
+        <p>Et puis, papa est sorti de la maison. L’air pas content. « Eh bien les enfants, qu’est-ce que c’est que ce vacarme, vous ne savez pas vous amuser gentiment ? – C’est à cause de Geoffroy, monsieur, il ne veut pas être le prisonnier ! » a dit Eudes. « Tu veux ma main sur la figure ? » a demandé Geoffroy et ils ont recommencé à se battre, mais papa les a séparés. « Allons, les enfants, il a dit, je vais vous montrer comme il faut jouer. Le prisonnier ce sera moi ! » Nous on était drôlement contents ! Il est chouette mon papa ! Nous avons attaché papa à l’arbre avec la corde à linge et à peine on avait fini, que nous avons vu monsieur Blédurt sauter par-dessus la haie du jardin.</p>
+        
+        <p>Monsieur Blédurt, c’est notre voisin qui aime bien taquiner papa. « Moi aussi je veux jouer, je serai le peau-rouge Taureau Debout ! – Sors d’ici Blédurt, on ne t’a pas sonné ! » Monsieur Blédurt il était formidable, il s’est mis devant papa avec les bras croisés et il a dit : « Que le visage pâle retienne sa langue ! » Papa faisait des drôles d’efforts pour se détacher de l’arbre et monsieur Blédurt s’est mis à danser autour de l’arbre en poussant des cris. Nous on aurait bien aimé rester voir papa et monsieur Blédurt s’amuser et faire les guignols, mais on n’a pas pu parce que maman nous a appelés pour le goûter et après on est allés dans ma chambre jouer au train électrique. Ce que je ne savais pas, c’est que papa aimait tellement jouer aux cow-boys. Quand on est descendus, le soir, monsieur Blédurt était parti depuis longtemps, mais papa était toujours attaché à l’arbre à crier et à faire des grimaces. C’est chouette de savoir s’amuser tout seul, comme ça !</p>
+    </article>
+
+    <div class="page-break">— Fin de l’histoire « Les cow-boys » —</div>
+
+    <!-- STORY 3 -->
+    <article class="story">
+        <h2>Le Bouillon</h2>
+        
+        <p>Aujourd’hui, à l’école, la maîtresse a manqué. Nous étions dans la cour, en rangs, pour entrer en classe, quand le surveillant nous a dit : « Votre maîtresse est malade, aujourd’hui. »</p>
+        
+        <p>Et puis, monsieur Dubon, le surveillant, nous a conduits en classe. Le surveillant, on l’appelle le Bouillon, quand il n’est pas là, bien sûr. On l’appelle comme ça, parce qu’il dit tout le temps : « Regardez-moi dans les yeux », et dans le bouillon il y a des yeux. Moi non plus je n’avais pas compris tout de suite, c’est des grands qui me l’ont expliqué. Le Bouillon a une grosse moustache et il punit souvent, avec lui, il ne faut pas rigoler. C’est pour ça qu’on était embêtés qu’il vienne nous surveiller, mais, heureusement, en arrivant en classe, il nous a dit : « Je ne peux pas rester avec vous, je dois travailler avec monsieur le Directeur, alors, regardez-moi dans les yeux et promettez-moi d’être sages. » Tous nos tas d’yeux ont regardé dans les siens et on a promis. D’ailleurs, nous sommes toujours assez sages.</p>
+        
+        <p>Mais il avait l’air de se méfier, le Bouillon, alors, il a demandé qui était le meilleur élève de la classe. « C’est moi monsieur ! » a dit Agnan, tout fier. Et c’est vrai, Agnan c’est le premier de la classe, c’est aussi le chouchou de la maîtresse et nous on ne l’aime pas trop, mais on ne peut pas lui taper dessus aussi souvent qu’on le voudrait, à cause de ses lunettes. « Bon, a dit le Bouillon, tu vas venir t’asseoir à la place de la maîtresse et tu surveilleras tes camarades. Je reviendrai de temps en temps voir comment les choses se passent. Révisez vos leçons. » Agnan, tout content, est allé s’asseoir au bureau de la maîtresse et le Bouillon est parti.</p>
+        
+        <p>« Bien, a dit Agnan, nous devions avoir arithmétique, prenez vos cahiers, nous allons faire un problème. – T’es pas un peu fou ? » a demandé Clotaire. « Clotaire, taisez-vous ! » a crié Agnan, qui avait vraiment l’air de se prendre pour la maîtresse. « Viens me le dire ici, si t’es un homme ! » a dit Clotaire et la porte de la classe s’est ouverte et on a vu entrer le Bouillon tout content. « Ah ! il a dit. J’étais resté derrière la porte pour écouter. VOUS, là-bas, regardez-moi dans les yeux ! » Clotaire a regardé, mais ce qu’il a vu n’a pas eu l’air de lui faire tellement plaisir. « Vous allez me conjuguer le verbe : je ne dois pas être grossier envers un camarade qui est chargé de me surveiller et qui veut me faire faire des problèmes d’arithmétique. » Après avoir dit ça, le Bouillon est sorti, mais il nous a promis qu’il reviendrait.</p>
+        
+        <p>Joachim s’est proposé pour guetter le surveillant à la porte, on a été tous d’accord, sauf Agnan qui criait : « Joachim, à votre place ! » Joachim a tiré la langue à Agnan, il s’est assis devant la porte et il s’est mis à regarder par le trou de la serrure « Il n’y a personne, Joachim ? » a demandé Clotaire. Joachim a répondu qu’il ne voyait rien. Alors, Clotaire s’est levé et il a dit qu’il allait faire manger son livre d’arithmétique à Agnan, ce qui était vraiment une drôle d’idée, mais ça n’a pas plu à Agnan qui a crié : « Non ! J’ai des lunettes ! » « Tu vas les manger aussi ! » a dit Clotaire, qui voulait absolument qu’Agnan mange quelque chose. Mais Geoffroy a dit qu’il ne fallait pas perdre de temps avec des bêtises, qu’on ferait mieux de jouer à la balle. « Et les problèmes, alors ? » a demandé Agnan, qui n’avait pas l’air content, mais nous, on n’a pas fait attention et on a commencé à se faire des passes et c’est drôlement chouette de jouer entre les bancs. Quand je serai grand, je m’achèterai une classe, rien que pour jouer dedans. Et puis, on a entendu un cri et on a vu Joachim assis par terre et qui se tenait le nez avec les mains. C’était le Bouillon qui venait d’ouvrir la porte et Joachim n’avait pas dû le voir venir. « Qu’est-ce que tu as ? » a demandé le Bouillon tout étonné, mais Joachim n’a pas répondu, il faisait ouille, ouille, et c’est tout, alors, le Bouillon l’a pris dans ses bras et l’a emmené dehors. Nous, on a ramassé la balle et on est retournés à nos places. Quand le Bouillon est revenu avec Joachim qui avait le nez tout gonflé il nous a dit qu’il commençait à en avoir assez et que si ça continuait on verrait ce qu’on verrait. « Pourquoi ne prenez vous pas exemple sur votre camarade Agnan ? il a demandé, il est sage, lui. » Et le Bouillon est parti. On a demandé à Joachim ce qu’il lui était arrivé et il nous a répondu qu’il s’était endormi à force de regarder par le trou de la serrure.</p>
+        
+        <p>« Un fermier va à la foire, a dit Agnan dans un panier, il a vingt-huit œufs à cinq cents francs la douzaine. » « C’est de ta faute, le coup du nez », a dit Joachim « Ouais ! a dit Clotaire, on va lui faire manger son livre d’arithmétique, avec le fermier, les œufs et les lunettes ! » Agnan, alors, s’est mis à pleurer. Il nous a dit que nous étions des méchants et qu’il le dirait à ses parents et qu’ils nous feraient tous renvoyer et le Bouillon a ouvert la porte. On était tous assis à nos places et on ne disait rien et le Bouillon a regardé Agnan qui pleurait tout seul assis au bureau de la maîtresse. « Alors quoi, il a dit le Bouillon, c’est vous qui vous dissipez, maintenant ? Vous allez me rendre fou ! Chaque fois que je viens, il y en a un autre qui fait le pitre ! Regardez-moi bien dans les yeux, tous ! Si je reviens encore une fois et que je vois quelque chose d’anormal, je sévirai ! » et il est parti de nouveau. Nous, on s’est dit que ce n’était plus le moment de faire les guignols, parce que le surveillant, quand il n’est pas content, il donne de drôles de punitions. On ne bougeait pas, on entendait seulement renifler Agnan et mâcher Alceste, un copain qui mange tout le temps. Et puis, on a entendu un petit bruit du côté de la porte. On a vu le bouton de porte qui tournait très doucement et puis la porte a commencé à s’ouvrir petit à petit, en grinçant. Tous, on regardait et on ne respirait pas souvent, même Alceste s’est arrêté de mâcher. Et, tout d’un coup, il y en a un qui a crié : « C’est le Bouillon ! » La porte s’est ouverte et le Bouillon est entré, tout rouge. « Qui a dit ça ? » il a demandé. « C’est Nicolas ! » a dit Agnan. « C’est pas vrai, sale menteur ! » et c’était vrai que c’était pas vrai, celui qui avait dit ça, c’était Rufus. « C’est toi ! C’est toi ! C’est toi ! » a crié Agnan et il s’est mis à pleurer. « Tu seras en retenue ! » m’a dit le Bouillon. Alors je me suis mis à pleurer, j’ai dit que ce n’était pas juste et que je quitterais l’école et qu’on me regretterait bien. « C’est pas lui, m’sieu, c’est Agnan qui a dit le Bouillon ! » a crié Rufus. « Ce n’est pas moi qui ai dit le Bouillon ! » a crié Agnan. « Tu as dit le Bouillon, je t’ai entendu dire le Bouillon, parfaitement, le Bouillon ! – Bon, ça va comme ça, a dit le Bouillon, vous serez tous en retenue ! » « Pourquoi moi ? a demandé Alceste. Je n’ai pas dit le Bouillon, moi ! » « Je ne veux plus entendre ce sobriquet ridicule, vous avez compris ? » a crié le Bouillon, qui avait l’air drôlement énervé. « Je ne viendrai pas en retenue ! » a crié Agnan et il s’est roulé par terre en pleurant et il avait des hoquets et il est devenu tout rouge et puis tout bleu. En classe, à peu près tout le monde criait ou pleurait, j’ai cru que le Bouillon allait s’y mettre aussi, quand le Directeur est entré. « Que se passe-t-il, le Bouil... Monsieur Dubon ? » il a demandé, le Directeur. « Je ne sais plus, monsieur le Directeur, a répondu le Bouillon, il y en a un qui se roule par terre, un autre qui saigne du nez quand j’ouvre la porte, le reste qui hurle, je n’ai jamais vu ça ! Jamais » et le Bouillon se passait la main dans les cheveux et sa moustache bougeait dans tous les sens.</p>
+        
+        <p>Le lendemain, la maîtresse est revenue, mais le Bouillon a manqué.</p>
+    </article>
+
+    <div class="page-break">— Fin de l’histoire « Le Bouillon » —</div>
+
+    <!-- STORY 4 -->
+    <article class="story">
+        <h2>Le football</h2>
+        
+        <p>Alceste nous a donné rendez-vous, à un tas de copains de la classe, pour cet après-midi dans le terrain vague, pas loin de la maison. Alceste c’est mon ami, il est gros, il aime bien manger, et s’il nous a donné rendez-vous, c’est parce que son papa lui a offert un ballon de football tout neuf et nous allons faire une partie terrible. Il est chouette, Alceste.</p>
+        
+        <p>Nous nous sommes retrouvés sur le terrain à trois heures de l’après-midi, nous étions dix-huit. Il a fallu décider comment former les équipes, pour qu’il y ait le même nombre de joueurs de chaque côté.</p>
+        
+        <p>Pour l’arbitre, ça a été facile. Nous avons choisi Agnan. Agnan c’est le premier de la classe, on ne l’aime pas trop, mais comme il porte des lunettes on ne peut pas lui taper dessus, ce qui, pour un arbitre, est une bonne combine. Et puis, aucune équipe ne voulait d’Agnan, parce qu’il est pas très fort pour le sport et il pleure trop facilement. Là où on a discuté c’est quand Agnan a demandé qu’on lui donne un sifflet. Le seul qui en avait un, c’était Rufus, dont le papa est agent de police.</p>
+        
+        <p>« Je ne peux pas le prêter, mon sifflet à roulette, a dit Rufus, c’est un souvenir de famille. » Il n’y avait rien à faire. Finalement, on a décidé qu’Agnan préviendrait Rufus et Rufus sifflerait à la place d’Agnan.</p>
+        
+        <p>« Alors ? On joue ou quoi ? Je commence à avoir faim, moi ! » a crié Alceste.</p>
+        
+        <p>Mais là où c’est devenu compliqué, c’est que si Agnan était arbitre, on n’était plus que dix-sept joueurs, ça en faisait un de trop pour le partage. Alors, on a trouvé le truc : il y en a un qui serait arbitre de touche et qui agiterait un petit drapeau, chaque fois que la balle sortirait du terrain. C’est Maixent qui a été choisi. Un seul arbitre de touche, ce n’est pas beaucoup pour surveiller tout le terrain mais Maixent court très vite, il a des jambes très longues et toutes maigres, avec de gros genoux sales. Maixent, il ne voulait rien savoir, il voulait jouer au ballon, lui, et puis il nous a dit qu’il n’avait pas de drapeau. Il a tout de même accepté d’être arbitre de touche pour la première mi-temps. Pour le drapeau, il agiterait son mouchoir qui n’était pas propre, mais bien sûr, il ne savait pas en sortant de chez lui que son mouchoir allait servir de drapeau.</p>
+        
+        <p>« Bon, on y va ? » a crié Alceste.</p>
+        
+        <p>Après, c’était plus facile, on n’était plus que seize joueurs.</p>
+        
+        <p>Il fallait un capitaine pour chaque équipe. Mais tout le monde voulait être capitaine. Tout le monde sauf Alceste, qui voulait être goal, parce qu’il n’aime pas courir. Nous, on était d’accord, il est bien, Alceste, comme goal ; il est très large et il couvre bien le but. Ça laissait tout de même quinze capitaines et ça en faisait plusieurs de trop.</p>
+        
+        <p>« Je suis le plus fort, criait Eudes, je dois être capitaine et je donnerai un coup de poing sur le nez de celui qui n’est pas d’accord ! — Le capitaine c’est moi, je suis le mieux habillé ! » a crié Geoffroy, et Eudes lui a donné un coup de poing sur le nez.</p>
+        
+        <p>C’était vrai, que Geoffroy était bien habillé, son papa, qui est très riche, lui avait acheté un équipement complet de joueur de football, avec une chemise rouge, blanche et bleue.</p>
+        
+        <p>« Si c’est pas moi le capitaine, a crié Rufus, j’appelle mon papa et il vous met tous en prison ! »</p>
+        
+        <p>Moi, j’ai eu l’idée de tirer au sort avec une pièce de monnaie. Avec deux pièces de monnaie, parce que la première s’est perdue dans l’herbe et on ne l’a jamais retrouvée. La pièce, c’était Joachim qui l’avait prêtée et il n’était pas content de l’avoir perdue ; il s’est mis à la chercher, et pourtant Geoffroy lui avait promis que son papa lui enverrait un chèque pour le rembourser. Finalement, les deux capitaines ont été choisis : Geoffroy et moi.</p>
+        
+        <p>« Dites, j’ai pas envie d’être en retard pour le goûter, a crié Alceste. On joue ? »</p>
+        
+        <p>Après, il a fallu former les équipes. Pour tous, ça allait assez bien, sauf pour Eudes. Geoffroy et moi, on voulait Eudes, parce que, quand il court avec le ballon, personne ne l’arrête. Il ne joue pas très bien, mais il fait peur. Joachim était tout content parce qu’il avait retrouvé sa pièce de monnaie, alors on la lui a demandée pour tirer Eudes au sort, et on a perdu la pièce de nouveau. Joachim s’est remis à la chercher, vraiment fâché, cette fois-ci, et c’est à la courte paille que Geoffroy a gagné Eudes. Geoffroy l’a désigné comme gardien de but, il s’est dit que personne n’oserait s’approcher de la cage et encore moins mettre le ballon dedans. Eudes se vexe facilement. Alceste mangeait des biscuits, assis entre les pierres qui marquaient son but. Il n’avait pas l’air content. « Alors, ça vient, oui ? » il criait.</p>
+        
+        <p>On s’est placés sur le terrain. Comme on n’était que sept de chaque côté, à part les gardiens de but, ça n’a pas été facile. Dans chaque équipe on a commencé à discuter. Il y en avait des tas qui voulaient être avant-centres. Joachim voulait être arrière-droit, mais c’était parce que la pièce de monnaie était tombée dans ce coin et il voulait continuer à la chercher tout en jouant.</p>
+        
+        <p>Dans l’équipe de Geoffroy ça s’est arrangé très vite, parce que Eudes a donné des tas de coups de poing et les joueurs se sont mis à leur place sans protester et en se frottant le nez. C’est qu’il frappe dur, Eudes !</p>
+        
+        <p>Dans mon équipe, on n’arrivait pas à se mettre d’accord, jusqu’au moment où Eudes a dit qu’il viendrait nous donner des coups de poing sur le nez à nous aussi : alors, on s’est placés.</p>
+        
+        <p>Agnan a dit à Rufus : « Siffle ! » et Rufus, qui jouait dans mon équipe, a sifflé le coup d’envoi. Geoffroy n’était pas content. Il a dit : « C’est malin ! Nous avons le soleil dans les yeux ! Il n’y a pas de raison que mon équipe joue du mauvais côté du terrain ! »</p>
+        
+        <p>Moi, je lui ai répondu que si le soleil ne lui plaisait pas, il n’avait qu’à fermer les yeux, qu’il jouerait peut-être même mieux comme ça. Alors, nous nous sommes battus. Rufus s’est mis à souffler dans son sifflet à roulette. « Je n’ai pas donné l’ordre de siffler, a crié Agnan, l’arbitre c’est moi ! » Ça n’a pas plu à Rufus qui a dit qu’il n’avait pas besoin de la permission d’Agnan pour siffler, qu’il sifflerait quand il en aurait envie, non mais tout de même. Et il s’est mis à siffler comme un fou. « Tu es méchant, voilà ce que tu es ! » a crié Agnan, qui a commencé à pleurer.</p>
+        
+        <p>« Eh, les gars ! » a dit Alceste, dans son but.</p>
+        
+        <p>Mais personne ne l’écoutait. Moi, je continuais à me battre avec Geoffroy. Je lui avais déchiré sa belle chemise rouge, blanche et bleue, et lui il disait : « Bah, bah, bah ! Ça ne fait rien ! Mon papa, il m’en achètera des tas d’autres ! » Et il me donnait des coups de pied, dans les chevilles. Rufus courait après Agnan qui criait : « J’ai des lunettes ! J’ai des lunettes ! » Joachim, il ne s’occupait de personne, il cherchait sa monnaie, mais il ne la trouvait toujours pas. Eudes, qui était resté tranquillement dans son but, en a eu assez et il a commencé à distribuer des coups de poing sur les nez qui se trouvaient le plus près de lui, c’est-à-dire sur ceux de son équipe. Tout le monde criait, courait. On s’amusait vraiment bien, c’était formidable !</p>
+        
+        <p>« Arrêtez, les gars ! » a crié Alceste de nouveau.</p>
+        
+        <p>Alors Eudes s’est fâché. « Tu étais pressé de jouer, il a dit à Alceste, eh ! bien, on joue. Si tu as quelque chose à dire, attends la mi-temps ! »</p>
+        
+        <p>« La mi-temps de quoi ? a demandé Alceste. Je viens de m’apercevoir que nous n’avons pas de ballon, je l’ai oublié à la maison ! »</p>
+    </article>
+
+    <div class="page-break">— Fin de l’histoire « Le football » —</div>
+
+    <!-- STORY 5 -->
+    <article class="story">
+        <h2>On a eu l’inspecteur</h2>
+        
+        <p>La maîtresse est entrée en classe toute nerveuse. « M. l’Inspecteur est dans l’école, elle nous a dit, je compte sur vous pour être sages et faire une bonne impression. » Nous on a promis qu’on se tiendrait bien, d’ailleurs, la maîtresse a tort de s’inquiéter, nous sommes presque toujours sages.</p>
+        
+        <p>« Je vous signale, a dit la maîtresse, que c’est un nouvel inspecteur, l’ancien était déjà habitué à vous, mais il a pris sa retraite...» Et puis, la maîtresse nous a fait des tas et des tas de recommandations, elle nous a défendu de parler sans être interrogés, de rire sans sa permission, elle nous a demandé de ne pas laisser tomber des billes comme la dernière fois que l’inspecteur est venu et qu’il s’est retrouvé par terre, elle a demandé à Alceste de cesser de manger quand l’inspecteur serait là et elle a dit à Clotaire, qui est le dernier de la classe, de ne pas se faire remarquer. Quelquefois je me demande si la maîtresse ne nous prend pas pour des guignols. Mais, comme on l’aime bien, la maîtresse, on lui a promis tout ce qu’elle a voulu. La maîtresse a regardé pour voir si la classe et nous nous étions bien propres et elle a dit que la classe était plus propre que certains d’entre nous. Et puis, elle a demandé à Agnan, qui est le premier de la classe et le chouchou, de mettre de l’encre dans les encriers, au cas où l’inspecteur voudrait nous faire une dictée. Agnan a pris la grande bouteille d’encre et il allait commencer à verser dans les encriers du premier banc, là où sont assis Cyrille et Joachim, quand quelqu’un a crié « Voilà l’inspecteur ! » Agnan a eu tellement peur qu’il a renversé de l’encre partout sur le banc. C’était une blague, l’inspecteur n’était pas là et la maîtresse était très fâchée. « Je vous ai vu, Clotaire, elle a dit. C’est vous l’auteur de cette plaisanterie stupide. Allez au piquet ! » Clotaire s’est mis à pleurer, il a dit que s’il allait au piquet, il allait se faire remarquer et l’inspecteur allait lui poser des tas de questions et lui il ne savait rien et il allait se mettre à pleurer et que ce n’était pas une blague, qu’il avait vu l’inspecteur passer dans la cour avec le directeur et comme c’était vrai, la maîtresse a dit que bon, ça allait pour cette fois-ci. Ce qui était embêtant, c’est que le premier banc était tout plein d’encre, la maîtresse a dit alors qu’il fallait passer ce banc au dernier rang, là où on ne le verrait pas. On s’est mis au travail et ça a été une drôle d’affaire, parce qu’il fallait remuer tous les bancs et on s’amusait bien et l’inspecteur est entré avec le directeur.</p>
+        
+        <p>On n’a pas eu à se lever, parce qu’on était tous debout, et tout le monde avait l’air bien étonné. « Ce sont les petits, ils ? ils sont un peu dissipés », a dit le directeur. « Je vois, a dit l’inspecteur, asseyez-vous, mes enfants. » On s’est tous assis, et, comme nous avions retourné leur banc pour le changer de place, Cyrille et Joachim tournaient le dos au tableau. L’inspecteur a regardé la maîtresse et il lui a demandé si ces deux élèves étaient toujours placés comme ça. La maîtresse, elle a fait la tête de Clotaire quand on l’interroge, mais elle n’a pas pleuré. « Un petit incident...» elle a dit. L’inspecteur n’avait pas l’air très content, il avait de gros sourcils, tout près des yeux. « Il faut avoir un peu d’autorité, il a dit. Allons, mes enfants, mettez ce banc à sa place. » On s’est tous levés et l’inspecteur s’est mis à crier « Pas tous à la fois vous deux seulement ! » Cyrille et Joachim ont retourné le banc et se sont assis. L’inspecteur a fait un sourire et il a appuyé ses mains sur le banc. « Bien, il a dit, que faisiez-vous, avant que je n’arrive ? – On changeait le banc de place », a répondu Cyrille. « Ne parlons plus de ce banc ! a crié l’inspecteur, qui avait l’air d’être nerveux. Et d’abord, pourquoi changiez-vous ce banc de place ? — A cause de l’encre », a dit Joachim. « L’encre ? » a demandé l’inspecteur et il a regardé ses mains qui étaient toutes bleues. L’inspecteur a fait un gros soupir et il a essuyé ses doigts avec un mouchoir.</p>
+        
+        <p>Nous, on a vu que l’inspecteur, la maîtresse et le directeur n’avaient pas l’air de rigoler. On a décidé d’être drôlement sages.</p>
+        
+        <p>« Vous avez, je vois, quelques ennuis avec la discipline, a dit l’inspecteur à la maîtresse, il faut user d’un peu de psychologie élémentaire », et puis, il s’est tourné vers nous, avec un grand sourire et il a éloigné ses sourcils de ses yeux. « Mes enfants, je veux être votre ami. Il ne faut pas avoir peur de moi, je sais que vous aimez vous amuser, et moi aussi, j’aime bien rire. D’ailleurs, tenez, vous connaissez l’histoire des deux sourds ? Un sourd dit à l’autre : tu vas à la pêche ? et l’autre dit : non, je vais à la pêche. Alors le premier dit : ah bon, je croyais que tu allais à la pêche. » C’est dommage que la maîtresse nous ait défendu de rire sans sa permission, parce qu’on a eu un mal fou à se retenir. Moi, je vais raconter l’histoire ce soir à papa, ça va le faire rigoler, je suis sûr qu’il ne la connaît pas. L’inspecteur, qui n’avait besoin de la permission de personne, a beaucoup ri, mais comme il a vu que personne ne disait rien dans la classe, il a remis ses sourcils en place, il a toussé et il a dit « Bon, assez ri, au travail. – Nous étions en train d’étudier les fables, a dit la maîtresse, Le Corbeau et le Renard. – Parfait, parfait, a dit l’inspecteur, eh bien, continuez. » La maîtresse a fait semblant de chercher au hasard dans la classe, et puis, elle a montré Agnan du doigt : « Vous, Agnan, récitez-nous la fable. » Mais l’inspecteur a levé la main. « Vous permettez ? » il a dit à la maîtresse, et puis, il a montré Clotaire. « Vous, là-bas, dans le fond, récitez-moi cette fable. » Clotaire a ouvert la bouche et il s’est mis à pleurer. « Mais, qu’est-ce qu’il a ? » a demandé l’inspecteur. La maîtresse a dit qu’il fallait excuser Clotaire, qu’il était très timide, alors, c’est Rufus qui a été interrogé. Rufus c’est un copain, et son papa, il est agent de police. Rufus a dit qu’il ne connaissait pas la fable par cœur, mais qu’il savait à peu près de quoi il s’agissait et il a commencé à expliquer que c’était l’histoire d’un corbeau qui tenait dans son bec un roquefort. « Un roquefort ? » a demandé l’inspecteur, qui avait l’air de plus en plus étonné. « Mais non, a dit Alceste, c’était un camembert. – Pas du tout, a dit Rufus, le camembert, le corbeau il n’aurait pas pu le tenir dans son bec, ça coule et puis ça sent pas bon ! – Ça sent pas bon, mais c’est chouette à manger, a répondu Alceste. Et puis, ça ne veut rien dire, le savon ça sent bon, mais c’est très mauvais à manger, j’ai essayé, une fois. – Bah ! a dit Rufus, tu es bête et je vais dire à mon papa de donner des tas de contraventions à ton papa ! » Et ils se sont battus.</p>
+        
+        <p>Tout le monde était levé et criait, sauf Clotaire qui pleurait toujours dans son coin et Agnan qui était allé au tableau et qui récitait Le Corbeau et le Renard. La maîtresse, l’inspecteur et le directeur criaient « Assez ! ». On a tous bien rigolé.</p>
+        
+        <p>Quand ça s’est arrêté et que tout le monde s’est assis, l’inspecteur a sorti son mouchoir et il s’est essuyé la figure, il s’est mis de l’encre partout et c’est dommage qu’on n’ait pas le droit de rire, parce qu’il faudra se retenir jusqu’à la récréation et ça ne va pas être facile.</p>
+        
+        <p>L’inspecteur s’est approché de la maîtresse et il lui a serré la main. « Vous avez toute ma sympathie, Mademoiselle. Jamais, comme aujourd’hui, je ne me suis aperçu à quel point notre métier est un sacerdoce. Continuez ! Courage ! Bravo ! » Et il est parti, très vite, avec le directeur.</p>
+        
+        <p>Nous, on l’aime bien, notre maîtresse, mais elle a été drôlement injuste. C’est grâce à nous qu’elle s’est fait féliciter, et elle nous a tous mis en retenue !</p>
+    </article>
+
+    <div class="page-break">— Fin de l’histoire « On a eu l’inspecteur » —</div>
+
+    <!-- STORY 6 -->
+    <article class="story">
+        <h2>Rex</h2>
+        
+        <p>En sortant de l’école, j’ai suivi un petit chien. Il avait l’air perdu, le petit chien, il était tout seul et ça m’a fait beaucoup de peine. J’ai pensé que le petit chien serait content de trouver un ami et j’ai eu du mal à le rattraper. Comme le petit chien n’avait pas l’air d’avoir tellement envie de venir avec moi, il devait se méfier, je lui ai offert la moitié de mon petit pain au chocolat et le petit chien a mangé le petit pain au chocolat et il s’est mis à remuer la queue dans tous les sens et moi je l’ai appelé Rex, comme dans un film policier que j’avais vu jeudi dernier.</p>
+        
+        <p>Après le petit pain, que Rex a mangé presque aussi vite que l’aurait fait Alceste, un copain qui mange tout le temps, Rex m’a suivi tout content. J’ai pensé que ce serait une bonne surprise pour papa et pour maman quand j’arriverais avec Rex à la maison. Et puis, j’apprendrais à Rex à faire des tours, il garderait la maison, et aussi, il m’aiderait à retrouver des bandits, comme dans le film de jeudi dernier.</p>
+        
+        <p>Eh bien, je suis sûr que vous ne me croirez pas, quand je suis arrivé à la maison, maman n’a pas été tellement contente de voir Rex, elle n’a pas été contente du tout. Il faut dire que c’est un peu de la faute de Rex. Nous sommes entrés dans le salon et maman est arrivée, elle m’a embrassé, m’a demandé si tout s’était bien passé à l’école, si je n’avais pas fait de bêtises et puis elle a vu Rex et elle s’est mise à crier « Où as-tu trouvé cet animal ? » Moi, j’ai...</p>
+        
+        <p>(Le texte de l’histoire « Rex » se poursuit dans les pages suivantes du livre original.)</p>
+    </article>
+
+    <footer>
+        <p><strong>Le petit Nicolas — Tome 1</strong> (Sempé &amp; Goscinny, 1960)<br>
+        Conversion HTML fidèle du document fourni (pages 1 à ~30). Le PDF complet comporte 95 pages.<br>
+        Illustrations originales de Sempé • Texte de Goscinny</p>
+    </footer>
+</body>
+</html>
