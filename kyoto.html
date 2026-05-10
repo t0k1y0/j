@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>京都の名刹 — 寺庙图录</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#16110d;--ink2:#2b2018;--ink3:#42301e;
+  --parch:#f7f2ea;--parch2:#ede7d8;--parch3:#e3dccf;
+  --verm:#b83525;--verm2:#d4452e;
+  --gold:#9a7828;--gold2:#c4a04e;--gold3:#e2c070;
+  --muted:#6b5e50;--muted2:#9a8a78;
+  --rinzen:#2d5a3d;--jodo:#1e3d6e;--shingon:#5a2060;--hosso:#7a4a10;
+  --border:rgba(22,17,13,.13);--border2:rgba(22,17,13,.22);
+}
+html{scroll-behavior:smooth}
+body{background:var(--parch);color:var(--ink);font-family:'Noto Serif SC','Noto Serif JP',serif;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+header{background:var(--ink);color:var(--parch);padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),var(--gold3),var(--gold2),transparent)}
+.h-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);font-family:'Noto Serif JP',serif;font-size:18rem;font-weight:300;color:rgba(255,255,255,.03);pointer-events:none;white-space:nowrap;letter-spacing:-.05em}
+.h-jp{font-family:'Noto Serif JP',serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:300;letter-spacing:.3em;position:relative}
+.h-rule{width:54px;height:1px;background:var(--gold2);margin:.9rem auto}
+.h-en{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;font-weight:300;letter-spacing:.12em;color:rgba(247,242,234,.55)}
+.h-zh{margin-top:.3rem;font-size:.86rem;color:rgba(247,242,234,.38);letter-spacing:.2em}
+.h-badge{margin-top:1.2rem;display:inline-block;border:1px solid var(--gold);color:var(--gold3);font-family:'Cormorant Garamond',serif;font-size:.78rem;letter-spacing:.22em;padding:.28rem 1.1rem;border-radius:2px}
+
+/* NAV */
+nav{background:var(--ink2);padding:.6rem 2rem;position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.nav-l{display:flex;align-items:center;gap:1.5rem}
+nav a{color:rgba(247,242,234,.65);text-decoration:none;font-size:.78rem;letter-spacing:.16em;font-family:'Cormorant Garamond',serif;transition:color .2s}
+nav a:hover{color:var(--gold3)}
+.nsep{color:rgba(247,242,234,.18);font-size:.65rem}
+.nav-r{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.cbtn{background:transparent;border:1px solid rgba(247,242,234,.22);color:rgba(247,242,234,.65);font-family:'Cormorant Garamond',serif;font-size:.74rem;letter-spacing:.12em;padding:.22rem .7rem;border-radius:2px;cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--gold2);color:var(--gold3)}
+.cbtn.on{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:600}
+select.csel{background:transparent;border:1px solid rgba(247,242,234,.22);color:rgba(247,242,234,.65);font-family:'Cormorant Garamond',serif;font-size:.74rem;letter-spacing:.1em;padding:.22rem .5rem;border-radius:2px;cursor:pointer;outline:none}
+select.csel option{background:var(--ink2);color:var(--parch)}
+
+/* MAIN */
+main{max-width:1320px;margin:0 auto;padding:3rem 2rem 6rem}
+
+/* SECTION HEADING */
+.sh{display:flex;align-items:center;gap:1rem;margin-bottom:2.4rem}
+.sh::before,.sh::after{content:'';flex:1;height:1px;background:var(--border)}
+.sh span{font-family:'Cormorant Garamond',serif;font-size:.74rem;letter-spacing:.3em;color:var(--muted);white-space:nowrap;text-transform:uppercase}
+
+/* STATS BAR */
+.sbar{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:2.4rem}
+.spill{background:var(--parch2);border:1px solid var(--border);border-radius:2px;padding:.38rem .9rem;font-size:.78rem;display:flex;align-items:center;gap:.5rem}
+.spill .sn{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--ink);line-height:1}
+.spill .sl{color:var(--muted);font-size:.7rem;letter-spacing:.09em}
+.sdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* CARD GRID */
+#gallery{margin-bottom:5rem}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.8rem}
+.card{background:#fff;border:1px solid var(--border);border-radius:3px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-5px);box-shadow:0 14px 44px rgba(22,17,13,.13)}
+.card.hid{display:none}
+
+/* CARD IMAGE */
+.ci{position:relative;height:210px;overflow:hidden;background:var(--parch3)}
+.ci img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s}
+.card:hover .ci img{transform:scale(1.06)}
+.ciph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem}
+.ciph-k{font-family:'Noto Serif JP',serif;font-size:3rem;font-weight:300;color:rgba(22,17,13,.15)}
+.ciph-t{font-size:.7rem;letter-spacing:.14em;color:var(--muted2);font-family:'Cormorant Garamond',serif}
+@keyframes shim{0%{background-position:-600px 0}100%{background-position:600px 0}}
+.shim{background:linear-gradient(90deg,var(--parch3) 25%,var(--parch2) 50%,var(--parch3) 75%);background-size:600px 100%;animation:shim 1.5s infinite linear}
+.cbadges{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.bs{font-size:.64rem;font-family:'Noto Serif SC',serif;padding:.17rem .52rem;border-radius:2px;color:#fff;letter-spacing:.04em}
+.bs.rinzai{background:var(--rinzen)}.bs.jodo{background:var(--jodo)}.bs.shingon{background:var(--shingon)}.bs.hosso{background:var(--hosso)}
+.bh{font-size:.62rem;font-family:'Cormorant Garamond',serif;padding:.15rem .52rem;border-radius:2px;background:rgba(154,120,40,.88);color:#fff;letter-spacing:.1em}
+.cybar{position:absolute;bottom:0;left:0;right:0;background:rgba(22,17,13,.62);color:rgba(247,242,234,.9);font-family:'Cormorant Garamond',serif;font-size:.78rem;font-style:italic;padding:.28rem .8rem;letter-spacing:.06em}
+
+/* CARD BODY */
+.cb{padding:1.2rem 1.4rem 1.4rem;flex:1;display:flex;flex-direction:column;gap:.7rem}
+.cn-zh{font-family:'Noto Serif SC',serif;font-size:1.4rem;font-weight:600;letter-spacing:.04em;line-height:1.2}
+.cn-alt{font-size:.7rem;color:var(--muted2);letter-spacing:.06em;margin-top:.1rem}
+.cn-rom{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-style:italic;color:var(--muted);letter-spacing:.06em}
+.crule{width:28px;height:1px;background:var(--gold2)}
+.cf{font-size:.79rem;line-height:1.5}
+.cl{display:block;font-family:'Cormorant Garamond',serif;font-size:.67rem;letter-spacing:.2em;color:var(--muted2);text-transform:uppercase;margin-bottom:.1rem}
+.cv{color:var(--ink2)}
+.cart{border-left:2px solid var(--gold2);padding-left:.7rem;font-size:.79rem;color:var(--ink2);line-height:1.55}
+.chist{font-size:.77rem;color:var(--muted);font-style:italic;font-family:'Cormorant Garamond',serif;line-height:1.5}
+.clinks{margin-top:auto;padding-top:.8rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.clink{display:inline-flex;align-items:center;gap:.28rem;font-size:.7rem;font-family:'Cormorant Garamond',serif;letter-spacing:.1em;text-decoration:none;padding:.2rem .6rem;border-radius:2px;border:1px solid var(--border2);color:var(--muted);transition:all .18s}
+.clink:hover{border-color:var(--gold);color:var(--gold);background:rgba(154,120,40,.06)}
+.clink.lmap{color:var(--verm);border-color:rgba(184,53,37,.3)}
+.clink.lmap:hover{border-color:var(--verm2);background:rgba(184,53,37,.06)}
+
+/* TABLE */
+.twrap{overflow-x:auto;border:1px solid var(--border);border-radius:3px}
+table{width:100%;border-collapse:collapse;font-size:.79rem;min-width:1100px}
+thead{background:var(--ink)}
+thead th{padding:.85rem 1rem;text-align:left;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:.73rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(247,242,234,.72);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(154,120,40,.055)}
+tbody tr:nth-child(even){background:rgba(22,17,13,.025)}
+tbody tr:nth-child(even):hover{background:rgba(154,120,40,.055)}
+tbody tr.hid{display:none}
+td{padding:.8rem 1rem;vertical-align:top;color:var(--ink);line-height:1.5}
+.tnk{font-family:'Noto Serif SC',serif;font-size:.95rem;font-weight:600;display:block;white-space:nowrap}
+.tnr{font-family:'Cormorant Garamond',serif;font-size:.78rem;font-style:italic;color:var(--muted);display:block}
+.tna{font-size:.67rem;color:var(--muted2)}
+.tyr{font-family:'Cormorant Garamond',serif;font-size:.87rem;color:var(--muted)}
+.ts{display:inline-block;font-size:.67rem;padding:.14rem .48rem;border-radius:2px;border:1px solid}
+.ts.rinzai{color:var(--rinzen);border-color:rgba(45,90,61,.35);background:rgba(45,90,61,.07)}
+.ts.jodo{color:var(--jodo);border-color:rgba(30,61,110,.35);background:rgba(30,61,110,.07)}
+.ts.shingon{color:var(--shingon);border-color:rgba(90,32,96,.35);background:rgba(90,32,96,.07)}
+.ts.hosso{color:var(--hosso);border-color:rgba(122,74,16,.35);background:rgba(122,74,16,.07)}
+.tlinks{display:flex;flex-direction:column;gap:3px}
+.tlink{font-family:'Cormorant Garamond',serif;font-size:.72rem;letter-spacing:.07em;text-decoration:none;color:var(--gold);padding:.08rem 0}
+.tlink:hover{color:var(--verm);text-decoration:underline}
+.tlink.tlmap{color:var(--verm)}
+.hdot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold2);margin-right:.35rem;vertical-align:middle}
+
+footer{background:var(--ink);color:rgba(247,242,234,.35);text-align:center;padding:2rem;font-family:'Cormorant Garamond',serif;font-size:.8rem;letter-spacing:.1em}
+footer a{color:var(--gold2);text-decoration:none}
+
+@media(max-width:640px){.cgrid{grid-template-columns:1fr;gap:1.2rem}main{padding:2rem 1rem 4rem}nav{gap:.5rem}.sbar{gap:.8rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-bg">寺</div>
+  <div class="h-jp">京都の名刹</div>
+  <div class="h-rule"></div>
+  <div class="h-en">A Compendium of Kyoto's Great Temples</div>
+  <div class="h-zh">京都著名寺庙图录</div>
+  <div class="h-badge">十四座名刹 &nbsp;·&nbsp; FOURTEEN TEMPLES</div>
+</header>
+
+<nav>
+  <div class="nav-l">
+    <a href="#gallery">图录</a>
+    <span class="nsep">◆</span>
+    <a href="#ref">参考表</a>
+  </div>
+  <div class="nav-r">
+    <select class="csel" id="sectSel" onchange="applyF()">
+      <option value="">全部宗派</option>
+      <option value="rinzai">临济宗</option>
+      <option value="jodo">净土宗</option>
+      <option value="shingon">真言宗</option>
+      <option value="hosso">法相宗</option>
+    </select>
+    <button class="cbtn" id="btnH" onclick="togH()">世界遗产</button>
+    <button class="cbtn" id="btnS" onclick="togS()">年代 ↑</button>
+  </div>
+</nav>
+
+<main>
+  <section id="gallery">
+    <div class="sh"><span>图录 · Gallery</span></div>
+    <div class="sbar" id="sbar"></div>
+    <div class="cgrid" id="cgrid"></div>
+  </section>
+
+  <section id="ref">
+    <div class="sh"><span>参考表 · Full Reference Table</span></div>
+    <div class="twrap">
+      <table>
+        <thead>
+          <tr>
+            <th>寺名</th><th>创立时间</th><th>宗派</th>
+            <th>创始人 / 关键人物</th><th>建筑特色</th>
+            <th>艺术 / 著名特色</th><th>相关历史人物 / 关联</th>
+            <th>地图 &amp; 百科链接</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  图像来源 <a href="https://commons.wikimedia.org" target="_blank">Wikimedia Commons</a> via Wikipedia API &nbsp;·&nbsp;
+  地图数据 Google Maps &nbsp;·&nbsp; 资料整理：京都佛教文化研究
+</footer>
+
+<script>
+var T=[
+ {zh:'清水寺',rom:'Kiyomizu-dera',alt:'',founded:'778年',fy:778,founder:'延镇；坂上田村麻吕',sk:'hosso',sect:'法相宗',arch:'无钉悬空木造舞台（13米高）',art:'音羽瀑布、京都全景、国宝众多',hist:'德川家光重建；世界遗产',her:true,wiki:'Kiyomizu-dera',wzh:'清水寺_(京都)',lat:34.9949,lng:135.7851},
+ {zh:'金阁寺',rom:'Kinkaku-ji',alt:'鹿苑寺',founded:'1397年（别墅）→1408年',fy:1397,founder:'足利义满',sk:'rinzai',sect:'临济宗',arch:'三层金箔金阁',art:'镜湖倒影、四季美景',hist:'足利幕府；室町文化象征',her:false,wiki:'Kinkaku-ji',wzh:'金閣寺',lat:35.0394,lng:135.7292},
+ {zh:'银阁寺',rom:'Ginkaku-ji',alt:'慈照寺',founded:'1482年（别墅）→1490年',fy:1482,founder:'足利义政',sk:'rinzai',sect:'临济宗',arch:'白银阁 + 银沙滩',art:'侘寂枯山水、苔藓庭园',hist:'足利义政；东山文化发源地',her:false,wiki:'Ginkaku-ji',wzh:'銀閣寺',lat:35.0270,lng:135.7982},
+ {zh:'龙安寺',rom:'Ry\u014Dan-ji',alt:'',founded:'1450年',fy:1450,founder:'细川胜元',sk:'rinzai',sect:'临济宗（妙心寺派）',arch:'方丈观景台',art:'世界著名15石枯山水庭园',hist:'禅宗冥想代表；世界遗产',her:true,wiki:'Ry%C5%8Dan-ji',wzh:'龍安寺',lat:35.0345,lng:135.7184},
+ {zh:'天龙寺',rom:'Tenry\u016B-ji',alt:'',founded:'1339年',fy:1339,founder:'足利尊氏；梦窗疏石',sk:'rinzai',sect:'临济宗（总本山）',arch:'大型寺院群、宏伟山门',art:'曹源池庭园（借景嵯峨山）',hist:'京都五山之一',her:true,wiki:'Tenry%C5%AB-ji',wzh:'天龍寺',lat:35.0170,lng:135.6771},
+ {zh:'南禅寺',rom:'Nanzen-ji',alt:'',founded:'1291年',fy:1291,founder:'龟山天皇（原离宫）',sk:'rinzai',sect:'临济宗（总本山）',arch:'巨大三门、明治红砖水道桥',art:'多座塔头庭园',hist:'京都五山领袖',her:false,wiki:'Nanzen-ji',wzh:'南禅寺',lat:35.0114,lng:135.7924},
+ {zh:'建仁寺',rom:'Kennin-ji',alt:'',founded:'1202年',fy:1202,founder:'明庵荣西',sk:'rinzai',sect:'临济宗（京都最古）',arch:'现存最古老禅宗建筑',art:'水墨画、禅庭、茶道文物',hist:'将禅宗与茶引入日本',her:false,wiki:'Kennin-ji',wzh:'建仁寺',lat:35.0000,lng:135.7750},
+ {zh:'东寺',rom:'T\u014D-ji',alt:'',founded:'796年',fy:796,founder:'桓武天皇；空海（弘法大师）',sk:'shingon',sect:'真言宗（总本山）',arch:'日本最高木造五重塔（55米）',art:'曼荼罗庭园、国宝众多',hist:'空海；京都守护寺',her:true,wiki:'T%C5%8D-ji',wzh:'東寺',lat:34.9804,lng:135.7476},
+ {zh:'知恩院',rom:'Chion-in',alt:'',founded:'1234年',fy:1234,founder:'法然上人；源智',sk:'jodo',sect:'净土宗（总本山）',arch:'日本最大木造二重门\u201c三门\u201d（高24米）',art:'日本最大吊钟（70吨）、莺鸣走廊、德川家陵墓',hist:'德川家康指定家族寺；净土宗发源地',her:false,wiki:'Chion-in',wzh:'知恩院',lat:35.0061,lng:135.7828},
+ {zh:'东福寺',rom:'T\u014Dfuku-ji',alt:'',founded:'1236年',fy:1236,founder:'九条道家；圆尔弁圆（圣一国师）',sk:'rinzai',sect:'临济宗（东福寺派）',arch:'最古老禅宗山门；通天桥',art:'红叶名所、多座国宝庭园',hist:'京都五山之一；宋风禅寺',her:false,wiki:'T%C5%8Dfuku-ji',wzh:'東福寺',lat:34.9755,lng:135.7729},
+ {zh:'西芳寺',rom:'Saih\u014D-ji',alt:'苔寺',founded:'1339年',fy:1339,founder:'梦窗疏石（重修）',sk:'rinzai',sect:'临济宗（苔寺派）',arch:'苔藓覆盖的庭园',art:'世界最著名苔藓庭园（约120种苔藓）',hist:'梦窗疏石；世界遗产',her:true,wiki:'Saih%C5%8D-ji_(Kyoto)',wzh:'西芳寺',lat:34.9944,lng:135.6881},
+ {zh:'大德寺',rom:'Daitoku-ji',alt:'',founded:'1315年',fy:1315,founder:'大灯国师（宗峰妙超）',sk:'rinzai',sect:'临济宗（大德寺派）',arch:'庞大寺院群，众多塔头（子院）',art:'枯山水庭园、茶室众多（如龙光院、瑞峰院）',hist:'茶道大师（千利休等）重要道场',her:false,wiki:'Daitoku-ji',wzh:'大徳寺',lat:35.0589,lng:135.7444},
+ {zh:'醍醐寺',rom:'Daigo-ji',alt:'',founded:'874年',fy:874,founder:'圣宝（理源大师）',sk:'shingon',sect:'真言宗（醍醐派总本山）',arch:'五重塔（国宝，日本最古老木造建筑之一）',art:'丰臣秀吉\u201c醍醐之花见\u201d遗址、樱花名所',hist:'丰臣秀吉；世界遗产',her:true,wiki:'Daigo-ji',wzh:'醍醐寺',lat:34.9484,lng:135.8090},
+ {zh:'平等院',rom:'By\u014Dd\u014D-in',alt:'宇治',founded:'1052年',fy:1052,founder:'藤原赖通（由别墅改建）',sk:'jodo',sect:'净土宗',arch:'凤凰堂（阿弥陀堂）',art:'凤凰堂建筑与佛像（国宝）、平等院庭园',hist:'\u300a源氏物语\u300b背景；世界遗产',her:true,wiki:'By%C5%8Dd%C5%8D-in',wzh:'平等院',lat:34.8893,lng:135.8078}
+];
+
+var fSect='', fHer=false, sortAsc=true;
+
+function mUrl(t){return 'https://www.google.com/maps/search/?api=1&query='+t.lat+','+t.lng+'&query_place_id='+encodeURIComponent(t.zh);}
+function wEn(t){return 'https://en.wikipedia.org/wiki/'+t.wiki;}
+function wZh(t){return 'https://zh.wikipedia.org/wiki/'+encodeURIComponent(t.wzh);}
+
+function sorted(){
+  var d=T.slice();
+  d.sort(function(a,b){return sortAsc?a.fy-b.fy:b.fy-a.fy;});
+  return d;
+}
+function visible(t){
+  return (!fSect||t.sk===fSect)&&(!fHer||t.her);
+}
+
+function renderStats(){
+  var vis=T.filter(visible);
+  var her=vis.filter(function(t){return t.her;}).length;
+  var sects=[...new Set(vis.map(function(t){return t.sk;}))].length;
+  document.getElementById('sbar').innerHTML=
+    '<div class="spill"><div class="sn">'+vis.length+'</div><div class="sl">显示寺庙</div></div>'+
+    '<div class="spill"><div class="sn">'+her+'</div><div class="sl">世界遗产</div></div>'+
+    '<div class="spill"><div class="sn">'+sects+'</div><div class="sl">宗派种类</div></div>'+
+    '<div class="spill" style="gap:.6rem">'+
+    '<span class="sdot" style="background:var(--rinzen)"></span><span class="sl">临济宗 (9)</span>'+
+    '<span class="sdot" style="background:var(--shingon)"></span><span class="sl">真言宗 (2)</span>'+
+    '<span class="sdot" style="background:var(--jodo)"></span><span class="sl">净土宗 (2)</span>'+
+    '<span class="sdot" style="background:var(--hosso)"></span><span class="sl">法相宗 (1)</span>'+
+    '</div>';
+}
+
+function renderCards(){
+  var g=document.getElementById('cgrid');
+  g.innerHTML='';
+  sorted().forEach(function(t,i){
+    var sc=t.sk;
+    var card=document.createElement('div');
+    card.className='card'+(visible(t)?'':' hid');
+    card.dataset.sk=t.sk; card.dataset.her=t.her;
+    card.innerHTML=
+      '<div class="ci shim" id="ci'+i+'">'+
+        '<div class="ciph" id="cp'+i+'">'+
+          '<div class="ciph-k">'+t.zh[0]+'</div>'+
+          '<div class="ciph-t">loading image\u2026</div>'+
+        '</div>'+
+        '<div class="cbadges">'+
+          '<span class="bs '+sc+'">'+t.sect.split('\uff08')[0]+'</span>'+
+          (t.her?'<span class="bh">\u25c6 UNESCO</span>':'')+
+        '</div>'+
+        '<div class="cybar">\u5275\u7acb '+t.founded+'</div>'+
+      '</div>'+
+      '<div class="cb">'+
+        '<div>'+
+          '<div class="cn-zh">'+t.zh+'</div>'+
+          (t.alt?'<div class="cn-alt">\u5225\u540d\uff1a'+t.alt+'</div>':'')+
+          '<div class="cn-rom">'+t.rom+'</div>'+
+        '</div>'+
+        '<div class="crule"></div>'+
+        '<div class="cf"><span class="cl">\u521b\u59cb\u4eba / \u5173\u952e\u4eba\u7269</span><span class="cv">'+t.founder+'</span></div>'+
+        '<div class="cf"><span class="cl">\u5b97\u6d3e</span><span class="cv">'+t.sect+'</span></div>'+
+        '<div class="cf"><span class="cl">\u5efa\u7b51\u7279\u8272</span><span class="cv">'+t.arch+'</span></div>'+
+        '<div><span class="cl">\u827a\u672f / \u8457\u540d\u7279\u8272</span><div class="cart">'+t.art+'</div></div>'+
+        '<div><span class="cl">\u76f8\u5173\u5386\u53f2\u4eba\u7269 / \u5173\u8054</span><div class="chist">'+t.hist+'</div></div>'+
+        '<div class="clinks">'+
+          '<a class="clink lmap" href="'+mUrl(t)+'" target="_blank" rel="noopener">&#x1f4cd; \u5730\u56fe\u4f4d\u7f6e</a>'+
+          '<a class="clink" href="'+wZh(t)+'" target="_blank" rel="noopener">&#x1f517; \u4e2d\u6587\u767e\u79d1</a>'+
+          '<a class="clink" href="'+wEn(t)+'" target="_blank" rel="noopener">&#x1f517; English</a>'+
+        '</div>'+
+      '</div>';
+    g.appendChild(card);
+  });
+  sorted().forEach(function(t,i){
+    setTimeout(function(){fetchImg(t,i);}, i*160);
+  });
+}
+
+function renderTable(){
+  var tb=document.getElementById('tbody');
+  tb.innerHTML='';
+  sorted().forEach(function(t){
+    var sc=t.sk;
+    var tr=document.createElement('tr');
+    if(!visible(t)) tr.classList.add('hid');
+    tr.dataset.sk=t.sk; tr.dataset.her=t.her;
+    tr.innerHTML=
+      '<td style="min-width:130px"><span class="tnk">'+t.zh+'</span><span class="tnr">'+t.rom+'</span>'+(t.alt?'<span class="tna">（'+t.alt+'）</span>':'')+'</td>'+
+      '<td><span class="tyr">'+t.founded+'</span></td>'+
+      '<td style="min-width:130px"><span class="ts '+sc+'">'+t.sect+'</span></td>'+
+      '<td style="min-width:160px;font-size:.77rem;color:var(--muted)">'+t.founder+'</td>'+
+      '<td style="min-width:200px;font-size:.77rem">'+t.arch+'</td>'+
+      '<td style="min-width:220px;font-size:.77rem">'+t.art+'</td>'+
+      '<td style="min-width:190px;font-size:.77rem">'+(t.her?'<span class="hdot"></span>':'')+t.hist+'</td>'+
+      '<td style="min-width:140px">'+
+        '<div class="tlinks">'+
+          '<a class="tlink tlmap" href="'+mUrl(t)+'" target="_blank" rel="noopener">&#x1f4cd; Google Maps</a>'+
+          '<a class="tlink" href="'+wZh(t)+'" target="_blank" rel="noopener">&#x1f517; \u4e2d\u6587\u7ef4\u57fa</a>'+
+          '<a class="tlink" href="'+wEn(t)+'" target="_blank" rel="noopener">&#x1f517; English Wiki</a>'+
+        '</div>'+
+      '</td>';
+    tb.appendChild(tr);
+  });
+}
+
+async function fetchImg(t,i){
+  try{
+    var r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+t.wiki,{headers:{'Accept':'application/json'}});
+    if(!r.ok) throw 0;
+    var d=await r.json();
+    var src=(d.originalimage||d.thumbnail||{}).source;
+    if(!src) throw 0;
+    var wrap=document.getElementById('ci'+i);
+    var ph=document.getElementById('cp'+i);
+    if(!wrap) return;
+    wrap.classList.remove('shim');
+    var img=document.createElement('img');
+    img.alt=t.zh; img.loading='lazy'; img.src=src;
+    img.onerror=function(){wrap.classList.remove('shim'); ph.querySelector('.ciph-t').textContent='\u6682\u65e0\u56fe\u50cf';};
+    img.onload=function(){ph.style.display='none';};
+    wrap.insertBefore(img,wrap.firstChild);
+  }catch(e){
+    var wrap=document.getElementById('ci'+i);
+    if(wrap) wrap.classList.remove('shim');
+  }
+}
+
+function applyF(){
+  fSect=document.getElementById('sectSel').value;
+  document.querySelectorAll('.card').forEach(function(el){
+    el.classList.toggle('hid',!(!fSect||el.dataset.sk===fSect)||!((!fHer)||el.dataset.her==='true'));
+  });
+  document.querySelectorAll('#tbody tr').forEach(function(el){
+    el.classList.toggle('hid',!(!fSect||el.dataset.sk===fSect)||!((!fHer)||el.dataset.her==='true'));
+  });
+  renderStats();
+}
+
+function togH(){
+  fHer=!fHer;
+  document.getElementById('btnH').classList.toggle('on',fHer);
+  applyF();
+}
+function togS(){
+  sortAsc=!sortAsc;
+  document.getElementById('btnS').textContent='年代 '+(sortAsc?'\u2191':'\u2193');
+  renderCards(); renderTable(); applyF();
+}
+
+renderStats(); renderCards(); renderTable();
+</script>
+</body>
+</html>
