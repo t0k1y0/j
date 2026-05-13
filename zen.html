@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masters of Zen Art &amp; Space</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#090806; --card-bg:#111009; --card-border:rgba(185,155,100,0.13);
+  --text:#cfc5b0; --text-muted:#786e60; --kanji:#e6d9c5;
+  --accent-red:#952a24; --accent-gold:#a87a2e; --accent-gold-light:#d4a850;
+  --tag-p-bg:#1e3530; --tag-p:#78c4a8;
+  --tag-c-bg:#2a2040; --tag-c:#a88ed4;
+  --tag-g-bg:#1e3018; --tag-g:#88c460;
+  --tag-t-bg:#352010; --tag-t:#d48848;
+  --tag-po-bg:#182030; --tag-po:#70a4d4;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'EB Garamond',Georgia,serif;min-height:100vh;line-height:1.65;}
+
+/* HEADER */
+header{padding:5rem 2rem 3.5rem;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid rgba(185,155,100,0.12);}
+header::before{content:'禅';position:absolute;font-family:'Noto Serif JP',serif;font-size:clamp(18rem,40vw,36rem);color:rgba(255,255,255,0.018);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;line-height:1;user-select:none;}
+.eyebrow{font-style:italic;font-size:0.82rem;letter-spacing:0.35em;color:var(--accent-gold);text-transform:uppercase;margin-bottom:1.2rem;}
+h1{font-family:'IM Fell English',serif;font-size:clamp(2rem,5vw,3.6rem);font-weight:400;color:var(--kanji);letter-spacing:0.03em;line-height:1.15;}
+.h-sub{font-family:'Noto Serif JP',serif;font-size:clamp(0.9rem,2vw,1.2rem);font-weight:300;color:var(--text-muted);letter-spacing:0.25em;margin:0.7rem 0 1.6rem;}
+.h-desc{font-style:italic;color:var(--text-muted);font-size:0.95rem;max-width:560px;margin:0 auto;line-height:1.8;}
+
+/* FILTER BAR */
+.filter-bar{position:sticky;top:0;z-index:100;background:rgba(9,8,6,0.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(185,155,100,0.1);padding:1rem 1.5rem;display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;align-items:center;}
+.f-label{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-right:0.4rem;}
+.f-btn{background:transparent;border:1px solid rgba(185,155,100,0.2);color:var(--text-muted);padding:0.3rem 0.9rem;border-radius:1px;cursor:pointer;font-family:'EB Garamond',serif;font-size:0.88rem;letter-spacing:0.04em;transition:all 0.2s ease;}
+.f-btn:hover{border-color:var(--accent-gold);color:var(--accent-gold-light);}
+.f-btn.active{background:rgba(168,122,46,0.18);border-color:var(--accent-gold);color:var(--accent-gold-light);}
+.count{margin-left:auto;font-size:0.75rem;font-style:italic;color:var(--text-muted);white-space:nowrap;}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:rgba(185,155,100,0.06);max-width:1440px;margin:0 auto;}
+
+/* CARD */
+.card{background:var(--card-bg);display:flex;flex-direction:column;transition:background 0.25s,box-shadow 0.25s;opacity:0;animation:fadeUp 0.45s ease forwards;position:relative;overflow:hidden;}
+.card:hover{background:#161310;box-shadow:inset 0 0 0 1px rgba(185,155,100,0.25);z-index:2;}
+.card.hidden{display:none;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent-gold) 40%,var(--accent-red) 60%,transparent);opacity:0;transition:opacity 0.3s;z-index:3;}
+.card:hover::before{opacity:1;}
+
+/* IMAGE */
+.card-img{width:100%;aspect-ratio:3/2;overflow:hidden;background:#18150f;position:relative;}
+.card-img img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform 0.55s ease;filter:sepia(15%) contrast(1.08) brightness(0.95);display:block;}
+.card:hover .card-img img{transform:scale(1.04);}
+
+/* Shimmer placeholder */
+.shimmer{width:100%;height:100%;background:linear-gradient(110deg,#1a1512 30%,#221e18 50%,#1a1512 70%);background-size:200% 100%;animation:shim 1.8s ease-in-out infinite;display:flex;align-items:center;justify-content:center;}
+@keyframes shim{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.shimmer-k{font-family:'Noto Serif JP',serif;font-size:3.5rem;font-weight:300;color:rgba(185,155,100,0.09);user-select:none;}
+.no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-size:3.5rem;font-weight:300;color:rgba(185,155,100,0.13);background:linear-gradient(150deg,#141108,#1e1810);}
+
+/* Sect badge */
+.sect-badge{position:absolute;bottom:0.65rem;right:0.65rem;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.18rem 0.55rem;background:rgba(9,8,6,0.88);border:1px solid rgba(185,155,100,0.18);color:var(--text-muted);backdrop-filter:blur(4px);z-index:2;}
+
+/* Discipline bar */
+.disc-bar{display:flex;flex-wrap:wrap;gap:0.3rem;padding:0.5rem 1rem;background:rgba(0,0,0,0.55);border-top:1px solid rgba(185,155,100,0.06);}
+.tag{font-size:0.64rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:1px;}
+.tp{background:var(--tag-p-bg);color:var(--tag-p);}
+.tc{background:var(--tag-c-bg);color:var(--tag-c);}
+.tg{background:var(--tag-g-bg);color:var(--tag-g);}
+.tt{background:var(--tag-t-bg);color:var(--tag-t);}
+.tpo{background:var(--tag-po-bg);color:var(--tag-po);}
+.td{background:rgba(120,110,90,0.2);color:var(--text-muted);}
+
+/* Card body */
+.card-body{padding:1.35rem 1.35rem 0.75rem;flex:1;display:flex;flex-direction:column;gap:0.9rem;}
+.name-block{border-left:2px solid var(--accent-red);padding-left:0.8rem;}
+.name-k{font-family:'Noto Serif JP',serif;font-weight:400;font-size:1.65rem;color:var(--kanji);letter-spacing:0.05em;line-height:1.2;}
+.name-r{font-family:'IM Fell English',serif;font-size:1.05rem;color:var(--text);margin-top:0.1rem;}
+.dates{font-style:italic;font-size:0.82rem;color:var(--text-muted);margin-top:0.1rem;}
+.info{font-size:0.83rem;}
+.info-lbl{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-gold);margin-bottom:0.25rem;}
+.temple-k{font-family:'Noto Serif JP',serif;font-size:0.92rem;font-weight:300;color:var(--kanji);letter-spacing:0.06em;}
+.temple-r{font-style:italic;font-size:0.79rem;color:var(--text-muted);margin-top:0.1rem;}
+.works{list-style:none;font-size:0.8rem;}
+.works li{padding:0.18rem 0 0.18rem 1.1rem;color:var(--text-muted);position:relative;line-height:1.5;}
+.works li::before{content:'—';position:absolute;left:0;color:var(--accent-red);opacity:0.55;}
+.card-foot{margin-top:auto;padding:0.6rem 1.35rem;border-top:1px solid rgba(185,155,100,0.07);display:flex;justify-content:flex-end;}
+.wlink{font-family:'EB Garamond',serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem;transition:color 0.2s;}
+.wlink:hover{color:var(--accent-gold-light);}
+.wlink::after{content:'→';display:inline-block;transition:transform 0.2s;}
+.wlink:hover::after{transform:translateX(3px);}
+
+footer{text-align:center;padding:2.5rem;border-top:1px solid rgba(185,155,100,0.08);color:var(--text-muted);font-size:0.78rem;font-style:italic;}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}.f-label,.count{display:none;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">A Comparative Reference</div>
+  <h1>Masters of Zen Art &amp; Space</h1>
+  <div class="h-sub">禅の芸術家と造形家</div>
+  <p class="h-desc">Painters, calligraphers, garden designers, and architects of the Chan and Zen traditions — from Song dynasty China through modern Japan</p>
+</header>
+
+<div class="filter-bar" id="fb">
+  <span class="f-label">Filter</span>
+  <button class="f-btn active" data-f="all">All</button>
+  <button class="f-btn" data-f="Painter">Painters</button>
+  <button class="f-btn" data-f="Calligrapher">Calligraphers</button>
+  <button class="f-btn" data-f="Garden / Landscape">Garden &amp; Landscape</button>
+  <button class="f-btn" data-f="Tea / Architecture">Tea &amp; Architecture</button>
+  <button class="f-btn" data-f="Poet / Abbot">Poets &amp; Abbots</button>
+  <span class="count" id="cnt"></span>
+</div>
+
+<div class="grid" id="grid"><p style="grid-column:1/-1;text-align:center;padding:4rem;font-style:italic;color:var(--text-muted)">Loading…</p></div>
+
+<footer>Images courtesy Wikipedia / Wikimedia Commons &nbsp;·&nbsp; Chan &amp; Zen traditions, 12th–21st century</footer>
+
+<script>
+// ─── ARTIST DATA ────────────────────────────────────────────────────────
+// fallback: computed Wikimedia Commons direct URL (MD5-based path)
+const A = [
+  { name:"Liang Kai",       kanji:"梁楷",   dates:"fl. late 12th–early 13th c.",
+    disc:["Ink painter"],    ft:"Painter",   sect:"Chan",
+    temple:"圖畫院",         tr:"Imperial Painting Academy, Hangzhou",
+    works:["Shakyamuni Descending the Mountain","Li Bai Chanting a Poem"],
+    wiki:"Liang Kai",        url:"https://en.wikipedia.org/wiki/Liang_Kai", fb:null },
+
+  { name:"Muqi Fachang",    kanji:"牧谿",   dates:"fl. 13th c.",
+    disc:["Ink painter"],    ft:"Painter",   sect:"Chan",
+    temple:"六通寺",         tr:"Liutong-si, Hangzhou",
+    works:["Six Persimmons","White-Robed Guanyin"],
+    wiki:"Muqi Fachang",     url:"https://en.wikipedia.org/wiki/Muqi_Fachang", fb:null },
+
+  { name:"Musō Soseki",     kanji:"夢窓疎石", dates:"1275–1351",
+    disc:["Garden designer","Poet","Calligrapher"], ft:"Garden / Landscape", sect:"Rinzai",
+    temple:"天龍寺・南禅寺・西芳寺", tr:"Tenryū-ji, Nanzen-ji, Saihō-ji, Kyoto",
+    works:["Saihō-ji Moss Garden (西芳寺)","Tenryū-ji Sōgenchi pond","夢中問答集 Dream Conversations"],
+    wiki:"Musō Soseki",      url:"https://en.wikipedia.org/wiki/Mus%C5%8D_Soseki", fb:null },
+
+  { name:"Bonpō",           kanji:"梵芳",   dates:"fl. 1349–1413",
+    disc:["Ink painter","Calligrapher"], ft:"Painter", sect:"Rinzai",
+    temple:"南禅寺",         tr:"Nanzen-ji, Kyoto",
+    works:["Orchid and Rock scroll series"],
+    wiki:"Bonpō",            url:"https://en.wikipedia.org/wiki/Bonp%C5%8D",
+    // MET Museum Orchids and Rock — confirmed on Wikimedia Commons
+    fb:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Gyokuen_Bonp%C5%8D_-_Orchids_and_Rock_-_1975.268.38_-_Metropolitan_Museum_of_Art.jpg/500px-Gyokuen_Bonp%C5%8D_-_Orchids_and_Rock_-_1975.268.38_-_Metropolitan_Museum_of_Art.jpg" },
+
+  { name:"Josetsu",         kanji:"如拙",   dates:"fl. c. 1394–1428",
+    disc:["Ink painter"],    ft:"Painter",   sect:"Rinzai",
+    temple:"相国寺",         tr:"Shōkoku-ji, Kyoto",
+    works:["瓢鮎図 Hyōnen-zu (Catching a Catfish with a Gourd, c. 1413)"],
+    wiki:"Josetsu",          url:"https://en.wikipedia.org/wiki/Josetsu",
+    // The famous Hyōnen-zu — confirmed on Wikimedia Commons
+    fb:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Hy%C3%B4nen_zu_by_Josetsu.jpg/500px-Hy%C3%B4nen_zu_by_Josetsu.jpg" },
+
+  { name:"Ikkyū Sōjun",     kanji:"一休宗純", dates:"1394–1481",
+    disc:["Poet","Calligrapher","Abbot"], ft:"Poet / Abbot", sect:"Rinzai",
+    temple:"大徳寺",         tr:"Daitoku-ji, Kyoto",
+    works:["狂雲集 Kyōunshū (Crazy Cloud anthology)","Calligraphy scrolls"],
+    wiki:"Ikkyū",            url:"https://en.wikipedia.org/wiki/Ikky%C5%AB_S%C5%8Djun", fb:null },
+
+  { name:"Sesshū Tōyō",     kanji:"雪舟等楊", dates:"1420–1506",
+    disc:["Ink painter","Garden designer"], ft:"Painter", sect:"Rinzai",
+    temple:"相国寺・雲谷庵", tr:"Shōkoku-ji (Kyoto) → Unkoku-an (Yamaguchi)",
+    works:["破墨山水図 Haboku Landscape","山水長巻 Long Scroll","秋冬山水図 Autumn & Winter Landscapes"],
+    wiki:"Sesshū Tōyō",      url:"https://en.wikipedia.org/wiki/Sessh%C5%AB_T%C5%8Dy%C5%8D", fb:null },
+
+  { name:"Sōami",           kanji:"相阿弥", dates:"d. 1525",
+    disc:["Garden designer","Ink painter"], ft:"Garden / Landscape", sect:"Rinzai",
+    temple:"大徳寺",         tr:"Daitoku-ji, Kyoto",
+    works:["Daisen-in garden (attrib.)","Fusuma ink paintings at Daitoku-ji"],
+    wiki:"Sōami",            url:"https://en.wikipedia.org/wiki/S%C5%8Dami",
+    // Daisen-in garden photo — confirmed on Wikimedia Commons
+    fb:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Daisen-in.JPG/500px-Daisen-in.JPG" },
+
+  { name:"Sen no Rikyū",    kanji:"千利休", dates:"1522–1591",
+    disc:["Tea architect","Garden designer"], ft:"Tea / Architecture", sect:"Rinzai (lay)",
+    temple:"大徳寺・妙喜庵", tr:"Daitoku-ji / Myōki-an, Kyoto",
+    works:["待庵 Taian teahouse (Myōki-an)","Roji path aesthetics","Wabi tea architecture"],
+    wiki:"Sen no Rikyū",     url:"https://en.wikipedia.org/wiki/Sen_no_Riky%C5%AB", fb:null },
+
+  { name:"Takuan Sōhō",     kanji:"沢庵宗彭", dates:"1573–1645",
+    disc:["Calligrapher","Garden designer"], ft:"Calligrapher", sect:"Rinzai",
+    temple:"大徳寺・東海寺", tr:"Daitoku-ji (Kyoto) / Tōkai-ji (Edo)",
+    works:["不動智神妙録 The Unfettered Mind","Calligraphy scrolls","Tōkai-ji garden"],
+    wiki:"Takuan Sōhō",      url:"https://en.wikipedia.org/wiki/Takuan_S%C5%8Dh%C5%8D", fb:null },
+
+  { name:"Kobori Enshū",    kanji:"小堀遠州", dates:"1579–1647",
+    disc:["Garden designer","Tea architect"], ft:"Garden / Landscape", sect:"Rinzai (lay)",
+    temple:"南禅寺・金地院・大徳寺", tr:"Nanzen-ji, Konchi-in, Daitoku-ji (Kyoto)",
+    works:["Leaping Tiger Garden (南禅寺)","金地院 karesansui","綺麗寂 Kirei-sabi aesthetic"],
+    wiki:"Kobori Enshū",     url:"https://en.wikipedia.org/wiki/Kobori_Ensh%C5%AB", fb:null },
+
+  { name:"Ingen Ryūki",     kanji:"隠元隆琦", dates:"1592–1673",
+    disc:["Calligrapher","Architect"], ft:"Tea / Architecture", sect:"Ōbaku",
+    temple:"万福寺",         tr:"Manpuku-ji, Uji (founder)",
+    works:["Manpuku-ji complex (Ming-style architecture)","黄檗様 Ōbaku-yō calligraphy"],
+    wiki:"Ingen Ryūki",      url:"https://en.wikipedia.org/wiki/Ingen_Ry%C5%ABki", fb:null },
+
+  { name:"Mokuan Shōtō",    kanji:"木庵性瑫", dates:"1611–1684",
+    disc:["Calligrapher"],   ft:"Calligrapher", sect:"Ōbaku",
+    temple:"瑞聖寺",         tr:"Zuishō-ji, Edo",
+    works:["Calligraphy scrolls","黄檗の三筆 Three Ōbaku Brushes"],
+    wiki:"Mokuan Shōtō",     url:"https://en.wikipedia.org/wiki/Mokuan_Sh%C5%8Dt%C5%8D",
+    // Daiyuhōden hall of Manpuku-ji — confirmed on Wikimedia Commons
+    fb:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Daiyuhoden_and_railing_of_Hatto%2C_Manpukuji%2C_Japan.jpg/500px-Daiyuhoden_and_railing_of_Hatto%2C_Manpukuji%2C_Japan.jpg" },
+
+  { name:"Hakuin Ekaku",    kanji:"白隠慧鶴", dates:"1685–1768",
+    disc:["Ink painter","Calligrapher"], ft:"Painter", sect:"Rinzai",
+    temple:"松蔭寺",         tr:"Shōin-ji, Hara (Shizuoka)",
+    works:["達磨図 Daruma","盲人橋渡図 Blind Men Crossing a Bridge","円相 Enso paintings"],
+    wiki:"Hakuin Ekaku",     url:"https://en.wikipedia.org/wiki/Hakuin_Ekaku", fb:null },
+
+  { name:"Tōrei Enji",      kanji:"東嶺円慈", dates:"1721–1792",
+    disc:["Painter","Calligrapher"], ft:"Painter", sect:"Rinzai",
+    temple:"龍澤寺",         tr:"Ryōtaku-ji, Mishima",
+    works:["Single-stroke 達磨 Daruma","禅林象器箋 The Undying Lamp of Zen"],
+    wiki:"Tōrei Enji",       url:"https://en.wikipedia.org/wiki/T%C5%8Drei_Enji", fb:null },
+
+  { name:"Sengai Gibon",    kanji:"仙厓義梵", dates:"1750–1837",
+    disc:["Ink painter"],    ft:"Painter",   sect:"Rinzai",
+    temple:"聖福寺",         tr:"Shōfuku-ji, Hakata (Fukuoka)",
+    works:["○△□ Universe","蛙図 Frog","布袋図 Hotei"],
+    wiki:"Sengai Gibon",     url:"https://en.wikipedia.org/wiki/Sengai_Gibon", fb:null },
+
+  { name:"Yamaoka Tesshū",  kanji:"山岡鉄舟", dates:"1836–1888",
+    disc:["Calligrapher"],   ft:"Calligrapher", sect:"Rinzai (lay)",
+    temple:"全生庵",         tr:"Zenshō-an, Tokyo",
+    works:["Monumental calligraphy","兵法 Hyōhō (sword-brush unity)"],
+    wiki:"Yamaoka Tesshū",   url:"https://en.wikipedia.org/wiki/Yamaoka_Tessh%C5%AB",
+    fb:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Yamaoka_Tesshu.jpg/500px-Yamaoka_Tesshu.jpg" },
+
+  { name:"Shigemori Mirei", kanji:"重森三玲", dates:"1896–1975",
+    disc:["Garden designer","Historian"], ft:"Garden / Landscape", sect:"Lay modernist",
+    temple:"東福寺",         tr:"Tōfuku-ji, Kyoto",
+    works:["東福寺本坊庭園 Tōfuku-ji Honbo Gardens (1939)","200+ gardens across Japan","日本庭園史図鑑 Illustrated History"],
+    wiki:"Mirei Shigemori",  url:"https://en.wikipedia.org/wiki/Mirei_Shigemori", fb:null },
+
+  { name:"Shunmyo Masuno",  kanji:"桝野俊明", dates:"b. 1953",
+    disc:["Garden designer"], ft:"Garden / Landscape", sect:"Sōtō",
+    temple:"建功寺",         tr:"Kenkō-ji, Yokohama",
+    works:["Cerulean Tower Hotel garden (Tokyo)","International garden commissions"],
+    wiki:"Shunmyo Masuno",   url:"https://en.wikipedia.org/wiki/Shunmy%C5%8D_Masuno",
+    // Confirmed file in his Wikimedia Commons category
+    fb:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Canadian_Museum_of_Civilization1.jpg/500px-Canadian_Museum_of_Civilization1.jpg" }
+];
+
+// ─── TAG CLASS ───────────────────────────────────────────────────────────
+function tc(d) {
+  const s = d.toLowerCase();
+  if (s.includes('ink')||s.includes('paint')) return 'tp';
+  if (s.includes('calligraph')) return 'tc';
+  if (s.includes('garden')||s.includes('landscape')||s.includes('architect')||s.includes('hist')) return 'tg';
+  if (s.includes('tea')) return 'tt';
+  if (s.includes('poet')||s.includes('abbot')) return 'tpo';
+  return 'td';
+}
+
+// ─── BUILD IMAGE MAP FROM WIKIPEDIA API RESPONSE ────────────────────────
+function buildMap(data) {
+  const map = {};
+  for (const p of Object.values(data.query?.pages||{}))
+    if (p.thumbnail) map[p.title.toLowerCase()] = p.thumbnail.source;
+  for (const n of (data.query?.normalized||[]))
+    if (map[n.to.toLowerCase()]) map[n.from.toLowerCase()] = map[n.to.toLowerCase()];
+  for (const r of (data.query?.redirects||[]))
+    if (map[r.to.toLowerCase()]) map[r.from.toLowerCase()] = map[r.to.toLowerCase()];
+  return map;
+}
+
+let filter = 'all';
+
+function updateCount() {
+  const v = document.querySelectorAll('.card:not(.hidden)').length;
+  document.getElementById('cnt').textContent = v===A.length ? `${A.length} artists` : `${v} of ${A.length}`;
+}
+
+// ─── RENDER CARDS ────────────────────────────────────────────────────────
+function render(map) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  A.forEach((a, i) => {
+    const src = map[a.wiki.toLowerCase()];
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.f = a.ft;
+    card.dataset.wiki = a.wiki;
+    card.style.animationDelay = `${i*0.038}s`;
+    if (filter !== 'all' && a.ft !== filter) card.classList.add('hidden');
+
+    // Image slot: real src > hardcoded fallback > shimmer (pending Phase 2)
+    let imgSlot;
+    if (src) {
+      imgSlot = `<img src="${src}" alt="${a.name}" loading="lazy"
+        onerror="imgErr(this,'${CSS.escape(a.kanji)}','${a.fb||''}')">`;
+    } else {
+      // Always shimmer — Phase 2 will inject a real image, using fb as last resort
+      imgSlot = `<div class="shimmer" data-pend="1" data-fb="${a.fb||''}" data-kanji="${a.kanji}"><span class="shimmer-k">${a.kanji}</span></div>`;
+    }
+
+    card.innerHTML = `
+      <div class="card-img">
+        ${imgSlot}
+        <div class="sect-badge">${a.sect}</div>
+      </div>
+      <div class="disc-bar">${a.disc.map(d=>`<span class="tag ${tc(d)}">${d}</span>`).join('')}</div>
+      <div class="card-body">
+        <div class="name-block">
+          <div class="name-k">${a.kanji}</div>
+          <div class="name-r">${a.name}</div>
+          <div class="dates">${a.dates}</div>
+        </div>
+        <div class="info"><div class="info-lbl">Temple / Institution</div>
+          <div class="temple-k">${a.temple}</div>
+          <div class="temple-r">${a.tr}</div></div>
+        <div class="info"><div class="info-lbl">Representative Works</div>
+          <ul class="works">${a.works.map(w=>`<li>${w}</li>`).join('')}</ul></div>
+      </div>
+      <div class="card-foot"><a href="${a.url}" target="_blank" rel="noopener" class="wlink">Wikipedia</a></div>`;
+    grid.appendChild(card);
+  });
+  updateCount();
+}
+
+function imgErr(el, kanji, fb) {
+  if (fb && el.src !== fb) {
+    el.src = fb;
+    el.onerror = () => { el.outerHTML = `<div class="no-img">${kanji}</div>`; };
+  } else {
+    el.outerHTML = `<div class="no-img">${kanji}</div>`;
+  }
+}
+
+// Inject image into a shimmer-pending card; falls back to fb then kanji
+function inject(wiki, src, kanji, fb) {
+  const card = document.querySelector(`.card[data-wiki="${CSS.escape(wiki)}"]`);
+  if (!card) return;
+  const pend = card.querySelector('[data-pend]');
+  if (!pend) return;
+  const resolvedFb = fb || pend.dataset.fb || '';
+  const resolvedKanji = kanji || pend.dataset.kanji || '';
+  if (src) {
+    const img = document.createElement('img');
+    img.src = src; img.alt = wiki; img.loading = 'lazy';
+    img.style.cssText='width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform 0.55s ease;filter:sepia(15%) contrast(1.08) brightness(0.95);display:block;';
+    img.onerror = () => imgErr(img, resolvedKanji, resolvedFb);
+    pend.replaceWith(img);
+  } else if (resolvedFb) {
+    const img = document.createElement('img');
+    img.src = resolvedFb; img.alt = wiki; img.loading = 'lazy';
+    img.style.cssText='width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform 0.55s ease;filter:sepia(15%) contrast(1.08) brightness(0.95);display:block;';
+    img.onerror = () => { img.outerHTML = `<div class="no-img">${resolvedKanji}</div>`; };
+    pend.replaceWith(img);
+  } else {
+    pend.outerHTML = `<div class="no-img">${resolvedKanji}</div>`;
+  }
+}
+
+// ─── PHASE 2: Scrape Wikipedia page for any usable image ─────────────────
+const BAD = /icon|logo|flag|stub|commons|wikidata|button|check|arrow|edit|close|lock|portal|wikisource|sound|disambig|question/i;
+
+async function pageImage(wiki) {
+  try {
+    const r = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(wiki)}&prop=images&format=json&origin=*&redirects`).then(x=>x.json());
+    const pg = Object.values(r.query?.pages||{})[0];
+    const imgs = (pg?.images||[]).filter(im=> /\.(jpe?g|png)$/i.test(im.title) && !BAD.test(im.title));
+    for (const im of imgs.slice(0,5)) {
+      const r2 = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(im.title)}&prop=imageinfo&iiprop=url&iiurlwidth=600&format=json&origin=*`).then(x=>x.json());
+      const ip = Object.values(r2.query?.pages||{})[0];
+      const s = ip?.imageinfo?.[0]?.thumburl || ip?.imageinfo?.[0]?.url;
+      if (s) return s;
+    }
+  } catch(e) { console.warn('Phase2',wiki,e); }
+  return null;
+}
+
+// ─── FILTER ──────────────────────────────────────────────────────────────
+document.getElementById('fb').addEventListener('click', e=>{
+  const btn = e.target.closest('.f-btn'); if(!btn) return;
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  filter = btn.dataset.f;
+  document.querySelectorAll('.card').forEach(c=>{
+    c.classList.toggle('hidden', filter!=='all' && c.dataset.f!==filter);
+  });
+  updateCount();
+});
+
+// ─── MAIN ────────────────────────────────────────────────────────────────
+(async () => {
+  // Phase 1 — batch pageimages
+  let map = {};
+  try {
+    const titles = A.map(a=>a.wiki).join('|');
+    const d = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(titles)}&prop=pageimages&format=json&pithumbsize=600&origin=*&redirects`).then(r=>r.json());
+    map = buildMap(d);
+  } catch(e) { console.warn('Phase1',e); }
+
+  render(map);   // show cards immediately
+
+  // Phase 2 — fill shimmer cards for ALL artists without a Phase 1 image
+  // (fb is only a last resort if Phase 2 also finds nothing)
+  const missing = A.filter(a => !map[a.wiki.toLowerCase()]);
+  await Promise.all(missing.map(async a => {
+    const src = await pageImage(a.wiki);
+    // inject() handles all cases: real src → fb → kanji
+    inject(a.wiki, src || null, a.kanji, a.fb);
+  }));
+})();
+</script>
+</body>
+</html>
