@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本の樹木 — A Compendium of the Trees of Japan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#141a12;--ink2:#1f2a1a;--ink3:#33402a;
+  --parch:#f6f3e9;--parch2:#ece6d5;--parch3:#e1dac8;
+  --verm:#a8521f;--verm2:#c4642a;
+  --gold:#937a2a;--gold2:#bf9d4a;--gold3:#ddc06a;
+  --muted:#5f5e4c;--muted2:#928d76;
+  --conifer:#2d5a3d;--ever:#2f7d6b;--decid:#a8521f;
+  --border:rgba(20,26,18,.13);--border2:rgba(20,26,18,.22);
+}
+html{scroll-behavior:smooth}
+body{background:var(--parch);color:var(--ink);font-family:'Noto Serif SC','Noto Serif JP',serif;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+header{background:var(--ink);color:var(--parch);padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),var(--gold3),var(--gold2),transparent)}
+.h-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);font-family:'Noto Serif JP',serif;font-size:18rem;font-weight:300;color:rgba(255,255,255,.035);pointer-events:none;white-space:nowrap;letter-spacing:-.05em}
+.h-jp{font-family:'Noto Serif JP',serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:300;letter-spacing:.3em;position:relative}
+.h-rule{width:54px;height:1px;background:var(--gold2);margin:.9rem auto}
+.h-en{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;font-weight:300;letter-spacing:.1em;color:rgba(246,243,233,.6)}
+.h-zh{margin-top:.3rem;font-size:.86rem;color:rgba(246,243,233,.4);letter-spacing:.18em}
+.h-badge{margin-top:1.2rem;display:inline-block;border:1px solid var(--gold);color:var(--gold3);font-family:'Cormorant Garamond',serif;font-size:.78rem;letter-spacing:.22em;padding:.28rem 1.1rem;border-radius:2px}
+
+/* NAV */
+nav{background:var(--ink2);padding:.6rem 2rem;position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.nav-l{display:flex;align-items:center;gap:1.5rem}
+nav a{color:rgba(246,243,233,.65);text-decoration:none;font-size:.78rem;letter-spacing:.14em;font-family:'Cormorant Garamond',serif;transition:color .2s}
+nav a:hover{color:var(--gold3)}
+.nsep{color:rgba(246,243,233,.18);font-size:.65rem}
+.nav-r{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.cbtn{background:transparent;border:1px solid rgba(246,243,233,.22);color:rgba(246,243,233,.65);font-family:'Cormorant Garamond',serif;font-size:.74rem;letter-spacing:.1em;padding:.22rem .7rem;border-radius:2px;cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--gold2);color:var(--gold3)}
+.cbtn.on{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:600}
+select.csel{background:transparent;border:1px solid rgba(246,243,233,.22);color:rgba(246,243,233,.65);font-family:'Cormorant Garamond',serif;font-size:.74rem;letter-spacing:.08em;padding:.22rem .5rem;border-radius:2px;cursor:pointer;outline:none}
+select.csel option{background:var(--ink2);color:var(--parch)}
+
+/* MAIN */
+main{max-width:1320px;margin:0 auto;padding:3rem 2rem 6rem}
+
+/* SECTION HEADING */
+.sh{display:flex;align-items:center;gap:1rem;margin-bottom:2.4rem}
+.sh::before,.sh::after{content:'';flex:1;height:1px;background:var(--border)}
+.sh span{font-family:'Cormorant Garamond',serif;font-size:.74rem;letter-spacing:.3em;color:var(--muted);white-space:nowrap;text-transform:uppercase}
+
+/* STATS BAR */
+.sbar{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:2.4rem;align-items:center}
+.spill{background:var(--parch2);border:1px solid var(--border);border-radius:2px;padding:.38rem .9rem;font-size:.78rem;display:flex;align-items:center;gap:.5rem}
+.spill .sn{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--ink);line-height:1}
+.spill .sl{color:var(--muted);font-size:.7rem;letter-spacing:.06em}
+.sdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* CARD GRID */
+#gallery{margin-bottom:5rem}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.8rem}
+.card{background:#fff;border:1px solid var(--border);border-radius:3px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-5px);box-shadow:0 14px 44px rgba(20,26,18,.14)}
+.card.hid{display:none}
+
+/* CARD IMAGE */
+.ci{position:relative;height:210px;overflow:hidden;background:var(--parch3)}
+.ci img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s}
+.card:hover .ci img{transform:scale(1.06)}
+.ciph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem}
+.ciph-k{font-family:'Noto Serif JP',serif;font-size:3rem;font-weight:300;color:rgba(20,26,18,.16)}
+.ciph-t{font-size:.7rem;letter-spacing:.14em;color:var(--muted2);font-family:'Cormorant Garamond',serif}
+@keyframes shim{0%{background-position:-600px 0}100%{background-position:600px 0}}
+.shim{background:linear-gradient(90deg,var(--parch3) 25%,var(--parch2) 50%,var(--parch3) 75%);background-size:600px 100%;animation:shim 1.5s infinite linear}
+.cbadges{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.bs{font-size:.64rem;font-family:'Noto Serif SC',serif;padding:.17rem .52rem;border-radius:2px;color:#fff;letter-spacing:.04em}
+.bs.conifer{background:var(--conifer)}.bs.ever{background:var(--ever)}.bs.decid{background:var(--decid)}
+.bh{font-size:.62rem;font-family:'Noto Serif SC',serif;padding:.15rem .52rem;border-radius:2px;background:rgba(147,122,42,.92);color:#fff;letter-spacing:.06em}
+.bf{font-size:.6rem;font-family:'Cormorant Garamond',serif;padding:.15rem .52rem;border-radius:2px;background:rgba(168,82,31,.92);color:#fff;letter-spacing:.1em}
+.cybar{position:absolute;bottom:0;left:0;right:0;background:rgba(20,26,18,.62);color:rgba(246,243,233,.92);font-family:'Cormorant Garamond',serif;font-size:.8rem;font-style:italic;padding:.28rem .8rem;letter-spacing:.04em}
+
+/* CARD BODY */
+.cb{padding:1.2rem 1.4rem 1.4rem;flex:1;display:flex;flex-direction:column;gap:.7rem}
+.cn-k{font-family:'Noto Serif JP',serif;font-size:1.7rem;font-weight:600;letter-spacing:.06em;line-height:1.2}
+.cn-en{font-size:.86rem;color:var(--ink2);letter-spacing:.02em;margin-top:.15rem}
+.cn-rom{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--muted);letter-spacing:.05em}
+.crule{width:28px;height:1px;background:var(--gold2)}
+.cf{font-size:.79rem;line-height:1.5}
+.cl{display:block;font-family:'Cormorant Garamond',serif;font-size:.67rem;letter-spacing:.2em;color:var(--muted2);text-transform:uppercase;margin-bottom:.1rem}
+.cv{color:var(--ink2)}
+.csci{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.92rem;color:var(--ink3)}
+.cart{border-left:2px solid var(--gold2);padding-left:.7rem;font-size:.81rem;color:var(--ink2);line-height:1.55}
+.clinks{margin-top:auto;padding-top:.8rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.clink{display:inline-flex;align-items:center;gap:.28rem;font-size:.7rem;font-family:'Cormorant Garamond',serif;letter-spacing:.08em;text-decoration:none;padding:.2rem .6rem;border-radius:2px;border:1px solid var(--border2);color:var(--muted);transition:all .18s}
+.clink:hover{border-color:var(--gold);color:var(--gold);background:rgba(147,122,42,.06)}
+.clink.limg{color:var(--verm);border-color:rgba(168,82,31,.3)}
+.clink.limg:hover{border-color:var(--verm2);background:rgba(168,82,31,.06)}
+
+/* TABLE */
+.twrap{overflow-x:auto;border:1px solid var(--border);border-radius:3px}
+table{width:100%;border-collapse:collapse;font-size:.79rem;min-width:1040px}
+thead{background:var(--ink)}
+thead th{padding:.85rem 1rem;text-align:left;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:.73rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(246,243,233,.72);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(147,122,42,.055)}
+tbody tr:nth-child(even){background:rgba(20,26,18,.025)}
+tbody tr:nth-child(even):hover{background:rgba(147,122,42,.055)}
+tbody tr.hid{display:none}
+td{padding:.8rem 1rem;vertical-align:top;color:var(--ink);line-height:1.5}
+.tnk{font-family:'Noto Serif JP',serif;font-size:1.15rem;font-weight:600;display:block;white-space:nowrap}
+.tnr{font-family:'Cormorant Garamond',serif;font-size:.78rem;font-style:italic;color:var(--muted);display:block}
+.tne{font-size:.67rem;color:var(--muted2)}
+.tsci{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;color:var(--ink3)}
+.ts{display:inline-block;font-size:.67rem;padding:.14rem .48rem;border-radius:2px;border:1px solid;white-space:nowrap}
+.ts.conifer{color:var(--conifer);border-color:rgba(45,90,61,.35);background:rgba(45,90,61,.07)}
+.ts.ever{color:var(--ever);border-color:rgba(47,125,107,.35);background:rgba(47,125,107,.07)}
+.ts.decid{color:var(--decid);border-color:rgba(168,82,31,.35);background:rgba(168,82,31,.07)}
+.tlinks{display:flex;flex-direction:column;gap:3px}
+.tlink{font-family:'Cormorant Garamond',serif;font-size:.72rem;letter-spacing:.06em;text-decoration:none;color:var(--gold);padding:.08rem 0}
+.tlink:hover{color:var(--verm);text-decoration:underline}
+.hdot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold2);margin-right:.35rem;vertical-align:middle}
+
+footer{background:var(--ink);color:rgba(246,243,233,.35);text-align:center;padding:2rem;font-family:'Cormorant Garamond',serif;font-size:.8rem;letter-spacing:.08em}
+footer a{color:var(--gold2);text-decoration:none}
+
+@media(max-width:640px){.cgrid{grid-template-columns:1fr;gap:1.2rem}main{padding:2rem 1rem 4rem}nav{gap:.5rem}.sbar{gap:.8rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-bg">樹</div>
+  <div class="h-jp">日本の樹木</div>
+  <div class="h-rule"></div>
+  <div class="h-en">A Compendium of the Trees of Japan</div>
+  <div class="h-zh">日本の代表的な樹木図鑑 · Nihon no jumoku zukan</div>
+  <div class="h-badge">二十四樹 &nbsp;·&nbsp; TWENTY-FOUR TREES</div>
+</header>
+
+<nav>
+  <div class="nav-l">
+    <a href="#gallery">Gallery 図鑑</a>
+    <span class="nsep">◆</span>
+    <a href="#ref">Reference 参考表</a>
+  </div>
+  <div class="nav-r">
+    <select class="csel" id="catSel" onchange="applyF()">
+      <option value="">All Types 全種</option>
+      <option value="conifer">針葉樹 Conifer</option>
+      <option value="decid">落葉広葉樹 Deciduous</option>
+      <option value="ever">常緑広葉樹 Evergreen</option>
+    </select>
+    <button class="cbtn" id="btnH" onclick="togH()">神木 Sacred</button>
+    <button class="cbtn" id="btnS" onclick="togS()">Name ↑</button>
+  </div>
+</nav>
+
+<main>
+  <section id="gallery">
+    <div class="sh"><span>Gallery · 図鑑</span></div>
+    <div class="sbar" id="sbar"></div>
+    <div class="cgrid" id="cgrid"></div>
+  </section>
+
+  <section id="ref">
+    <div class="sh"><span>Full Reference Table · 参考表</span></div>
+    <div class="twrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name 名称</th><th>Type 区分</th>
+            <th>Scientific Name 学名</th>
+            <th>Key Significance 主な意義</th>
+            <th>Links 参考</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Images via <a href="https://commons.wikimedia.org" target="_blank">Wikimedia Commons</a> &amp; Wikipedia API &nbsp;·&nbsp;
+  資料整理：日本樹木・文化研究 &nbsp;·&nbsp; Source: <em>Trees in Japan</em> dataset &nbsp;·&nbsp;
+  神木 = <span style="color:var(--gold2)">shinboku</span>, a sacred or ritually significant tree
+</footer>
+
+<script>
+var T=[
+ {id:1,k:'桜',en:'Cherry Blossom',rom:'Sakura',sci:'Prunus spp. (esp. P. × yedoensis)',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'National symbol of spring; hanami 花見; emblem of transience (mono no aware).',wiki:'Cherry_blossom',jp:'サクラ'},
+ {id:2,k:'杉',en:'Japanese Cedar',rom:'Sugi',sci:'Cryptomeria japonica',cat:'conifer',catJp:'針葉樹',sacred:true,five:false,sig:'Most planted tree; sacred shinboku 神木; major timber species; the official tree of Kyoto.',wiki:'Cryptomeria',jp:'スギ'},
+ {id:3,k:'檜 / 桧',en:'Japanese Cypress',rom:'Hinoki',sci:'Chamaecyparis obtusa',cat:'conifer',catJp:'針葉樹',sacred:true,five:true,sig:'Sacred timber for temples and shrines (Ise Jingū 伊勢神宮); one of the “Five Sacred Trees.”',wiki:'Chamaecyparis_obtusa',jp:'ヒノキ'},
+ {id:4,k:'松',en:'Pine',rom:'Matsu',sci:'Pinus thunbergii / P. densiflora',cat:'conifer',catJp:'針葉樹',sacred:true,five:false,sig:'Symbol of longevity; Zen gardens; kadomatsu 門松 New-Year decoration; sacred groves.',wiki:'Pinus_thunbergii',jp:'マツ'},
+ {id:5,k:'楓 / 紅葉',en:'Japanese Maple',rom:'Kaede / Momiji',sci:'Acer palmatum',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Autumn kōyō 紅葉 foliage; centerpiece of temple gardens; the height of seasonal beauty.',wiki:'Acer_palmatum',jp:'カエデ'},
+ {id:6,k:'銀杏',en:'Ginkgo',rom:'Ichō',sci:'Ginkgo biloba',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Iconic street tree; golden autumn; a resilient living fossil (deciduous gymnosperm).',wiki:'Ginkgo_biloba',jp:'イチョウ'},
+ {id:7,k:'楠',en:'Camphor Tree',rom:'Kusunoki',sci:'Cinnamomum camphora',cat:'ever',catJp:'常緑広葉樹',sacred:true,five:false,sig:'Frequent shinboku 神木 at temples; many ancient, sacred specimens survive.',wiki:'Cinnamomum_camphora',jp:'クスノキ'},
+ {id:8,k:'欅',en:'Zelkova',rom:'Keyaki',sci:'Zelkova serrata',cat:'decid',catJp:'落葉広葉樹',sacred:true,five:false,sig:'Common street and shade tree; long-lived; appears in sacred groves.',wiki:'Zelkova_serrata',jp:'ケヤキ'},
+ {id:9,k:'桐',en:'Paulownia',rom:'Kiri',sci:'Paulownia tomentosa',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Imperial crest symbol; lightweight wood prized for tansu 箪笥 chests.',wiki:'Paulownia_tomentosa',jp:'キリ'},
+ {id:10,k:'桂',en:'Katsura',rom:'Katsura',sci:'Cercidiphyllum japonicum',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Graceful garden tree; heart-shaped leaves; burnt-sugar scent in autumn.',wiki:'Cercidiphyllum_japonicum',jp:'カツラ_(植物)'},
+ {id:11,k:'翌檜',en:'Hiba / Asunaro',rom:'Asunaro',sci:'Thujopsis dolabrata',cat:'conifer',catJp:'針葉樹',sacred:true,five:true,sig:'One of the “Five Sacred Trees”; of northern forests and shrines.',wiki:'Thujopsis',jp:'アスナロ'},
+ {id:12,k:'コウヤマキ',en:'Japanese Umbrella Pine',rom:'Kōyamaki',sci:'Sciadopitys verticillata',cat:'conifer',catJp:'針葉樹',sacred:true,five:true,sig:'Living fossil; one of the “Five Sacred Trees”; rare and revered.',wiki:'Sciadopitys',jp:'コウヤマキ'},
+ {id:13,k:'シナノキ',en:'Japanese Linden',rom:'Shinanoki',sci:'Tilia japonica',cat:'decid',catJp:'落葉広葉樹',sacred:true,five:false,sig:'Ornamental shade tree in parks; some specimens held sacred.',wiki:'Tilia_japonica',jp:'シナノキ'},
+ {id:14,k:'ヤマボウシ',en:'Kousa Dogwood',rom:'Yamabōshi',sci:'Cornus kousa',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Native flowering tree, white bracts in early summer and red fruit later; favored in temple landscapes.',wiki:'Cornus_kousa',jp:'ヤマボウシ'},
+ {id:15,k:'トチノキ',en:'Japanese Horse Chestnut',rom:'Tochinoki',sci:'Aesculus turbinata',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Large shade tree; its nuts (tochi) were traditionally used for food.',wiki:'Aesculus_turbinata',jp:'トチノキ'},
+ {id:16,k:'柿',en:'Persimmon',rom:'Kaki',sci:'Diospyros kaki',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Culturally important fruit tree; woven through rural folklore and seasonal foods.',wiki:'Diospyros_kaki',jp:'カキノキ'},
+ {id:17,k:'コブシ / 辛夷',en:'Kobus Magnolia',rom:'Kobushi',sci:'Magnolia kobus',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Early-spring flowering; elegant white blooms herald the season in gardens.',wiki:'Magnolia_kobus',jp:'コブシ'},
+ {id:18,k:'ブナ',en:'Japanese Beech',rom:'Buna',sci:'Fagus crenata',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Dominant cool-temperate forest tree; of great ecological importance.',wiki:'Fagus_crenata',jp:'ブナ'},
+ {id:19,k:'楢 / カシ',en:'Oak (native species)',rom:'Nara / Kashi',sci:'Quercus spp.',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Key forest component (nara deciduous, kashi evergreen); acorns and strong timber.',wiki:'Quercus_serrata',jp:'コナラ'},
+ {id:20,k:'ハルニレ',en:'Japanese Elm',rom:'Harunire',sci:'Ulmus davidiana var. japonica',cat:'decid',catJp:'落葉広葉樹',sacred:false,five:false,sig:'Native broadleaf used in parks and landscaping; resilient in mixed forests.',wiki:'Ulmus_davidiana',jp:'ハルニレ'},
+ {id:21,k:'菩提樹',en:'Japanese Bodhi Tree',rom:'Bodai-ju',sci:'Tilia miqueliana',cat:'decid',catJp:'落葉広葉樹',sacred:true,five:false,sig:'Symbol of enlightenment in Japanese Buddhism; planted at many temples.',wiki:'Tilia_miqueliana',jp:'ボダイジュ'},
+ {id:22,k:'榊',en:'Sakaki',rom:'Sakaki',sci:'Cleyera japonica',cat:'ever',catJp:'常緑広葉樹',sacred:true,five:false,sig:'Among the most sacred Shintō trees; glossy evergreen leaves used in ritual offerings.',wiki:'Cleyera_japonica',jp:'サカキ'},
+ {id:23,k:'モミ',en:'Japanese Fir',rom:'Momi',sci:'Abies firma',cat:'conifer',catJp:'針葉樹',sacred:false,five:false,sig:'Native conifer of mountain forests; ecologically important in forestry.',wiki:'Abies_firma',jp:'モミ'},
+ {id:24,k:'ツガ',en:'Japanese Hemlock',rom:'Tsuga',sci:'Tsuga sieboldii',cat:'conifer',catJp:'針葉樹',sacred:false,five:false,sig:'Native conifer of cool mountain forests; important in mixed-forest ecology.',wiki:'Tsuga_sieboldii',jp:'ツガ'}
+];
+
+var CATLBL={conifer:'針葉樹 Conifer',decid:'落葉広葉樹 Deciduous',ever:'常緑広葉樹 Evergreen'};
+var fCat='', fSac=false, sortAsc=true;
+
+function wEn(t){return 'https://en.wikipedia.org/wiki/'+t.wiki;}
+function wJa(t){return 'https://ja.wikipedia.org/wiki/'+encodeURI(t.jp);}
+function imgUrl(t){return 'https://www.google.com/search?tbm=isch&q='+encodeURIComponent(t.sci);}
+
+function sorted(){
+  var d=T.slice();
+  d.sort(function(a,b){var c=a.rom.localeCompare(b.rom);return sortAsc?c:-c;});
+  return d;
+}
+function visible(t){return (!fCat||t.cat===fCat)&&(!fSac||t.sacred);}
+
+function renderStats(){
+  var vis=T.filter(visible);
+  var sac=vis.filter(function(t){return t.sacred;}).length;
+  var cats=[...new Set(vis.map(function(t){return t.cat;}))].length;
+  function cnt(c){return T.filter(function(t){return t.cat===c;}).length;}
+  document.getElementById('sbar').innerHTML=
+    '<div class="spill"><div class="sn">'+vis.length+'</div><div class="sl">trees shown 表示樹木</div></div>'+
+    '<div class="spill"><div class="sn">'+sac+'</div><div class="sl">sacred 神木</div></div>'+
+    '<div class="spill"><div class="sn">'+cats+'</div><div class="sl">types 区分</div></div>'+
+    '<div class="spill" style="gap:.7rem">'+
+    '<span class="sdot" style="background:var(--conifer)"></span><span class="sl">針葉樹 ('+cnt('conifer')+')</span>'+
+    '<span class="sdot" style="background:var(--decid)"></span><span class="sl">落葉広葉樹 ('+cnt('decid')+')</span>'+
+    '<span class="sdot" style="background:var(--ever)"></span><span class="sl">常緑広葉樹 ('+cnt('ever')+')</span>'+
+    '</div>';
+}
+
+function renderCards(){
+  var g=document.getElementById('cgrid');
+  g.innerHTML='';
+  sorted().forEach(function(t,i){
+    var card=document.createElement('div');
+    card.className='card'+(visible(t)?'':' hid');
+    card.dataset.cat=t.cat; card.dataset.sac=t.sacred;
+    card.innerHTML=
+      '<div class="ci shim" id="ci'+i+'">'+
+        '<div class="ciph" id="cp'+i+'">'+
+          '<div class="ciph-k">'+t.k[0]+'</div>'+
+          '<div class="ciph-t">loading image\u2026</div>'+
+        '</div>'+
+        '<div class="cbadges">'+
+          '<span class="bs '+t.cat+'">'+t.catJp+'</span>'+
+          (t.sacred?'<span class="bh">\u795e\u6728 SACRED</span>':'')+
+          (t.five?'<span class="bf">\u4e94\u5927\u795e\u6728</span>':'')+
+        '</div>'+
+        '<div class="cybar">'+t.sci+'</div>'+
+      '</div>'+
+      '<div class="cb">'+
+        '<div>'+
+          '<div class="cn-k">'+t.k+'</div>'+
+          '<div class="cn-en">'+t.en+'</div>'+
+          '<div class="cn-rom">'+t.rom+'</div>'+
+        '</div>'+
+        '<div class="crule"></div>'+
+        '<div class="cf"><span class="cl">Scientific Name \u5b66\u540d</span><span class="csci">'+t.sci+'</span></div>'+
+        '<div class="cf"><span class="cl">Type \u533a\u5206</span><span class="cv">'+CATLBL[t.cat]+'</span></div>'+
+        '<div><span class="cl">Key Significance \u4e3b\u306a\u610f\u7fa9</span><div class="cart">'+t.sig+'</div></div>'+
+        '<div class="clinks">'+
+          '<a class="clink" href="'+wEn(t)+'" target="_blank" rel="noopener">&#x1f517; English Wiki</a>'+
+          '<a class="clink" href="'+wJa(t)+'" target="_blank" rel="noopener">&#x1f517; \u65e5\u672c\u8a9e Wiki</a>'+
+          '<a class="clink limg" href="'+imgUrl(t)+'" target="_blank" rel="noopener">&#x1f50d; Images</a>'+
+        '</div>'+
+      '</div>';
+    g.appendChild(card);
+  });
+  sorted().forEach(function(t,i){
+    setTimeout(function(){fetchImg(t,i);}, i*140);
+  });
+}
+
+function renderTable(){
+  var tb=document.getElementById('tbody');
+  tb.innerHTML='';
+  sorted().forEach(function(t){
+    var tr=document.createElement('tr');
+    if(!visible(t)) tr.classList.add('hid');
+    tr.dataset.cat=t.cat; tr.dataset.sac=t.sacred;
+    tr.innerHTML=
+      '<td style="min-width:150px"><span class="tnk">'+t.k+'</span><span class="tnr">'+t.rom+'</span><span class="tne">'+t.en+'</span></td>'+
+      '<td style="min-width:120px"><span class="ts '+t.cat+'">'+t.catJp+'</span></td>'+
+      '<td style="min-width:170px"><span class="tsci">'+t.sci+'</span></td>'+
+      '<td style="min-width:300px;font-size:.78rem">'+(t.sacred?'<span class="hdot"></span>':'')+t.sig+'</td>'+
+      '<td style="min-width:130px">'+
+        '<div class="tlinks">'+
+          '<a class="tlink" href="'+wEn(t)+'" target="_blank" rel="noopener">&#x1f517; English Wiki</a>'+
+          '<a class="tlink" href="'+wJa(t)+'" target="_blank" rel="noopener">&#x1f517; \u65e5\u672c\u8a9e Wiki</a>'+
+          '<a class="tlink" href="'+imgUrl(t)+'" target="_blank" rel="noopener">&#x1f50d; Images</a>'+
+        '</div>'+
+      '</td>';
+    tb.appendChild(tr);
+  });
+}
+
+async function fetchImg(t,i){
+  try{
+    var r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+t.wiki,{headers:{'Accept':'application/json'}});
+    if(!r.ok) throw 0;
+    var d=await r.json();
+    var src=(d.originalimage||d.thumbnail||{}).source;
+    if(!src) throw 0;
+    var wrap=document.getElementById('ci'+i);
+    var ph=document.getElementById('cp'+i);
+    if(!wrap) return;
+    wrap.classList.remove('shim');
+    var img=document.createElement('img');
+    img.alt=t.en; img.loading='lazy'; img.src=src;
+    img.onerror=function(){wrap.classList.remove('shim'); ph.querySelector('.ciph-t').textContent='\u753b\u50cf\u306a\u3057';};
+    img.onload=function(){ph.style.display='none';};
+    wrap.insertBefore(img,wrap.firstChild);
+  }catch(e){
+    var wrap=document.getElementById('ci'+i);
+    var ph=document.getElementById('cp'+i);
+    if(wrap){wrap.classList.remove('shim'); if(ph) ph.querySelector('.ciph-t').textContent='\u753b\u50cf\u306a\u3057';}
+  }
+}
+
+function applyF(){
+  fCat=document.getElementById('catSel').value;
+  function show(el){return (!fCat||el.dataset.cat===fCat)&&((!fSac)||el.dataset.sac==='true');}
+  document.querySelectorAll('.card').forEach(function(el){el.classList.toggle('hid',!show(el));});
+  document.querySelectorAll('#tbody tr').forEach(function(el){el.classList.toggle('hid',!show(el));});
+  renderStats();
+}
+
+function togH(){
+  fSac=!fSac;
+  document.getElementById('btnH').classList.toggle('on',fSac);
+  applyF();
+}
+function togS(){
+  sortAsc=!sortAsc;
+  document.getElementById('btnS').textContent='Name '+(sortAsc?'\u2191':'\u2193');
+  renderCards(); renderTable(); applyF();
+}
+
+renderStats(); renderCards(); renderTable();
+</script>
+</body>
+</html>
