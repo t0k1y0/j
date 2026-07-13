@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Whistler — Bilingual Exhibition Posters / 双语展览海报</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=Work+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --stone:#c7c1b6;
+    --charcoal:#2b2926;
+    --ink:#1c1a17;
+    --cream:#f1ede3;
+    --brass:#a5813f;
+    --brass-light:#c9a35f;
+    --line:rgba(28,26,23,0.18);
+    --line-light:rgba(241,237,227,0.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#111;}
+  body{font-family:'Work Sans',sans-serif; color:var(--ink);}
+
+  /* ---- nav / language switch ---- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; gap:.6rem;
+    padding:.6rem 1rem;
+    background:rgba(17,17,17,.9);
+    backdrop-filter:blur(6px);
+    font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+    color:#d8d2c4; overflow-x:auto; white-space:nowrap;
+  }
+  .nav a{color:#d8d2c4; text-decoration:none; opacity:.55; padding:.2rem .45rem; border:1px solid transparent; border-radius:2px;}
+  .nav a:hover{opacity:1; border-color:var(--brass-light);}
+  .nav .brand{color:var(--brass-light); opacity:1; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.9rem; margin-right:.4rem;}
+  .nav .spacer{flex:1;}
+  .lang-switch{
+    display:flex; align-items:center; gap:.4rem;
+    border:1px solid rgba(216,210,196,.35); border-radius:999px; padding:.2rem; flex:0 0 auto;
+  }
+  .lang-switch button{
+    appearance:none; border:none; background:transparent; color:#d8d2c4;
+    font-family:'Work Sans',sans-serif; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+    padding:.32rem .7rem; border-radius:999px; cursor:pointer; opacity:.55;
+  }
+  .lang-switch button.active{background:var(--brass-light); color:#1c1a17; opacity:1;}
+
+  .deck{padding-top:2.6rem;}
+
+  /* ---- poster page ---- */
+  .poster{
+    position:relative; width:100%; min-height:100vh;
+    padding:6vh 8vw 8vh;
+    display:flex; flex-direction:column; justify-content:center;
+    scroll-margin-top:3rem; overflow:hidden;
+    border-bottom:2px solid #111;
+  }
+  .poster::before{
+    content:''; position:absolute; right:-4vw; bottom:-6vh;
+    width:46vw; max-width:520px; aspect-ratio:1; opacity:.06; pointer-events:none;
+  }
+  .eyebrow{
+    display:flex; align-items:baseline; gap:.8rem;
+    letter-spacing:.22em; text-transform:uppercase; font-size:.72rem; font-weight:600; margin-bottom:1.1rem;
+  }
+  .eyebrow .num{font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.6rem; font-weight:600; letter-spacing:0; color:var(--brass);}
+  .eyebrow .tag{opacity:.55;}
+  .eyebrow .rule{flex:1; height:1px; background:var(--line);}
+
+  h1.title{
+    font-family:'Libre Baskerville', serif; font-weight:700;
+    font-size:clamp(2.1rem, 5vw, 4rem); line-height:1.02; margin:0 0 .25rem; letter-spacing:-.01em;
+  }
+  h2.title-secondary{margin:0 0 2.2rem; color:var(--brass);}
+  h2.title-secondary.fr-only{font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:500; font-size:clamp(1.2rem, 2.4vw, 1.9rem);}
+  h2.title-secondary.zh-only{font-family:'Noto Serif SC', serif; font-weight:600; font-size:clamp(1.3rem, 2.6vw, 2.1rem); letter-spacing:.04em;}
+
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:3.2rem; max-width:1180px; align-items:start;}
+  .col{position:relative;}
+  .col + .col{padding-left:3.2rem; border-left:1px solid var(--line);}
+  .lang-tag{font-size:.66rem; letter-spacing:.18em; text-transform:uppercase; color:var(--brass); margin-bottom:.7rem; display:block;}
+  .lang-tag.zh-only{font-family:'Noto Sans SC',sans-serif; letter-spacing:.08em;}
+
+  .col p{font-family:'Libre Baskerville', serif; font-size:.98rem; line-height:1.68; margin:0 0 1rem;}
+  .fr-text p{font-family:'Cormorant Garamond', serif; font-size:1.16rem; font-weight:500; line-height:1.6; margin:0 0 1rem;}
+  .zh-text p{font-family:'Noto Serif SC', serif; font-size:1.02rem; font-weight:400; line-height:2; letter-spacing:.02em; margin:0 0 1.1rem;}
+  .quote-mark{font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.4rem; color:var(--brass);}
+  .quote-mark.zh-only{font-family:'Noto Serif SC',serif; font-style:normal;}
+
+  footer.credit{
+    margin-top:auto; padding-top:2.2rem;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:.65rem; letter-spacing:.14em; text-transform:uppercase; opacity:.55;
+  }
+
+  /* ---- language visibility ---- */
+  body.show-fr .zh-only{display:none !important;}
+  body:not(.show-fr) .fr-only{display:none !important;}
+
+  /* ---- per-poster palettes ---- */
+  .p-quote{background:var(--charcoal); color:var(--cream);}
+  .p-quote .eyebrow{color:var(--cream);} .p-quote .rule{background:var(--line-light);} .p-quote .col + .col{border-left-color:var(--line-light);}
+
+  .p1{background:#cfc9bd;}
+  .p2{background:#b9b2a2; color:#211f1c;}
+  .p3{background:#cac4b7;}
+  .p4{background:#c7ab7d;}
+  .p5{background:#b8b2a4;}
+  .p6{background:#4a4842; color:var(--cream);}
+  .p6 .rule{background:var(--line-light);} .p6 .col + .col{border-left-color:var(--line-light);} .p6 .eyebrow{color:var(--cream);}
+  .p7{background:#a9a196;}
+  .p8{background:#9c968a; color:var(--cream);}
+  .p8 .rule{background:var(--line-light);} .p8 .col + .col{border-left-color:var(--line-light);} .p8 .eyebrow{color:var(--cream);}
+  .p9{background:#8f8b83; color:#171614;}
+
+  .butterfly{position:absolute; top:2.2rem; right:2.4vw; width:64px; opacity:.85;}
+
+  @media print{
+    .nav{display:none;}
+    .deck{padding-top:0;}
+    .poster{min-height:100vh; height:100vh; page-break-after:always; border-bottom:none; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  }
+  @media (max-width:820px){
+    .cols{grid-template-columns:1fr;}
+    .col + .col{padding-left:0; border-left:none; margin-top:1.6rem; padding-top:1.6rem; border-top:1px solid var(--line);}
+    .poster{padding:8vh 6vw 6vh;}
+  }
+</style>
+</head>
+<body class="">
+
+<nav class="nav">
+  <span class="brand">Whistler</span>
+  <a href="javascript:void(0)" onclick="goTo('quote')">题词</a>
+  <a href="javascript:void(0)" onclick="goTo('p1')">01</a><a href="javascript:void(0)" onclick="goTo('p2')">02</a><a href="javascript:void(0)" onclick="goTo('p3')">03</a><a href="javascript:void(0)" onclick="goTo('p4')">04</a><a href="javascript:void(0)" onclick="goTo('p5')">05</a>
+  <a href="javascript:void(0)" onclick="goTo('p6')">06</a><a href="javascript:void(0)" onclick="goTo('p7')">07</a><a href="javascript:void(0)" onclick="goTo('p8')">08</a><a href="javascript:void(0)" onclick="goTo('p9')">09</a>
+  <span class="spacer"></span>
+  <div class="lang-switch" role="group" aria-label="Second language / 第二语言">
+    <button id="btn-zh" class="active" onclick="setLang('zh')">EN · 中文</button>
+    <button id="btn-fr" onclick="setLang('fr')">EN · Français</button>
+  </div>
+</nav>
+
+<div class="deck">
+
+  <!-- Epigraph -->
+  <section class="poster p-quote" id="quote">
+    <svg class="butterfly" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".6">
+      <path d="M32 10 C24 2 8 6 8 20 C8 30 20 34 32 30 C44 34 56 30 56 20 C56 6 40 2 32 10 Z"/>
+      <line x1="32" y1="10" x2="32" y2="52"/>
+      <path d="M32 30 C24 34 14 46 20 54 C26 60 32 46 32 34"/>
+      <path d="M32 30 C40 34 50 46 44 54 C38 60 32 46 32 34"/>
+    </svg>
+    <div class="eyebrow">
+      <span class="tag zh-only">题词 · Epigraph</span>
+      <span class="tag fr-only">Épigraphe · Epigraph</span>
+      <span class="rule"></span>
+    </div>
+    <h1 class="title" style="max-width:16ch;">"Nature is<br>very rarely right."</h1>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p><span class="quote-mark">&ldquo;</span>To say to the painter, that Nature is to be taken as she is, is to say to the player, that he may sit on the piano.<span class="quote-mark">&rdquo;</span></p>
+        <p style="opacity:.75; font-family:'Work Sans',sans-serif; font-size:.78rem; letter-spacing:.04em;">— James McNeill Whistler</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span>
+        <span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p><span class="quote-mark zh-only">「</span>对画家说,自然应当照其本来面目被接受,就等于对乐手说,他可以坐到钢琴上。<span class="quote-mark zh-only">」</span></p>
+          <p style="opacity:.75; font-family:'Noto Sans SC',sans-serif; font-size:.82rem; letter-spacing:.04em;">——詹姆斯·麦克尼尔·惠斯勒</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p><span class="quote-mark">«</span> Dire au peintre que la Nature doit être prise telle qu'elle est, c'est dire au musicien qu'il peut s'asseoir sur le piano. <span class="quote-mark">»</span></p>
+          <p style="opacity:.75; font-family:'Work Sans',sans-serif; font-size:.78rem; letter-spacing:.04em;">— James McNeill Whistler</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>Whistler Exhibition</span><span>Wall Text</span></footer>
+  </section>
+
+  <!-- 1 -->
+  <section class="poster p1" id="p1">
+    <div class="eyebrow"><span class="num">01</span><span class="tag">In the Studio</span><span class="rule"></span></div>
+    <h1 class="title">In the Studio</h1>
+    <h2 class="title-secondary zh-only">在画室</h2>
+    <h2 class="title-secondary fr-only">Dans l'atelier</h2>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p>The 1870s marked James McNeill Whistler's declaration of independence. In his waterside studio in Chelsea, he painted the famous portrait of his mother and night views of the River Thames that challenged the art world.</p>
+        <p>Whistler's home was devoted to work. He rejected fussy Victorian taste, designing rooms with plain walls, sparse furnishings and artefacts from East and South Asia. He also broke social conventions, sharing his life with professional women as partners and friends.</p>
+        <p>The studio was a public place of performance as well as a private working space. Whistler fascinated the press and fashionable society, who flocked to his dinner parties and studio breakfasts, serving dishes such as American pancakes with maple syrup.</p>
+        <p>Yet the decade was turbulent, taking Whistler from triumph to financial ruin. No sooner had he moved to a new studio house than he lost it all, forced to leave London and start again.</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p>19世纪70年代,是詹姆斯·麦克尼尔·惠斯勒宣告独立的年代。他在切尔西河畔的画室里,创作了那幅著名的母亲肖像,以及震动艺术界的泰晤士河夜景。</p>
+          <p>惠斯勒的家彻底为工作而设。他摒弃了维多利亚时代繁琐的审美趣味,以素墙、简朴的陈设,以及来自东亚与南亚的器物布置房间。他也打破了社会常规,与从事专业工作的女性相伴,既是伴侣,也是挚友。</p>
+          <p>画室既是私人的工作空间,也是公开表演的场所。惠斯勒令新闻界与上流社会为之着迷,他们蜂拥而至参加他的晚宴与画室早餐,席间常有淋上枫糖浆的美式煎饼。</p>
+          <p>然而这十年动荡不安,惠斯勒从声名鼎盛跌入经济崩溃的境地。他刚迁入新的画室住宅,便失去了一切,被迫离开伦敦,重新开始。</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p>Les années 1870 marquent la déclaration d'indépendance de James McNeill Whistler. Dans son atelier au bord de l'eau à Chelsea, il peint le célèbre portrait de sa mère et des vues nocturnes de la Tamise qui bousculent le monde de l'art.</p>
+          <p>La maison de Whistler est entièrement vouée au travail. Il rejette le goût victorien chargé, préférant des murs nus, un mobilier épuré et des objets venus d'Asie de l'Est et du Sud. Il brise aussi les conventions sociales, partageant sa vie avec des femmes actives, à la fois compagnes et amies.</p>
+          <p>L'atelier est un lieu de représentation publique autant qu'un espace de travail privé. Whistler fascine la presse et la bonne société, qui se pressent à ses dîners et ses petits-déjeuners d'atelier, où il sert des pancakes américains au sirop d'érable.</p>
+          <p>Pourtant, la décennie est tumultueuse, menant Whistler du triomphe à la ruine financière. À peine installé dans une nouvelle maison-atelier, il perd tout et doit quitter Londres pour tout recommencer.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>01 / 09</span><span>Chelsea, London · 1870s</span></footer>
+  </section>
+
+  <!-- 2 -->
+  <section class="poster p2" id="p2">
+    <div class="eyebrow"><span class="num">02</span><span class="tag">Origin Story</span><span class="rule"></span></div>
+    <h1 class="title">Origin Story</h1>
+    <h2 class="title-secondary zh-only">起源故事</h2>
+    <h2 class="title-secondary fr-only">L'histoire des origines</h2>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p>Whistler was born in Massachusetts to a family of soldiers, doctors and engineers. He grew up in St Petersburg, where his father oversaw Russia's first railway for Tsar Nicholas I. At 14, encouraged by trips to England and Europe, he asked permission to train as a professional artist.</p>
+        <p>Letters reveal a blended family brought closer by the deaths of four children in quick succession. They shared a fierce commitment to work and a love of making art and music together. After Whistler's father died suddenly, they returned to the United States. Whistler enrolled at West Point Military Academy. Drawing was the only subject in which he excelled. He was expelled for poor performance and persistent rule-breaking.</p>
+        <p>Drawing was both a discipline and a refuge from an early age. By 20, Whistler had produced nearly 200 studies, mostly on pocket-sized sheets. Whistler lived by the motto "no day without a line".</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p>惠斯勒出生于马萨诸塞州一个军人、医生与工程师世家。他在圣彼得堡长大,父亲为沙皇尼古拉一世督建俄国第一条铁路。14岁那年,几次英国与欧洲之行令他心生向往,他请求家人允许他接受专业艺术训练。</p>
+          <p>书信显示,这是一个因接连痛失四个孩子而愈加紧密的重组家庭。他们共有着对工作的执着,以及对艺术与音乐的热爱。父亲骤然去世后,全家返回美国。惠斯勒进入西点军校,唯有绘画一科出类拔萃。他最终因成绩不佳与屡犯校规而被开除。</p>
+          <p>绘画自幼年起,既是一种自律,也是一处避难所。到20岁时,惠斯勒已完成近200幅习作,大多绘于口袋大小的纸页上。惠斯勒奉行的座右铭是:「一日不可无一线。」</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p>Whistler naît dans le Massachusetts, au sein d'une famille de soldats, de médecins et d'ingénieurs. Il grandit à Saint-Pétersbourg, où son père dirige la première ligne ferroviaire de Russie pour le tsar Nicolas Ier. À 14 ans, encouragé par des voyages en Angleterre et en Europe, il demande la permission de se former comme artiste professionnel.</p>
+          <p>Des lettres révèlent une famille recomposée, rapprochée par la mort de quatre enfants en succession rapide. Ils partagent un engagement farouche envers le travail et l'amour de l'art et de la musique. Après la mort soudaine de son père, la famille rentre aux États-Unis. Whistler s'inscrit à l'Académie militaire de West Point. Le dessin est la seule matière où il excelle. Il est renvoyé pour ses résultats médiocres et ses infractions répétées au règlement.</p>
+          <p>Le dessin est dès son plus jeune âge à la fois une discipline et un refuge. À 20 ans, Whistler a déjà produit près de 200 études. Il vit selon la devise : « pas un jour sans une ligne ».</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>02 / 09</span><span>Massachusetts · St Petersburg · West Point</span></footer>
+  </section>
+
+  <!-- 3 -->
+  <section class="poster p3" id="p3">
+    <div class="eyebrow"><span class="num">03</span><span class="tag">Across the Water</span><span class="rule"></span></div>
+    <h1 class="title">Across the Water</h1>
+    <h2 class="title-secondary zh-only">跨越水域</h2>
+    <h2 class="title-secondary fr-only">De l'autre côté de l'eau</h2>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p>At 23, Whistler had triumphed as a printmaker but not yet made his name as a painter. He now embarked on a series of landscapes and interior scenes.</p>
+        <p>All around him, artists and writers were exploring what it meant to represent the modern world. Whistler's generation moved away from the 'realism' of Gustave Courbet's circle. They broke new ground, drawn to urban subjects and natural, luminous colours. To capture the fleeting beauty of movement and light, they sketched quickly and painted with visible, varied brushstrokes. Later this style would become famous as 'impressionism'.</p>
+        <p>After four years in Paris, Whistler's interest in modernity drew him to London. He moved to the city and to the teeming, industrial spectacle of the River Thames.</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p>23岁时,惠斯勒已凭版画声名鹊起,却尚未以画家身份立足。他随即投入一系列风景画与室内场景的创作。</p>
+          <p>在他周围,艺术家与作家们都在探索如何表现现代世界。惠斯勒这一代人渐渐远离古斯塔夫·库尔贝一派的「写实主义」。他们开辟新径,倾心于都市题材与自然明亮的色彩。为了捕捉运动与光影转瞬即逝的美,他们迅速写生,以清晰多变的笔触作画。这种风格后来被称为「印象主义」而闻名于世。</p>
+          <p>在巴黎度过四年后,惠斯勒对现代性的兴趣将他引向伦敦。他迁居这座城市,被泰晤士河繁忙的工业景象所吸引。</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p>À 23 ans, Whistler s'est déjà imposé comme graveur, mais pas encore comme peintre. Il se lance alors dans une série de paysages et de scènes d'intérieur.</p>
+          <p>Autour de lui, artistes et écrivains explorent ce que signifie représenter le monde moderne. La génération de Whistler s'éloigne du « réalisme » du cercle de Gustave Courbet. Ils ouvrent de nouvelles voies, attirés par les sujets urbains et les couleurs naturelles et lumineuses. Pour saisir la beauté fugace du mouvement et de la lumière, ils esquissent rapidement et peignent à coups de pinceau visibles et variés. Ce style deviendra plus tard célèbre sous le nom d'« impressionnisme ».</p>
+          <p>Après quatre ans à Paris, l'intérêt de Whistler pour la modernité l'attire à Londres. Il s'installe dans la ville, attiré par le spectacle industriel grouillant de la Tamise.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>03 / 09</span><span>Paris → London · Age 23</span></footer>
+  </section>
+
+  <!-- 4 -->
+  <section class="poster p4" id="p4">
+    <div class="eyebrow"><span class="num">04</span><span class="tag">Breaking In, Breaking Up</span><span class="rule"></span></div>
+    <h1 class="title" style="max-width:14ch;">Breaking In, Breaking Up</h1>
+    <h2 class="title-secondary zh-only">闯入与突破</h2>
+    <h2 class="title-secondary fr-only">Percée et rupture</h2>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p>Whistler broke into the mainstream art world and then defied it from within. The sketch-like liveliness of his style appealed to progressive critics and attracted patrons. But he went further. His portraits, like his landscapes, tested the limits of painting from nature.</p>
+        <p>Whistler called his sitters back again and again so that he could scrape back their portraits and begin anew. Each time, he used fewer strokes. He was not satisfied until he summoned their presence with the most spontaneous touch.</p>
+        <p>He pushed beyond the innovations of impressionism. 'Nature is very rarely right,' he declared. Instead, beauty lay in art's abstract qualities — brushstrokes, composition and colour harmonies. Musical titles such as 'arrangement' reflected Whistler's aim to create a visual equivalent to music.</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p>惠斯勒打入了主流艺术世界,继而又从内部挑战它。他那速写般灵动的风格,吸引了进步派评论家,也招来了赞助人。但他走得更远——他的肖像画,如同他的风景画一样,不断试探对景写生的极限。</p>
+          <p>惠斯勒一再召回他的模特,以便刮去先前的画作,重新开始。每一次,他所用的笔触都更少。直到能以最自然天成的一笔唤出他们的神韵,他才肯罢休。</p>
+          <p>他超越了印象主义的种种创新。「自然极少是对的,」他如是宣称。相反,美存在于艺术自身的抽象特质之中——笔触、构图与色彩的和谐。诸如「乐章」一类的音乐化标题,正体现了惠斯勒欲以视觉呈现音乐的抱负。</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p>Whistler s'impose dans le monde de l'art établi, puis le défie de l'intérieur. La vivacité esquissée de son style séduit les critiques progressistes et attire les mécènes. Mais il va plus loin : ses portraits, comme ses paysages, repoussent les limites de la peinture d'après nature.</p>
+          <p>Whistler rappelle ses modèles encore et encore afin de pouvoir gratter leurs portraits et recommencer. Chaque fois, il utilise moins de coups de pinceau. Il n'est satisfait que lorsqu'il parvient à évoquer leur présence par la touche la plus spontanée.</p>
+          <p>Il dépasse les innovations de l'impressionnisme. « La nature a très rarement raison », déclare-t-il. La beauté réside plutôt dans les qualités abstraites de l'art — coups de pinceau, composition, harmonies de couleurs. Des titres musicaux tels qu'« arrangement » traduisent son ambition de créer un équivalent visuel de la musique.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>04 / 09</span><span>Portraiture · Method</span></footer>
+  </section>
+
+  <!-- 5 -->
+  <section class="poster p5" id="p5">
+    <div class="eyebrow"><span class="num">05</span><span class="tag">Butterfly World</span><span class="rule"></span></div>
+    <h1 class="title">Butterfly World</h1>
+    <h2 class="title-secondary zh-only">蝴蝶的世界</h2>
+    <h2 class="title-secondary fr-only">Le monde du papillon</h2>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p>Whistler's 'poetry of sight' developed from his study of East Asian art. This transformed how he saw nature.</p>
+        <p>In the 19th century, imperial expansion and global trade brought objects from China, Japan and other countries to Britain and Europe. Whistler and his circle were avid collectors of imported ceramics, textiles and woodblock prints. At first, he included them in his paintings. Soon, they reshaped his style.</p>
+        <p>East Asian culture encouraged Whistler to blur distinctions between art and design. He learned from the rhythmic lines, flat colours and balanced compositions of Japanese prints. In turn, his innovative work was soon appreciated by artists and critics in Japan.</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p>惠斯勒「观看的诗意」,源自他对东亚艺术的钻研,这彻底改变了他看待自然的方式。</p>
+          <p>19世纪,帝国扩张与全球贸易将来自中国、日本及其他国家的器物带入英国与欧洲。惠斯勒及其友人圈热衷收藏进口的陶瓷、织物与木版画。起初,他将这些器物纳入画中,不久后,它们便重塑了他的整体风格。</p>
+          <p>东亚文化促使惠斯勒模糊了艺术与设计之间的界限。他从日本版画那富有节奏的线条、平涂的色彩与均衡的构图中汲取养分。而他那富有创新精神的作品,也很快获得了日本艺术家与评论家的赏识。</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p>La « poésie du regard » de Whistler naît de son étude de l'art est-asiatique, qui transforme sa vision de la nature.</p>
+          <p>Au XIXe siècle, l'expansion impériale et le commerce mondial apportent en Grande-Bretagne et en Europe des objets venus de Chine, du Japon et d'autres pays. Whistler et son cercle collectionnent avec passion céramiques, textiles et estampes importés. Il les intègre d'abord dans ses tableaux. Bientôt, ils redéfinissent son style tout entier.</p>
+          <p>La culture est-asiatique encourage Whistler à brouiller la frontière entre l'art et le design. Il s'inspire des lignes rythmées, des couleurs plates et des compositions équilibrées des estampes japonaises. En retour, son œuvre novatrice est bientôt appréciée par les artistes et les critiques du Japon.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>05 / 09</span><span>Japonisme · 浮世絵</span></footer>
+  </section>
+
+  <!-- 6 -->
+  <section class="poster p6" id="p6">
+    <div class="eyebrow"><span class="num">06</span><span class="tag">Nocturnes</span><span class="rule"></span></div>
+    <h1 class="title">Nocturnes</h1>
+    <h2 class="title-secondary zh-only">夜曲</h2>
+    <h2 class="title-secondary fr-only">Nocturnes</h2>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p>Whistler was fascinated by the asymmetry and flat colours in Japanese landscape prints. During a trip to Chile, he found these qualities in the subdued hues of the sea at dusk. He went further in London with a series of colour harmonies of the Thames at night. He called these 'nocturnes', borrowing a musical term to suggest atmosphere rather than a story.</p>
+        <p>Through Whistler's eyes, the twilight transformed the fog, smoke and pollution of the industrial river into timeless beauty. He abandoned unblended impressionist brushwork. Instead, he used long, ribbon-like strokes to evoke the moving river, soaking the canvas in thin paint to conjure mist. Delicate touches created gleams of light reflected in the water.</p>
+        <p>Some mistook the subtlety of the nocturnes for haste. The leading art critic John Ruskin attacked Whistler's 'ill-educated conceit' in a harsh review. Whistler sued, using the court case as a stage on which to defend his art.</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p>惠斯勒痴迷于日本风景版画中的不对称与平涂色彩。在一次智利之行中,他在暮色下大海那沉静的色调中,发现了同样的特质。回到伦敦后,他更进一步,创作了一系列描绘夜晚泰晤士河色彩和谐的作品。他将这些画作命名为「夜曲」,借用这一音乐术语来暗示氛围,而非叙事。</p>
+          <p>透过惠斯勒的目光,暮色将这条工业河流的雾霭、烟尘与污染,转化为一种永恒的美。他放弃了印象派那种未经调和的笔触,转而以长长的、如缎带般的笔触表现流动的河水,以稀薄的颜料浸润画布来营造薄雾之感,再以细腻的笔触点染水面粼粼的反光。</p>
+          <p>一些人误将夜曲的含蓄细腻当作草率之作。艺术评论界的权威人物约翰·罗斯金,在一篇措辞严厉的评论中抨击惠斯勒「浅薄无知的自负」。惠斯勒愤而将其告上法庭,以这场官司作为捍卫自己艺术理念的舞台。</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p>Whistler est fasciné par l'asymétrie et les couleurs plates des estampes de paysage japonaises. Lors d'un voyage au Chili, il retrouve ces qualités dans les teintes assourdies de la mer au crépuscule. Il va plus loin à Londres avec une série d'harmonies de couleurs de la Tamise nocturne. Il nomme ces œuvres « nocturnes », empruntant un terme musical pour suggérer une atmosphère plutôt qu'un récit.</p>
+          <p>À travers le regard de Whistler, le crépuscule transforme le brouillard, la fumée et la pollution du fleuve industriel en une beauté intemporelle. Il abandonne la touche impressionniste non mélangée. Il utilise plutôt de longues touches en forme de ruban pour évoquer le fleuve en mouvement, imbibant la toile de peinture diluée pour évoquer la brume. Des touches délicates créent des reflets de lumière sur l'eau.</p>
+          <p>Certains prennent la subtilité des nocturnes pour de la précipitation. Le grand critique John Ruskin attaque la « prétention mal éduquée » de Whistler dans une critique acerbe. Whistler l'attaque en justice, faisant du procès une tribune pour défendre son art.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>06 / 09</span><span>The Thames at Night · Ruskin v. Whistler</span></footer>
+  </section>
+
+  <!-- 7 -->
+  <section class="poster p7" id="p7">
+    <div class="eyebrow"><span class="num">07</span><span class="tag">Going Away</span><span class="rule"></span></div>
+    <h1 class="title">Going Away</h1>
+    <h2 class="title-secondary zh-only">远行</h2>
+    <h2 class="title-secondary fr-only">Le départ</h2>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p>At 45, Whistler was left bankrupt by legal battles, forcing him to give up his home and studio. He left London for Venice, living on a commission to make 12 etchings of the city. Despite his loss of reputation, Whistler stuck to his artistic beliefs. He stayed for 18 months and returned with 200 experimental etchings and pastels.</p>
+        <p>For the rest of his life, Whistler regularly roamed Britain and Europe working on small landscapes. He looked for scenes that were not traditionally subjects of art, often ordinary people and places.</p>
+        <p>Whistler chose his medium in response to each location, exploring new effects from oils, watercolours, pastels, etchings and lithographs. The results transformed the observed world into visual poetry.</p>
+        <p>Whistler controlled how his small works were displayed, curating his solo shows in rooms decorated in minimal Japanese style — forerunners to the white-walled galleries of our time.</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p>45岁那年,惠斯勒因诉讼缠身而破产,被迫放弃住所与画室。他离开伦敦前往威尼斯,靠着一份绘制12幅该城市蚀刻版画的委托维持生计。尽管声誉受损,惠斯勒仍坚守自己的艺术信念。他在那里停留了18个月,归来时带回了200幅实验性的蚀刻版画与粉彩作品。</p>
+          <p>此后余生,惠斯勒经常游历于英国与欧洲各地,创作小幅风景画。他寻找那些并非传统艺术题材的场景,往往是普通的人与地方。</p>
+          <p>惠斯勒依据每一处地点选择创作媒介,以敏捷的技巧探索油画、水彩、粉彩、蚀刻与石版画所能带来的新效果。其成果,将所观察到的世界转化为视觉的诗篇。</p>
+          <p>惠斯勒亲自把控自己这些小幅作品的展陈方式,将个展布置在装饰极简、风格日式的房间之中——这些空间可视为当今白墙画廊的先声。</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p>À 45 ans, ruiné par des batailles judiciaires, Whistler doit abandonner sa maison et son atelier. Il quitte Londres pour Venise, vivant grâce à une commande de 12 eaux-fortes de la ville. Malgré la perte de sa réputation, Whistler reste fidèle à ses convictions artistiques. Il y reste 18 mois et en revient avec 200 eaux-fortes et pastels expérimentaux.</p>
+          <p>Pour le reste de sa vie, Whistler parcourt régulièrement la Grande-Bretagne et l'Europe, travaillant sur de petits paysages. Il recherche des scènes qui ne sont pas traditionnellement des sujets d'art, souvent des gens et des lieux ordinaires.</p>
+          <p>Whistler choisit son medium en fonction de chaque lieu, explorant de nouveaux effets à l'huile, à l'aquarelle, au pastel, à l'eau-forte et à la lithographie. Les résultats transforment le monde observé en poésie visuelle.</p>
+          <p>Whistler contrôle la présentation de ses petites œuvres, concevant ses expositions personnelles dans des salles épurées de style japonais — précurseurs des galeries aux murs blancs de notre époque.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>07 / 09</span><span>Venice · 18 Months</span></footer>
+  </section>
+
+  <!-- 8 -->
+  <section class="poster p8" id="p8">
+    <div class="eyebrow"><span class="num">08</span><span class="tag">Battles for Beauty</span><span class="rule"></span></div>
+    <h1 class="title">Battles for Beauty</h1>
+    <h2 class="title-secondary zh-only">为美而战</h2>
+    <h2 class="title-secondary fr-only">Combats pour la beauté</h2>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p>As Whistler redefined art and design, he also reshaped the artist's public role. He crafted his reputation as one of the best-known personalities of his time.</p>
+        <p>Whistler returned from Venice determined to defend his ideas of 'art for art's sake'. He hired a theatre to deliver a provocative lecture, 'Mr Whistler's Ten O'Clock', to a paying public.</p>
+        <p>He understood that satire, even scandal, could be the best publicity. He engaged in sharp exchanges with Oscar Wilde and others, and self-published pamphlets and books, such as <em>The Gentle Art of Making Enemies</em>. They were signed with his butterfly emblem, now with a sting in its tail.</p>
+        <p>Whistler courted controversy until the end of his career. Yet he attracted loyal followers and students across the world. His work and ideas influenced painting, photography and design well beyond his lifetime.</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p>惠斯勒在重新定义艺术与设计的同时,也重塑了艺术家的公众角色。他精心经营自己的声誉,使自己成为那个时代最知名的人物之一。</p>
+          <p>从威尼斯归来后,惠斯勒决心捍卫自己「为艺术而艺术」的理念。他租下一座剧院,向付费的公众发表了一场颇具挑衅意味的演讲——《惠斯勒先生的十点钟》。</p>
+          <p>他深知,讽刺甚至丑闻,往往是最好的宣传。他与奥斯卡·王尔德等人展开了针锋相对的交锋,并自行出版了小册子与书籍,如《制造敌人的温柔艺术》。这些作品都签署着他那如今带有尖刺的蝴蝶标志。</p>
+          <p>惠斯勒的艺术生涯直至终了都伴随着争议,但他也在世界各地吸引了忠实的追随者与学生。他的作品与理念,对绘画、摄影与设计的影响,远远超越了他本人的一生。</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p>En redéfinissant l'art et le design, Whistler transforme aussi le rôle public de l'artiste. Il façonne sa réputation pour devenir l'une des personnalités les plus connues de son temps.</p>
+          <p>De retour de Venise, Whistler est déterminé à défendre ses idées de « l'art pour l'art ». Il loue un théâtre pour prononcer une conférence provocatrice, le « Ten O'Clock » de M. Whistler, devant un public payant.</p>
+          <p>Il comprend que la satire, voire le scandale, peut être la meilleure des publicités. Il se livre à de vifs échanges avec Oscar Wilde et d'autres, et publie lui-même pamphlets et livres, comme <em>The Gentle Art of Making Enemies</em>. Ils sont signés de son emblème du papillon, désormais muni d'un dard.</p>
+          <p>Whistler cultive la controverse jusqu'à la fin de sa carrière. Pourtant, il s'attire des disciples fidèles à travers le monde. Son œuvre et ses idées influencent la peinture, la photographie et le design bien au-delà de sa vie.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>08 / 09</span><span>Ten O'Clock · Wilde · Ruskin</span></footer>
+  </section>
+
+  <!-- 9 -->
+  <section class="poster p9" id="p9">
+    <div class="eyebrow"><span class="num">09</span><span class="tag">Arrangements in Black</span><span class="rule"></span></div>
+    <h1 class="title">Arrangements in Black</h1>
+    <h2 class="title-secondary zh-only">黑色乐章</h2>
+    <h2 class="title-secondary fr-only">Arrangements en noir</h2>
+    <div class="cols">
+      <div class="col">
+        <span class="lang-tag">English</span>
+        <p>Whistler returned to society portraiture during the last 20 years of his life. The genre was fiercely competitive, testing an artist's skill, reputation and commercial ambition.</p>
+        <p>For Whistler, each portrait was an aesthetic experiment. He summoned both wealthy patrons and paid models for increasingly long sittings, spending years reworking some paintings even after they had been signed, sold and exhibited. Yet he pursued an effect that looked effortless.</p>
+        <p>Whistler believed that beauty was intensified by brevity. He gave the title <em>Arrangements in Black</em> to a series of full-length figures emerging from the shadows — technical triumphs and spirited reflections on historic art.</p>
+        <p>By the end of the century, Whistler's enigmatic, tonal paintings were in demand. They influenced generations of younger artists.</p>
+      </div>
+      <div class="col">
+        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
+        <div class="zh-only zh-text">
+          <p>生命最后的20年里,惠斯勒重新投身于上流社会的肖像绘画。这一领域竞争异常激烈,考验着艺术家的技艺、声誉与商业野心。</p>
+          <p>对惠斯勒而言,每一幅肖像都是一次美学实验。他召来富有的赞助人与受雇的模特,进行越来越漫长的写生;有些画作即便已经签名、售出并展出,他仍会花费数年反复修改。然而,他所追求的,始终是一种看似毫不费力的效果。</p>
+          <p>惠斯勒相信,简练能够强化美感。他将「黑色乐章」这一标题,赋予了一系列从阴影中浮现而出的全身人物像——这些作品既是技法上的胜利,也是对历史艺术充满灵性的回应。</p>
+          <p>到19世纪末,惠斯勒那些神秘朦胧的色调画作已备受追捧,并影响了此后数代年轻艺术家。</p>
+        </div>
+        <div class="fr-only fr-text">
+          <p>Whistler revient à la portraiture mondaine durant les 20 dernières années de sa vie. Le genre est féroce, mettant à l'épreuve le talent, la réputation et l'ambition commerciale d'un artiste.</p>
+          <p>Pour Whistler, chaque portrait est une expérience esthétique. Il convoque riches mécènes et modèles rémunérés pour des séances toujours plus longues, passant des années à retravailler certains tableaux même après les avoir signés, vendus et exposés. Pourtant, il recherche un effet qui paraisse sans effort.</p>
+          <p>Whistler croit que la beauté est intensifiée par la brièveté. Il donne le titre <em>Arrangements in Black</em> à une série de figures en pied émergeant de l'ombre — des triomphes techniques et des réflexions inspirées sur l'art historique.</p>
+          <p>À la fin du siècle, les tableaux tonaux et énigmatiques de Whistler sont très recherchés. Ils influencent des générations d'artistes plus jeunes.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="credit"><span>09 / 09</span><span>Late Portraiture · 1880s–1903</span></footer>
+  </section>
+
+</div>
+
+<script>
+  function goTo(id){
+    const el = document.getElementById(id);
+    const nav = document.querySelector('.nav');
+    if(!el) return;
+    const navHeight = nav ? nav.offsetHeight : 0;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - navHeight;
+    window.scrollTo({top: top, behavior: 'smooth'});
+  }
+  function setLang(lang){
+    const body = document.body;
+    const btnZh = document.getElementById('btn-zh');
+    const btnFr = document.getElementById('btn-fr');
+    if(lang === 'fr'){
+      body.classList.add('show-fr');
+      btnFr.classList.add('active');
+      btnZh.classList.remove('active');
+      document.documentElement.lang = 'fr';
+    } else {
+      body.classList.remove('show-fr');
+      btnZh.classList.add('active');
+      btnFr.classList.remove('active');
+      document.documentElement.lang = 'zh';
+    }
+  }
+</script>
+</body>
+</html>
