@@ -118,6 +118,16 @@
     .poster{padding:8vh 6vw 6vh;}
     .art-wrap{grid-template-columns:1fr;}
   }
+
+  .tts-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:1.6em; height:1.6em; margin-left:.5em; vertical-align:middle;
+    border-radius:50%; border:1px solid currentColor; background:transparent;
+    color:inherit; opacity:.7; cursor:pointer; font-size:.85em; line-height:1;
+    padding:0;
+  }
+  .tts-btn:hover{opacity:1;}
+  .tts-btn.speaking{opacity:1; box-shadow:0 0 0 2px rgba(200,160,80,.5);}
 </style>
 </head>
 <body class="">
@@ -149,13 +159,13 @@
         <p>From still lifes small enough to hold in the hands to altarpieces that towered 15 metres in the air, Zurbarán's production was prodigious and various. He employed a sizeable studio, trained his son Juan (1620–1649) in the art of still life and worked, for a time, at the court of King Philip IV. This exhibition — the first major monographic show dedicated to the artist in Britain — begins with some of his earliest paintings, revealing the startling originality that defined Zurbarán's art.</p>
       </div>
       <div class="col">
-        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
-        <div class="zh-only zh-text">
+        <span class="lang-tag zh-only">中文</span><button class="tts-btn zh-only" title="朗读 / Read aloud" onclick="speakBlock('zhtext-1','zh-CN',this)">&#128266;</button><span class="lang-tag fr-only">Français</span><button class="tts-btn fr-only" title="Lire à voix haute" onclick="speakBlock('frtext-1','fr-FR',this)">&#128266;</button>
+        <div class="zh-only zh-text" id="zhtext-1">
           <p>弗朗西斯科·德·苏巴朗(Francisco de Zurbarán,1598—1664)是17世纪西班牙最伟大的画家之一。他出生于人烟稀少的埃斯特雷马杜拉地区,15岁时前往塞维利亚。在这座与西班牙美洲殖民地联系密切、充满活力的港口城市,他学习了绘画、雕刻与镀金技艺。他的艺术生涯始于17世纪20年代中期,历时四十年,在此期间,他逐渐形成了对绘画独树一帜的理解。</p>
           <p>在苏巴朗生活的年代,天主教会重申了艺术作为激发信仰之手段的重要性。人们相信,画作在其最动人之处,能够成为沟通天堂与人间的桥梁,使信徒更加接近上帝。苏巴朗的天才之处,在于将极富雕塑感的人物、戏剧性的光影与强烈的写实主义相结合,以此传达信仰的奥秘。</p>
           <p>从可以捧在手中的小幅静物画,到高耸15米的祭坛画,苏巴朗的创作既高产又多样。他经营着一个规模可观的画室,培养儿子胡安(Juan,1620—1649)掌握静物画艺术,并一度供职于国王腓力四世的宫廷。本次展览——英国首次为这位艺术家举办的大型个人回顾展——从他早期的一些画作开始,揭示出塑造了苏巴朗艺术风格的、令人惊讶的独创性。</p>
         </div>
-        <div class="fr-only fr-text">
+        <div class="fr-only fr-text" id="frtext-1">
           <p>Francisco de Zurbarán (1598-1664) fut l'un des plus grands peintres de l'Espagne du XVIIe siècle. Né dans la région peu peuplée d'Estrémadure, Zurbarán se rend à Séville à 15 ans. Dans cette ville portuaire vibrante, étroitement liée aux colonies espagnoles des Amériques, il apprend la peinture, la sculpture sur bois et la dorure. Là, au cours d'une carrière débutée au milieu des années 1620 et s'étendant sur quatre décennies, il élabore une vision singulière de ce que la peinture pouvait être.</p>
           <p>Du vivant de Zurbarán, l'Église catholique réaffirme l'importance de l'art comme moyen d'encourager la dévotion. Les tableaux, dans leur forme la plus puissante, étaient censés agir comme un pont entre le ciel et la terre, rapprochant les fidèles de Dieu. Le génie de Zurbarán résidait dans sa capacité à conjuguer des figures hautement sculpturales, un éclairage dramatique et un naturalisme intense pour exprimer les mystères de la foi.</p>
           <p>Des natures mortes tenant dans la main aux retables culminant à 15 mètres de hauteur, la production de Zurbarán fut aussi prodigieuse que variée. Il dirigeait un atelier de belle taille, forma son fils Juan (1620-1649) à l'art de la nature morte, et travailla, un temps, à la cour du roi Philippe IV. Cette exposition — la première grande rétrospective consacrée à l'artiste en Grande-Bretagne — s'ouvre sur certaines de ses toutes premières œuvres, révélant l'étonnante originalité qui allait définir son art.</p>
@@ -179,13 +189,13 @@
         <p>Zurbarán's popularity as a painter of religious scenes was due to his powerful and inventive storytelling, which made complex episodes from the orders' histories legible and immediate. Lifesize, dramatically lit and attired in precisely described clothing, his figures felt as if they had stepped out of the contemporary world.</p>
       </div>
       <div class="col">
-        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
-        <div class="zh-only zh-text">
+        <span class="lang-tag zh-only">中文</span><button class="tts-btn zh-only" title="朗读 / Read aloud" onclick="speakBlock('zhtext-2','zh-CN',this)">&#128266;</button><span class="lang-tag fr-only">Français</span><button class="tts-btn fr-only" title="Lire à voix haute" onclick="speakBlock('frtext-2','fr-FR',this)">&#128266;</button>
+        <div class="zh-only zh-text" id="zhtext-2">
           <p>在早期取得成功后,塞维利亚市议会于1629年正式邀请苏巴朗定居塞维利亚。此后,来自这座城市各修会的委托纷至沓来。有的修会,苏巴朗只绘制一幅作品;有的,他则创作了20多幅。</p>
           <p>塞维利亚众多宗教机构的兴起,源于这座城市极度的富庶与市民深厚的宗教虔诚。自1503年起,塞维利亚港便垄断了与西班牙美洲领地之间的贸易与运输。巨额财富涌入塞维利亚,大批传教士也从这里启程远行。受益于这份繁荣,西班牙南部的各个修会彼此竞相修建最宏伟、装饰最奢华的建筑。为「防御圣母」(Nuestra Señora de la Defensión)教堂绘制的15米高祭坛画——本展览展出其中三幅——正代表着这位艺术家艺术生涯的巅峰时期。</p>
           <p>苏巴朗之所以作为宗教题材画家广受欢迎,得益于他极具感染力与创造力的叙事手法,使修会历史中错综复杂的情节变得清晰易懂、扣人心弦。他笔下的人物真人大小,光影极具戏剧性,衣着描绘一丝不苟,仿佛正从当代的现实世界中走出。</p>
         </div>
-        <div class="fr-only fr-text">
+        <div class="fr-only fr-text" id="frtext-2">
           <p>Après ses premiers succès, Zurbarán est formellement invité par le conseil municipal à s'installer à Séville en 1629. Les commandes des ordres religieux de la ville affluent alors. Pour certains, Zurbarán peint une œuvre unique ; pour d'autres, il en produit plus de 20.</p>
           <p>Les nombreuses institutions religieuses de Séville tirent leur origine de l'extrême richesse de la ville et de la profonde dévotion de ses habitants. Depuis 1503, son port détenait le monopole du commerce et du transport avec les territoires espagnols des Amériques. D'immenses richesses affluaient à Séville, d'où partaient aussi un grand nombre de missionnaires. Profitant de cette prospérité, les ordres religieux du sud de l'Espagne rivalisaient pour ériger les édifices les plus grandioses et les plus richement décorés. Le retable de 15 mètres de haut pour Nuestra Señora de la Defensión, dont trois tableaux sont exposés ici, illustre l'artiste au sommet de son art.</p>
           <p>La popularité de Zurbarán comme peintre de scènes religieuses tenait à son art du récit, puissant et inventif, qui rendait lisibles et immédiats des épisodes complexes tirés de l'histoire des ordres religieux. Grandeur nature, éclairées de façon dramatique et vêtues avec une précision minutieuse, ses figures semblaient tout droit sorties du monde contemporain.</p>
@@ -209,13 +219,13 @@
         <p>Painted for monastic commissions and private patrons throughout southern Spain, these dramatically illuminated saints stand out against dark backgrounds, each with an almost sculptural presence that unites spiritual drama with an unstinting attention to the things of this world.</p>
       </div>
       <div class="col">
-        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
-        <div class="zh-only zh-text">
+        <span class="lang-tag zh-only">中文</span><button class="tts-btn zh-only" title="朗读 / Read aloud" onclick="speakBlock('zhtext-3','zh-CN',this)">&#128266;</button><span class="lang-tag fr-only">Français</span><button class="tts-btn fr-only" title="Lire à voix haute" onclick="speakBlock('frtext-3','fr-FR',this)">&#128266;</button>
+        <div class="zh-only zh-text" id="zhtext-3">
           <p>苏巴朗那些恢弘的单人圣徒像,是他最具个人特色的成就之一。这些圣徒静静伫立,沉思冥想,身披的织物无论华丽还是粗陋,都彰显出他作为服饰与织物画家的非凡技艺。这些作品既有独立成幅的画布,也有专为悬挂于教堂而设计的系列组画中的一部分——当它们并置陈列时,或许正意在唤起一场肃穆的圣徒行列。</p>
           <p>苏巴朗对织物的兴趣,或许可追溯至他的少年时代。他那身为商人的父亲有时也经营布匹生意,而苏巴朗本人晚年也涉足这一行当,将塞维利亚产的丝线出售给一位马德里的商贩。这份亲身体会的知识,清晰体现在圣徒长袍厚重锦缎的每一道褶皱、修士粗布法衣的质感,以及优雅长袍那流转闪烁的丝绸光泽之中。我们几乎能感受到它们的重量与质地。</p>
           <p>这些为南部西班牙各地的修道院与私人赞助人所绘的圣徒像,以戏剧性的光线映照,在深色背景中格外醒目,每一位都带有近乎雕塑般的存在感,将精神层面的戏剧张力与对尘世万物一丝不苟的关注融为一体。</p>
         </div>
-        <div class="fr-only fr-text">
+        <div class="fr-only fr-text" id="frtext-3">
           <p>Les monumentales figures de saints en pied comptent parmi les réalisations les plus caractéristiques de Zurbarán. Ils se tiennent dans une contemplation silencieuse, drapés dans des étoffes qui, somptueuses ou élimées, mettent en lumière son talent exceptionnel de peintre du vêtement et du textile. Conçues à la fois comme des toiles autonomes et comme des éléments de séries destinées aux églises, ces œuvres, une fois réunies, pourraient même avoir été pensées pour évoquer une solennelle procession de figures saintes.</p>
           <p>L'intérêt de Zurbarán pour le tissu prend peut-être racine dans sa jeunesse. Son père, marchand, faisait parfois commerce d'étoffes, et Zurbarán lui-même, sur le tard, participa à ce négoce, vendant du fil de soie sévillan à un fournisseur de Madrid. Cette connaissance intime transparaît dans chaque pli des lourds brocarts des robes de saints, la laine grossière des habits de moines et les soies chatoyantes des robes élégantes et fluides. On croirait presque en sentir le poids et la texture.</p>
           <p>Peints pour des commandes monastiques et des mécènes privés à travers le sud de l'Espagne, ces saints, éclairés de façon spectaculaire, se détachent sur des fonds sombres, chacun doté d'une présence quasi sculpturale qui unit le drame spirituel à une attention scrupuleuse portée aux choses de ce monde.</p>
@@ -239,13 +249,13 @@
         <p>The Crucifixion was another subject to which Zurbarán returned in no less than a dozen canvases. Showing Christ alone or surrounded by mourners, in the throes of suffering or after his death, each composition offers a different perspective on his sacrifice.</p>
       </div>
       <div class="col">
-        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
-        <div class="zh-only zh-text">
+        <span class="lang-tag zh-only">中文</span><button class="tts-btn zh-only" title="朗读 / Read aloud" onclick="speakBlock('zhtext-4','zh-CN',this)">&#128266;</button><span class="lang-tag fr-only">Français</span><button class="tts-btn fr-only" title="Lire à voix haute" onclick="speakBlock('frtext-4','fr-FR',this)">&#128266;</button>
+        <div class="zh-only zh-text" id="zhtext-4">
           <p>人们常常请求苏巴朗描绘同样的宗教场景。然而,在他的整个艺术生涯中,他展现出令人瞩目的能力,能够以截然不同的方式处理这些主题,效果非凡。这个展厅邀请观者驻足沉思两个主题,它们既是这位艺术家创作的核心,也是17世纪天主教信仰的核心。</p>
           <p>圣母玛利亚在天主教会中始终备受特别崇敬。17世纪塞维利亚的艺术家们发展出一套极为具体的图像程式,用以表现「无染原罪」(Immaculate Conception)的观念——即圣母受孕时未沾染原罪的信仰。苏巴朗一生中至少绘制了15幅《圣母无染原罪》,其中许多都融入了委托人或机构所特有的细节与寓意。</p>
           <p>耶稣受难是苏巴朗反复描绘的另一主题,他为此创作了不下十二幅画作。无论是基督独自一人,还是身旁环绕着哀悼者;无论是痛苦挣扎之际,还是死后的场景,每一幅构图都为其牺牲提供了不同的视角。</p>
         </div>
-        <div class="fr-only fr-text">
+        <div class="fr-only fr-text" id="frtext-4">
           <p>On demandait fréquemment à Zurbarán de représenter les mêmes scènes religieuses. Pourtant, tout au long de sa carrière, il fit preuve d'une remarquable capacité à varier le traitement de ces thèmes. Cette salle invite à s'arrêter et à méditer sur deux sujets qui sont au cœur de l'œuvre de l'artiste et de la dévotion catholique du XVIIe siècle.</p>
           <p>La Vierge Marie a toujours fait l'objet d'une vénération particulière au sein de l'Église catholique. Les artistes sévillans du XVIIe siècle élaborèrent une formule picturale très précise pour représenter l'idée de son Immaculée Conception — la croyance selon laquelle la Vierge fut conçue sans péché. Zurbarán peignit au moins 15 Immaculées Conceptions au cours de sa carrière, nombre d'entre elles empreintes de détails et de résonances propres aux personnes ou institutions qui les avaient commandées.</p>
           <p>La Crucifixion fut un autre sujet auquel Zurbarán revint dans pas moins d'une douzaine de toiles. Montrant le Christ seul ou entouré de personnes en deuil, en proie à la souffrance ou après sa mort, chaque composition offre une perspective différente sur son sacrifice.</p>
@@ -268,12 +278,12 @@
         <p>Zurbarán probably returned to Seville in 1635 or 1636 and his work remained in high demand. Between 1636 and 1649 he exported over 120 paintings to the Spanish Americas, mostly to Lima, the capital of the Viceroyalty of Peru, but also to Buenos Aires and Portobelo. The viceroyalties of Peru and New Spain were governed on behalf of the Spanish crown and treated as Spanish provinces. Many of the works Zurbarán sent there were painted by his workshop, but the artist's extensive engagement with religious institutions in the Americas made his style highly influential in Spain's overseas empire.</p>
       </div>
       <div class="col">
-        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
-        <div class="zh-only zh-text">
+        <span class="lang-tag zh-only">中文</span><button class="tts-btn zh-only" title="朗读 / Read aloud" onclick="speakBlock('zhtext-5','zh-CN',this)">&#128266;</button><span class="lang-tag fr-only">Français</span><button class="tts-btn fr-only" title="Lire à voix haute" onclick="speakBlock('frtext-5','fr-FR',this)">&#128266;</button>
+        <div class="zh-only zh-text" id="zhtext-5">
           <p>1634年,苏巴朗被召往马德里,为国王腓力四世作画。这是他一生中最为显赫的委托,作品用于「王国厅」(Hall of Realms)——腓力新建宫殿布恩雷蒂罗(Buen Retiro)内一座规模宏大的仪典空间。为在视觉上礼赞西班牙王室的强盛,这座恢弘的大厅装饰着描绘西班牙胜利战役与王室肖像的画作,其中许多出自腓力的宫廷画师迭戈·委拉斯凯兹(Diego Velázquez)之手。苏巴朗至少贡献了一幅战争题材画作,以及一组描绘「赫拉克勒斯的功绩」的十幅系列作品——赫拉克勒斯被视为西班牙王室神话中的缔造者。</p>
           <p>苏巴朗大概于1635或1636年返回塞维利亚,他的作品此后依然广受追捧。1636年至1649年间,他向西属美洲出口了120余幅画作,主要运往秘鲁总督辖区首府利马,此外也运往布宜诺斯艾利斯与波托贝洛。秘鲁与新西班牙两大总督辖区代表西班牙王室治理,被视同西班牙的行省。苏巴朗送往当地的许多作品实际出自其画室之手,但他与美洲宗教机构之间广泛而持续的往来,使其艺术风格在西班牙海外帝国中产生了深远的影响。</p>
         </div>
-        <div class="fr-only fr-text">
+        <div class="fr-only fr-text" id="frtext-5">
           <p>En 1634, Zurbarán est appelé à Madrid pour peindre pour le roi Philippe IV. Cette commande, la plus prestigieuse de sa carrière, était destinée au Salón de Reinos, un vaste espace cérémoniel du Buen Retiro, le nouveau palais de Philippe. Rendant un hommage visuel à la puissance de la monarchie espagnole, cette salle grandiose était ornée de tableaux représentant des victoires espagnoles et des portraits royaux, nombre d'entre eux fournis par le peintre de cour de Philippe, Diego Velázquez. Zurbarán y contribua avec au moins une scène de bataille et une série de dix œuvres représentant les Travaux d'Hercule, le fondateur mythique de la monarchie espagnole.</p>
           <p>Zurbarán retourna probablement à Séville en 1635 ou 1636, et son œuvre resta très demandée. Entre 1636 et 1649, il exporta plus de 120 tableaux vers les Amériques espagnoles, principalement à Lima, capitale de la vice-royauté du Pérou, mais aussi à Buenos Aires et à Portobelo. Les vice-royautés du Pérou et de la Nouvelle-Espagne étaient gouvernées au nom de la couronne espagnole et traitées comme des provinces espagnoles. Nombre des œuvres que Zurbarán y envoya furent peintes par son atelier, mais son engagement soutenu auprès des institutions religieuses des Amériques rendit son style extrêmement influent dans l'empire espagnol d'outre-mer.</p>
         </div>
@@ -296,13 +306,13 @@
         <p>The Zurbaráns' still lifes invite prolonged contemplation. Developed from just a few simple objects, these paintings celebrate the bounty and beauty of nature as well as the illusionistic art of painting itself.</p>
       </div>
       <div class="col">
-        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
-        <div class="zh-only zh-text">
+        <span class="lang-tag zh-only">中文</span><button class="tts-btn zh-only" title="朗读 / Read aloud" onclick="speakBlock('zhtext-6','zh-CN',this)">&#128266;</button><span class="lang-tag fr-only">Français</span><button class="tts-btn fr-only" title="Lire à voix haute" onclick="speakBlock('frtext-6','fr-FR',this)">&#128266;</button>
+        <div class="zh-only zh-text" id="zhtext-6">
           <p>苏巴朗所绘的静物画极少——目前已知不超过十幅——但他对这一画种的贡献却意义深远。他那幅非凡的《柠檬、橙子与玫瑰静物》(1633年)是塞维利亚现存最早签名并注明日期的静物画。同时代的其他西班牙静物画家擅长表现平凡器物的质感与美感,而苏巴朗的静物画则以其肃穆、冥想般的氛围,以及含蓄内敛的宗教象征意味而独树一帜。</p>
           <p>苏巴朗之子胡安(Juan,1620—1649)则将静物画作为自己的专长,在塞维利亚建立起成功的艺术生涯,擅长描绘摆放在金属托盘与编织篮筐中的水果,有时还辅以华丽的陶瓷器皿。胡安的画作既延续了父亲的艺术旨趣与敏锐的细节观察力,也引入了新的创新手法,例如以果枝点缀的不对称构图,以及一种全新的、装饰性的丰盈感。</p>
           <p>苏巴朗父子的静物画,邀人久久凝视、细细品味。这些画作仅由寥寥几件简单的物品构成,却既礼赞了自然的丰饶与美丽,也颂扬了绘画本身那以假乱真的幻艺之美。</p>
         </div>
-        <div class="fr-only fr-text">
+        <div class="fr-only fr-text" id="frtext-6">
           <p>Zurbarán peignit très peu de natures mortes — on n'en connaît pas plus d'une dizaine — mais sa contribution au genre fut d'une immense importance. Son extraordinaire <em>Nature morte aux citrons, oranges et une rose</em> (1633) est la plus ancienne nature morte signée et datée à Séville. D'autres peintres espagnols de natures mortes du XVIIe siècle excellaient à rendre la texture et la beauté des objets modestes, mais celles de Zurbarán se distinguent par leur atmosphère sévère et méditative, ainsi que par leur symbolisme religieux discret.</p>
           <p>Juan, le fils de Zurbarán (1620-1649), fit de la nature morte sa spécialité et bâtit à Séville une carrière florissante en représentant des fruits disposés sur des plats de métal et dans des paniers tressés, parfois accompagnés de somptueux récipients en céramique. Les tableaux de Juan reflètent les intérêts artistiques de son père et son sens aigu du détail, tout en introduisant des innovations, telles que des compositions asymétriques rehaussées de branches fruitières et une nouvelle abondance décorative.</p>
           <p>Les natures mortes des Zurbarán invitent à une contemplation prolongée. Nées de quelques objets simples, ces œuvres célèbrent à la fois la générosité et la beauté de la nature, et l'art illusionniste de la peinture elle-même.</p>
@@ -326,13 +336,13 @@
         <p>In 1658 Zurbarán left Seville to seek a new market in Madrid. The small-scale paintings he made there — many signed on trompe-l'oeil scraps of paper that stake a claim for painting's unrivalled ability to imitate reality — have a heightened intimacy and poetic grace that reveal an artist who continued to evolve until his death in 1664.</p>
       </div>
       <div class="col">
-        <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
-        <div class="zh-only zh-text">
+        <span class="lang-tag zh-only">中文</span><button class="tts-btn zh-only" title="朗读 / Read aloud" onclick="speakBlock('zhtext-7','zh-CN',this)">&#128266;</button><span class="lang-tag fr-only">Français</span><button class="tts-btn fr-only" title="Lire à voix haute" onclick="speakBlock('frtext-7','fr-FR',this)">&#128266;</button>
+        <div class="zh-only zh-text" id="zhtext-7">
           <p>苏巴朗的整个艺术生涯中,尤其是在他生命的最后几年,他为世俗赞助人创作了大量宗教题材作品。西班牙教会鼓励信众私人拥有宗教圣像。这类画作尺幅亲切,旨在触动情感,大概原本是为家庭与私人礼拜堂所绘。它们常常融入静物元素——其中一些元素,他也曾单独描绘于独立的静物画中,将神圣与日常融为一体。</p>
           <p>1649年,一场毁灭性的瘟疫席卷塞维利亚,此后苏巴朗的画风开始转变。曾一度定义他艺术特色的强烈戏剧性光影,逐渐让位于柔和的轮廓与更为松弛的笔触。</p>
           <p>1658年,苏巴朗离开塞维利亚,前往马德里寻求新的市场。他在那里创作的这些小幅画作——许多签名题写在以假乱真(trompe-l'œil)的纸片图案上,宣示着绘画那无与伦比的摹真之力——透出一种愈发浓厚的亲密感与诗意的优雅,展现出一位直至1664年辞世前仍在不断探索、持续演变的艺术家。</p>
         </div>
-        <div class="fr-only fr-text">
+        <div class="fr-only fr-text" id="frtext-7">
           <p>Tout au long de sa carrière, mais plus particulièrement dans ses dernières années, Zurbarán peignit des œuvres religieuses pour des commanditaires laïcs. L'Église espagnole encourageait la possession privée d'images pieuses. De format intime et conçues pour toucher les émotions, les peintures de Zurbarán de ce type étaient probablement destinées à des demeures et des chapelles privées. Elles intègrent souvent des éléments de nature morte, dont certains apparaissent également dans ses natures mortes autonomes, unissant ainsi le divin et le quotidien.</p>
           <p>Après la peste catastrophique qui ravagea Séville en 1649, le style de Zurbarán commença à se transformer. L'éclairage dur et dramatique qui avait caractérisé son art céda peu à peu la place à des contours adoucis et une touche plus libre.</p>
           <p>En 1658, Zurbarán quitta Séville pour chercher un nouveau marché à Madrid. Les tableaux de petit format qu'il y réalisa — nombre d'entre eux signés sur des bouts de papier en trompe-l'œil, affirmant la capacité inégalée de la peinture à imiter la réalité — révèlent une intimité accrue et une grâce poétique, témoignant d'un artiste qui continua d'évoluer jusqu'à sa mort en 1664.</p>
@@ -361,11 +371,11 @@
             <p>No portrait of Zurbarán survives. There are few documents in which we hear his voice. This painting — although not a literal self portrait — is the closest we come to meeting him. There is no precedent in Western art for a painter witnessing the Crucifixion, but here Saint Luke, the patron saint of painters, stands at Christ's feet, palette and brushes in his hand. This small canvas is Zurbarán's most explicit articulation of what it meant to him to be an artist, inspiring emotion and devotion through paint.</p>
           </div>
           <div class="col">
-            <span class="lang-tag zh-only">中文</span><span class="lang-tag fr-only">Français</span>
-            <div class="zh-only zh-text">
+            <span class="lang-tag zh-only">中文</span><button class="tts-btn zh-only" title="朗读 / Read aloud" onclick="speakBlock('zhtext-8','zh-CN',this)">&#128266;</button><span class="lang-tag fr-only">Français</span><button class="tts-btn fr-only" title="Lire à voix haute" onclick="speakBlock('frtext-8','fr-FR',this)">&#128266;</button>
+            <div class="zh-only zh-text" id="zhtext-8">
               <p>苏巴朗没有留下任何一幅肖像画。留存至今、能让我们听见他真实声音的文献也寥寥无几。这幅画——虽非严格意义上的自画像——却是我们最接近与他相遇的方式。在西方艺术中,从未有过画家亲眼目睹「基督受难」的先例,但在这幅画中,画家的主保圣人圣路加(Saint Luke)立于基督足下,手持调色板与画笔。这幅小画布,是苏巴朗对「身为艺术家」这一身份最直白的表达——以绘画激发情感,唤起信仰。</p>
             </div>
-            <div class="fr-only fr-text">
+            <div class="fr-only fr-text" id="frtext-8">
               <p>Aucun portrait de Zurbarán ne nous est parvenu. Peu de documents nous permettent d'entendre sa voix. Ce tableau — bien qu'il ne s'agisse pas d'un autoportrait au sens strict — est ce qui s'approche le plus d'une rencontre avec lui. Rien, dans l'art occidental, ne précède la représentation d'un peintre témoin de la Crucifixion ; pourtant, ici, saint Luc, le saint patron des peintres, se tient aux pieds du Christ, palette et pinceaux à la main. Cette petite toile constitue l'expression la plus explicite, chez Zurbarán, de ce que signifiait pour lui être artiste — inspirer l'émotion et la dévotion par la peinture.</p>
             </div>
           </div>
@@ -378,6 +388,29 @@
 </div>
 
 <script>
+
+  let currentUtterance = null;
+  function speakBlock(id, lang, btn){
+    const el = document.getElementById(id);
+    if(!el || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    document.querySelectorAll('.tts-btn.speaking').forEach(b => b.classList.remove('speaking'));
+    if(currentUtterance && currentUtterance._btn === btn){
+      currentUtterance = null;
+      return;
+    }
+    const text = el.innerText;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = lang;
+    utter.rate = 0.95;
+    utter._btn = btn;
+    utter.onstart = () => btn.classList.add('speaking');
+    utter.onend = () => { btn.classList.remove('speaking'); currentUtterance = null; };
+    utter.onerror = () => { btn.classList.remove('speaking'); currentUtterance = null; };
+    currentUtterance = utter;
+    window.speechSynthesis.speak(utter);
+  }
+
   function goTo(id){
     const el = document.getElementById(id);
     const nav = document.querySelector('.nav');
