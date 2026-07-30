@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conifers — A Field Guide to the Gymnosperms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1511;
+    --bg-2:#0b100d;
+    --surface:#161f19;
+    --surface-2:#1c261f;
+    --border:#2a352c;
+    --border-soft:#212b23;
+    --text:#e9e6da;
+    --text-dim:#a7b3a5;
+    --text-faint:#5f6f62;
+    --needle:#6a9464;
+    --needle-bright:#8fc086;
+    --resin:#c99a52;
+    --resin-dim:#8c723f;
+    --rust:#b16a49;
+    --frost:#7fa3ab;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(106,148,100,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(201,154,82,0.06), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    min-height:100vh;
+  }
+
+  /* contour-line atmosphere */
+  .contours{
+    position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.35;
+  }
+
+  .wrap{position:relative; z-index:1; max-width:1280px; margin:0 auto; padding:0 28px 80px;}
+
+  header{
+    padding:72px 0 40px;
+    border-bottom:1px solid var(--border-soft);
+    margin-bottom:36px;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--needle-bright);
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:22px; height:1px; background:var(--needle-bright);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(38px, 6vw, 68px);
+    line-height:1.02;
+    margin:0 0 20px;
+    letter-spacing:-0.01em;
+    color:var(--text);
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--needle-bright);
+  }
+  .sub{
+    font-size:16px;
+    line-height:1.65;
+    color:var(--text-dim);
+    max-width:620px;
+    font-weight:300;
+  }
+
+  .stats-row{
+    display:flex; gap:36px; margin-top:34px; flex-wrap:wrap;
+  }
+  .stat{font-family:'JetBrains Mono', monospace;}
+  .stat .n{font-size:22px; color:var(--resin); display:block;}
+  .stat .l{font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.1em;}
+
+  /* filters */
+  .filters{
+    display:flex; flex-wrap:wrap; gap:8px;
+    margin-bottom:40px;
+    position:sticky; top:0; z-index:5;
+    padding:18px 0;
+    background:linear-gradient(var(--bg) 78%, transparent);
+  }
+  .filter-btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.03em;
+    background:var(--surface);
+    color:var(--text-dim);
+    border:1px solid var(--border);
+    padding:9px 16px;
+    border-radius:3px;
+    cursor:pointer;
+    transition:all .18s ease;
+    white-space:nowrap;
+  }
+  .filter-btn:hover{border-color:var(--needle); color:var(--text);}
+  .filter-btn.active{
+    background:var(--needle);
+    border-color:var(--needle);
+    color:#0b120c;
+    font-weight:500;
+  }
+  .filter-btn .ct{opacity:0.6; margin-left:6px;}
+
+  /* grid */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:18px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:6px;
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:border-color .2s ease, transform .2s ease;
+    position:relative;
+  }
+  .card:hover{border-color:var(--border); transform:translateY(-2px);}
+  .card.hidden{display:none;}
+
+  .card-img{
+    width:100%; height:190px;
+    background:var(--bg-2);
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .card-img img{
+    width:100%; height:100%; object-fit:cover;
+    display:block;
+    opacity:0;
+    transition:opacity .5s ease;
+  }
+  .card-img img.loaded{opacity:1;}
+  .shimmer{
+    position:absolute; inset:0;
+    background:linear-gradient(100deg, var(--bg-2) 30%, #202b23 50%, var(--bg-2) 70%);
+    background-size:300% 100%;
+    animation:shimmer 1.8s infinite;
+  }
+  @keyframes shimmer{0%{background-position:150% 0;}100%{background-position:-150% 0;}}
+  .fallback-icon{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--text-faint);
+  }
+  .fallback-icon svg{width:56px; height:56px; opacity:0.55;}
+
+  .badge-group{
+    position:absolute; top:10px; left:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:0.06em; text-transform:uppercase;
+    background:rgba(11,16,13,0.78);
+    border:1px solid rgba(255,255,255,0.08);
+    color:var(--needle-bright);
+    padding:4px 8px; border-radius:3px;
+    backdrop-filter:blur(2px);
+  }
+
+  .card-body{padding:18px 18px 20px; display:flex; flex-direction:column; gap:8px; flex:1;}
+  .common-name{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:19px;
+    line-height:1.2;
+    color:var(--text);
+  }
+  .sci-name{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:14px;
+    color:var(--needle-bright);
+  }
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:6px 10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--text-faint);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    margin:2px 0 4px;
+  }
+  .meta-row span{white-space:nowrap;}
+  .meta-row .dot{color:var(--border);}
+  .range{
+    font-size:12.5px;
+    color:var(--frost);
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.01em;
+  }
+  .fact{
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--text-dim);
+    font-weight:300;
+    margin-top:2px;
+  }
+  .notable{
+    margin-top:auto;
+    padding-top:10px;
+    border-top:1px dashed var(--border-soft);
+    font-size:11px;
+    font-family:'JetBrains Mono', monospace;
+    color:var(--resin);
+    display:flex; align-items:center; gap:6px;
+  }
+  .notable svg{width:12px; height:12px; flex-shrink:0;}
+
+  footer{
+    margin-top:60px;
+    padding-top:28px;
+    border-top:1px solid var(--border-soft);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--text-faint);
+    line-height:1.8;
+  }
+
+  @media (max-width:640px){
+    header{padding:48px 0 32px;}
+    .grid{grid-template-columns:1fr 1fr;}
+    .stats-row{gap:22px;}
+  }
+  @media (max-width:420px){
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<svg class="contours" viewBox="0 0 1280 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#6a9464" stroke-width="1">
+    <path d="M-50,780 C 200,700 350,760 550,690 S 900,600 1330,660" opacity="0.18"/>
+    <path d="M-50,820 C 220,750 400,810 600,740 S 950,650 1330,710" opacity="0.14"/>
+    <path d="M-50,860 C 240,800 450,850 650,790 S 1000,700 1330,760" opacity="0.10"/>
+    <path d="M-50,60 C 250,140 420,40 640,110 S 980,180 1330,90" opacity="0.10"/>
+    <path d="M-50,20 C 260,90 440,10 660,70 S 1000,120 1330,40" opacity="0.14"/>
+  </g>
+</svg>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Pinophyta · 35 species surveyed</div>
+    <h1>The Conifers:<br><em>a field guide to the standing rings</em></h1>
+    <p class="sub">From the swamp-footed bald cypress to the wind-scoured bristlecone at treeline —
+    a reference collection of cone-bearing trees across the seven families of living Pinophyta,
+    plus one that survives only as stone.</p>
+    <div class="stats-row">
+      <div class="stat"><span class="n">35</span><span class="l">species</span></div>
+      <div class="stat"><span class="n">8</span><span class="l">lineages</span></div>
+      <div class="stat"><span class="n">~4,850</span><span class="l">oldest, yrs (P. longaeva)</span></div>
+      <div class="stat"><span class="n">115.7m</span><span class="l">tallest (Hyperion)</span></div>
+    </div>
+  </header>
+
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    Images sourced live from Wikipedia article thumbnails where available; species without a usable
+    photo display a line-drawn placeholder rather than a guessed file link. Ranges given are native
+    distribution, not cultivated range. Compiled for reference — verify taxonomic details against a
+    current source before formal use.
+  </footer>
+</div>
+
+<script>
+const FALLBACK_ICON = `
+<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M32 6 L44 24 H38 L48 38 H40 L50 54 H14 L24 38 H16 L26 24 H20 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  <rect x="29" y="54" width="6" height="6" fill="currentColor"/>
+</svg>`;
+
+const GROUPS = [
+  {id:'pines',        label:'Pines',                     color:'#6a9464'},
+  {id:'firs',         label:'Firs, Spruces & Hemlock',    color:'#7fa3ab'},
+  {id:'cedars',       label:'Cedars & Larch',             color:'#c99a52'},
+  {id:'redwoods',     label:'Redwood Subfamily',          color:'#b16a49'},
+  {id:'cypress',      label:'Cypresses & Junipers',       color:'#8fc086'},
+  {id:'yews',         label:'Yews',                       color:'#a08cc9'},
+  {id:'araucaria',    label:'Araucarias & Kauri',         color:'#c9c752'},
+  {id:'ancient',      label:'Ancient & Fossil Lineages',  color:'#6f6f6f'},
+];
+
+const SPECIES = [
+  {common:'Douglas Fir', sci:'Pseudotsuga menziesii', family:'Pinaceae', group:'firs', range:'Western North America', fact:'Not a true fir — its own genus. Among the tallest conifers on Earth and a mainstay of structural timber.', wiki:'Douglas fir'},
+  {common:'Western Red Cedar', sci:'Thuja plicata', family:'Cupressaceae', group:'cypress', range:'Pacific Northwest coast', fact:'Central to Northwest Coast Indigenous culture — carved into canoes, totem poles, and longhouse planks.', wiki:'Thuja plicata'},
+  {common:'Torrey Pine', sci:'Pinus torreyana', family:'Pinaceae', group:'pines', range:'Coastal San Diego County & Santa Rosa Island, CA', fact:'One of the rarest pines in North America, confined to two small wild populations.', notable:'Restricted range', wiki:'Pinus torreyana'},
+  {common:'Cryptomeria (Sugi)', sci:'Cryptomeria japonica', family:'Cupressaceae', group:'redwoods', range:'Japan, China', fact:"Japan's national tree, long planted in avenues leading to shrines and temples.", wiki:'Cryptomeria'},
+  {common:'Japanese Umbrella Pine', sci:'Sciadopitys verticillata', family:'Sciadopityaceae', group:'ancient', range:'Central Japan', fact:'Sole living member of its own family — whorls of needle-like structures give the umbrella form.', notable:'Monotypic family', wiki:'Sciadopitys verticillata'},
+  {common:'Monkey Puzzle Tree', sci:'Araucaria araucana', family:'Araucariaceae', group:'araucaria', range:'Andes of Chile & Argentina', fact:'Sacred to the Pehuenche people; densely overlapping, spine-tipped leaves deter climbing.', wiki:'Araucaria araucana'},
+  {common:'Japanese Yew', sci:'Taxus cuspidata', family:'Taxaceae', group:'yews', range:'Japan, Korea, NE China, Russian Far East', fact:'Source of taxane compounds related to paclitaxel; foliage and seeds are toxic if eaten.', wiki:'Taxus cuspidata'},
+  {common:'Utah Juniper', sci:'Juniperus osteosperma', family:'Cupressaceae', group:'cypress', range:'Great Basin, southwestern US', fact:'Forms vast pinyon–juniper woodlands across the intermountain West; some individuals exceed 1,000 years.', wiki:'Juniperus osteosperma'},
+  {common:'Mediterranean Cypress', sci:'Cupressus sempervirens', family:'Cupressaceae', group:'cypress', range:'Eastern Mediterranean', fact:'The columnar silhouette long planted in cemeteries and along roads across Tuscany and Greece.', wiki:'Cupressus sempervirens'},
+  {common:'Lebanese Cedar', sci:'Cedrus libani', family:'Pinaceae', group:'cedars', range:'Lebanon, Syria, southern Turkey', fact:"Timber prized in antiquity for temples and ships; the tree appears on Lebanon's flag.", notable:'Vulnerable — IUCN', wiki:'Cedrus libani'},
+  {common:'Atlas Cedar', sci:'Cedrus atlantica', family:'Pinaceae', group:'cedars', range:'Atlas Mountains, Morocco & Algeria', fact:'The blue-needled form is planted worldwide as an ornamental; wild stands are increasingly fragmented.', notable:'Endangered — IUCN', wiki:'Cedrus atlantica'},
+  {common:'Himalayan Cedar (Deodar)', sci:'Cedrus deodara', family:'Pinaceae', group:'cedars', range:'Western Himalayas', fact:'Name derives from Sanskrit devadāru — "timber of the gods."', wiki:'Cedrus deodara'},
+  {common:'Wollemi Pine', sci:'Wollemia nobilis', family:'Araucariaceae', group:'araucaria', range:'Wollemi National Park, Australia', fact:'Known only from fossils until a living stand of fewer than 100 trees was found hidden in a canyon in 1994.', notable:'Critically Endangered', wiki:'Wollemia'},
+  {common:'Scots Pine', sci:'Pinus sylvestris', family:'Pinaceae', group:'pines', range:'Scotland to eastern Siberia', fact:'The widest natural range of any pine species, recognizable by flaking orange upper bark.', wiki:'Pinus sylvestris'},
+  {common:'Stone Pine', sci:'Pinus pinea', family:'Pinaceae', group:'pines', range:'Mediterranean Basin', fact:'The umbrella-shaped crown of Roman roadsides; its large seeds are the pine nuts used in pesto.', wiki:'Pinus pinea'},
+  {common:'Bristlecone Pine', sci:'Pinus longaeva', family:'Pinaceae', group:'pines', range:'White Mountains, California & Nevada', fact:'Individual trees exceed 4,800 years old — among the oldest known non-clonal organisms.', notable:'Longevity record', wiki:'Pinus longaeva'},
+  {common:'Sequoia (Coast Redwood)', sci:'Sequoia sempervirens', family:'Cupressaceae', group:'redwoods', range:'Northern California & southern Oregon coast', fact:'The tallest tree species on Earth; the tree Hyperion stands 115.7 m.', notable:'Height record', wiki:'Sequoia sempervirens'},
+  {common:'Giant Sequoia', sci:'Sequoiadendron giganteum', family:'Cupressaceae', group:'redwoods', range:'Western Sierra Nevada, California', fact:'Greatest wood volume of any living tree; cones need fire-driven heat to release their seed.', notable:'Volume record', wiki:'Sequoiadendron giganteum'},
+  {common:'Norfolk Island Pine', sci:'Araucaria heterophylla', family:'Araucariaceae', group:'araucaria', range:'Norfolk Island, South Pacific', fact:'Symmetrical, tiered branching has made it a popular potted "living Christmas tree" worldwide.', wiki:'Araucaria heterophylla'},
+  {common:'Bunya Pine', sci:'Araucaria bidwillii', family:'Araucariaceae', group:'araucaria', range:'Southeast Queensland, Australia', fact:'Cones can weigh up to 10 kg; historically gathered at large Aboriginal Bunya gatherings.', wiki:'Araucaria bidwillii'},
+  {common:'Bald Cypress', sci:'Taxodium distichum', family:'Cupressaceae', group:'redwoods', range:'Southeastern US wetlands', fact:'A deciduous conifer — it sheds its needles each autumn — and forms distinctive "knees" in swamp water.', wiki:'Taxodium distichum'},
+  {common:'Dawn Redwood', sci:'Metasequoia glyptostroboides', family:'Cupressaceae', group:'redwoods', range:'Sichuan & Hubei, China', fact:'Known only as fossils and presumed extinct until living groves were located in 1944.', notable:'Living fossil', wiki:'Metasequoia'},
+  {common:'Korean Pine', sci:'Pinus koraiensis', family:'Pinaceae', group:'pines', range:'Korea, NE China, Russian Far East, Japan', fact:'Large, wingless edible seeds make it a major regional pine-nut crop.', wiki:'Pinus koraiensis'},
+  {common:'Larch (European)', sci:'Larix decidua', family:'Pinaceae', group:'cedars', range:'European Alps & Carpathians', fact:'A deciduous conifer whose needles turn gold and drop each autumn.', wiki:'Larix decidua'},
+  {common:'Siberian Pine', sci:'Pinus sibirica', family:'Pinaceae', group:'pines', range:'Siberia, Mongolia, Kazakhstan', fact:'A cold-hardy five-needle pine whose seeds sustain nutcrackers, squirrels, and local harvests.', wiki:'Pinus sibirica'},
+  {common:'Hinoki Cypress', sci:'Chamaecyparis obtusa', family:'Cupressaceae', group:'cypress', range:'Central Japan', fact:'Fragrant, rot-resistant timber traditionally reserved for shrines, temples, and bathhouses.', wiki:'Chamaecyparis obtusa'},
+  {common:'Alerce (Patagonian Cypress)', sci:'Fitzroya cupressoides', family:'Cupressaceae', group:'cypress', range:'Andes of Chile & Argentina', fact:'One of the longest-lived tree species on record, with individuals over 3,600 years old.', notable:'Longevity record', wiki:'Fitzroya'},
+  {common:'Paraná Pine', sci:'Araucaria angustifolia', family:'Araucariaceae', group:'araucaria', range:'Southern Brazil, Argentina, Paraguay', fact:'A keystone species of the highly reduced Atlantic Forest araucaria woodlands.', notable:'Critically Endangered', wiki:'Araucaria angustifolia'},
+  {common:'Yellow Cedar', sci:'Cupressus nootkatensis', family:'Cupressaceae', group:'cypress', range:'Pacific coast, Oregon to Alaska', fact:'Durable, aromatic wood; increasingly stressed by thinning snowpack and root freeze damage.', wiki:'Cupressus nootkatensis'},
+  {common:'Queensland Kauri', sci:'Agathis robusta', family:'Araucariaceae', group:'araucaria', range:'Northeastern Queensland, Australia', fact:'A tall, buttressed trunk once heavily logged for resin and clear, straight-grained timber.', wiki:'Agathis robusta'},
+  {common:'Araucarioxylon', sci:'Araucarioxylon arizonicum', family:'Araucariaceae (extinct)', group:'ancient', range:'Late Triassic Arizona (fossil)', fact:'An extinct conifer genus whose silicified logs form the bulk of Petrified Forest National Park.', notable:'Extinct — fossil only', wiki:'Araucarioxylon'},
+  {common:'Ponderosa Pine', sci:'Pinus ponderosa', family:'Pinaceae', group:'pines', range:'Western North America', fact:'Thick, puzzle-plated bark that smells of vanilla or butterscotch in the sun.', wiki:'Pinus ponderosa'},
+  {common:'Blue Spruce', sci:'Picea pungens', family:'Pinaceae', group:'firs', range:'Rocky Mountains, CO/UT/WY', fact:'A waxy blue-gray coating on the needles gives the species its color; state tree of Colorado and Utah.', wiki:'Picea pungens'},
+  {common:'Mountain Hemlock', sci:'Tsuga mertensiana', family:'Pinaceae', group:'firs', range:'Western North American high mountains', fact:'A distinctive drooping leader shoot; thrives under deep, persistent snowpack.', wiki:'Tsuga mertensiana'},
+  {common:'Subalpine Fir', sci:'Abies lasiocarpa', family:'Pinaceae', group:'firs', range:'Western North American subalpine zone', fact:'A narrow spire form sheds snow easily and forms wind-flagged krummholz mats at treeline.', wiki:'Abies lasiocarpa'},
+];
+
+function groupMeta(id){ return GROUPS.find(g=>g.id===id); }
+
+function cardHTML(sp, idx){
+  const g = groupMeta(sp.group);
+  const notable = sp.notable ? `
+    <div class="notable">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>
+      ${sp.notable}
+    </div>` : '';
+  return `
+  <div class="card" data-group="${sp.group}" data-idx="${idx}">
+    <div class="card-img" id="img-${idx}">
+      <div class="shimmer"></div>
+      <div class="fallback-icon" style="display:none;">${FALLBACK_ICON}</div>
+      <span class="badge-group" style="color:${g.color}">${g.label}</span>
+    </div>
+    <div class="card-body">
+      <div class="common-name">${sp.common}</div>
+      <div class="sci-name">${sp.sci}</div>
+      <div class="meta-row"><span>${sp.family}</span></div>
+      <div class="range">${sp.range}</div>
+      <div class="fact">${sp.fact}</div>
+      ${notable}
+    </div>
+  </div>`;
+}
+
+function renderFilters(){
+  const el = document.getElementById('filters');
+  const counts = {};
+  SPECIES.forEach(s=> counts[s.group] = (counts[s.group]||0)+1 );
+  let html = `<button class="filter-btn active" data-filter="all">All <span class="ct">${SPECIES.length}</span></button>`;
+  GROUPS.forEach(g=>{
+    html += `<button class="filter-btn" data-filter="${g.id}">${g.label} <span class="ct">${counts[g.id]||0}</span></button>`;
+  });
+  el.innerHTML = html;
+  el.addEventListener('click', e=>{
+    const btn = e.target.closest('.filter-btn');
+    if(!btn) return;
+    el.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.card').forEach(c=>{
+      c.classList.toggle('hidden', f !== 'all' && c.dataset.group !== f);
+    });
+  });
+}
+
+function renderGrid(){
+  document.getElementById('grid').innerHTML = SPECIES.map(cardHTML).join('');
+}
+
+function showFallback(idx){
+  const box = document.getElementById(`img-${idx}`);
+  if(!box) return;
+  const shimmer = box.querySelector('.shimmer');
+  const fb = box.querySelector('.fallback-icon');
+  if(shimmer) shimmer.remove();
+  if(fb) fb.style.display = 'flex';
+}
+
+function showImage(idx, url){
+  const box = document.getElementById(`img-${idx}`);
+  if(!box) return;
+  const img = new Image();
+  img.onload = () => {
+    const shimmer = box.querySelector('.shimmer');
+    if(shimmer) shimmer.remove();
+    img.className = 'loaded';
+    box.insertBefore(img, box.firstChild);
+    requestAnimationFrame(()=> img.classList.add('loaded'));
+  };
+  img.onerror = () => showFallback(idx);
+  img.src = url;
+  img.alt = '';
+}
+
+// Phase 1: batch pageimages lookup
+async function loadImagesBatch(){
+  const titles = SPECIES.map(s=>s.wiki);
+  const pending = new Set(SPECIES.map((s,i)=>i));
+  const chunkSize = 20;
+  for(let i=0; i<titles.length; i+=chunkSize){
+    const chunk = titles.slice(i, i+chunkSize);
+    const idxs = SPECIES.map((s,ix)=>ix).slice(i, i+chunkSize);
+    try{
+      const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=thumbnail&pithumbsize=500&redirects=1&titles=${encodeURIComponent(chunk.join('|'))}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const pages = data?.query?.pages || {};
+      const normalized = {};
+      (data?.query?.normalized||[]).forEach(n=> normalized[n.to]=n.from );
+      (data?.query?.redirects||[]).forEach(r=> normalized[r.to]=normalized[r.from]||r.from );
+
+      const byTitle = {};
+      Object.values(pages).forEach(p=>{
+        if(p.thumbnail?.source) byTitle[p.title] = p.thumbnail.source;
+      });
+
+      idxs.forEach(ix=>{
+        const sp = SPECIES[ix];
+        // try direct title match, then reverse-normalized
+        let found = byTitle[sp.wiki];
+        if(!found){
+          for(const [norm, orig] of Object.entries(normalized)){
+            if(orig === sp.wiki && byTitle[norm]){ found = byTitle[norm]; break; }
+          }
+        }
+        if(found){
+          showImage(ix, found);
+          pending.delete(ix);
+        }
+      });
+    }catch(e){ /* continue to phase 2 */ }
+  }
+  return pending;
+}
+
+// Phase 2: individual lookups for stragglers (handles disambiguation / odd titles)
+async function loadImagesIndividually(pendingSet){
+  for(const idx of pendingSet){
+    const sp = SPECIES[idx];
+    try{
+      const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=original&redirects=1&titles=${encodeURIComponent(sp.wiki)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const pages = data?.query?.pages || {};
+      const page = Object.values(pages)[0];
+      if(page?.original?.source){
+        showImage(idx, page.original.source);
+      }else{
+        showFallback(idx);
+      }
+    }catch(e){
+      showFallback(idx);
+    }
+  }
+}
+
+async function init(){
+  renderFilters();
+  renderGrid();
+  const pending = await loadImagesBatch();
+  if(pending.size) await loadImagesIndividually(pending);
+}
+
+init();
+</script>
+</body>
+</html>
