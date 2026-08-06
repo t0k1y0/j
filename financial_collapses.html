@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger of Collapse — Financial Failures, 1974–2026</title>
+<style>
+  :root {
+    --paper: #efe9db;
+    --paper-dark: #e4dcc8;
+    --ink: #23201a;
+    --ink-soft: #58513f;
+    --rule: #c9bd9e;
+    --rule-dark: #a89a72;
+    --accent: #7a2e2e;
+    --accent-soft: #a8593f;
+    --ledger-green: #3b4a3a;
+    --mono: 'Courier New', Courier, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  }
+
+  body {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(168,154,114,0.06) 0px, rgba(168,154,114,0.06) 1px, transparent 1px, transparent 34px);
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 56px 24px 120px;
+  }
+
+  header.masthead {
+    text-align: center;
+    border-bottom: 3px double var(--rule-dark);
+    padding-bottom: 22px;
+    margin-bottom: 8px;
+  }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-family: 'Times New Roman', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(34px, 6vw, 54px);
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
+    line-height: 1.05;
+  }
+
+  .subhead {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    margin-top: 14px;
+  }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 26px 0 40px;
+    flex-wrap: wrap;
+  }
+
+  .controls button {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--rule-dark);
+    color: var(--ink-soft);
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .controls button:hover { background: var(--ink); color: var(--paper); }
+  .controls button.active { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+
+  .decade-block { margin-bottom: 6px; }
+
+  .decade-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ledger-green);
+    display: inline-block;
+    padding: 4px 12px;
+    margin: 34px 0 4px;
+  }
+
+  ul.entries { list-style: none; margin: 0; padding: 0; }
+
+  li.entry {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .entry-head {
+    display: grid;
+    grid-template-columns: 64px 1fr auto 18px;
+    align-items: baseline;
+    gap: 14px;
+    padding: 15px 4px;
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.15s ease;
+  }
+  .entry-head:hover { background: var(--paper-dark); }
+
+  .entry-year {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
+  .entry-name {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .entry-name .subject {
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .entry-scale {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    text-align: right;
+    white-space: nowrap;
+    display: none;
+  }
+
+  .chevron {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--rule-dark);
+    transition: transform 0.2s ease;
+    justify-self: end;
+  }
+  li.entry.open .chevron { transform: rotate(90deg); color: var(--accent); }
+
+  .entry-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.28s ease;
+  }
+  li.entry.open .entry-body { max-height: 600px; }
+
+  .entry-body-inner {
+    padding: 0 4px 24px 78px;
+  }
+
+  .cause-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    border: 1px solid var(--accent-soft);
+    padding: 2px 8px;
+    margin-bottom: 10px;
+  }
+
+  .entry-detail {
+    font-size: 15px;
+    line-height: 1.62;
+    color: var(--ink);
+    max-width: 680px;
+  }
+
+  .entry-scale-mobile {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 18px;
+    border-top: 1px double var(--rule-dark);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.7;
+  }
+
+  @media (min-width: 640px) {
+    .entry-scale { display: block; }
+    .entry-scale-mobile { display: none; }
+  }
+
+  @media (max-width: 520px) {
+    .entry-head { grid-template-columns: 46px 1fr 16px; }
+    .entry-body-inner { padding-left: 4px; }
+  }
+
+  ::selection { background: var(--accent); color: var(--paper); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">A Ledger, Compiled</div>
+    <h1>The Book of Collapse</h1>
+    <p class="subhead">Bank failures, hedge fund blow-ups, and corporate frauds, 1974–2026 — click any entry to read the full account.</p>
+    <div class="meta-row">
+      <span id="countLabel">49 entries</span>
+      <span>Sorted chronologically</span>
+    </div>
+  </header>
+
+  <div class="controls" id="filters">
+    <button data-filter="all" class="active">All</button>
+    <button data-filter="bank">Banks</button>
+    <button data-filter="fund">Hedge Funds</button>
+    <button data-filter="fraud">Fraud / Ponzi</button>
+    <button data-filter="crypto">Crypto</button>
+  </div>
+
+  <div id="ledger"></div>
+
+  <footer>
+    Figures are approximate and vary by source and measurement date.<br>
+    Legal outcomes reflect status as of compilation; some cases remain under appeal.
+  </footer>
+</div>
+
+<script>
+const DATA = [
+{ y:"1974", name:"Herstatt Bank", tag:"bank", scale:"—", cause:"FX settlement failure", detail:"German bank shut down mid-day by regulators after FX trading losses, but had already received dollar payments from counterparties before delivering the corresponding Deutsche marks on the other side of settlement. The resulting settlement-timing failure — banks paying out but not receiving — became known as \"Herstatt risk\" and led directly to the founding of the Basel Committee on Banking Supervision." },
+{ y:"1984", name:"Continental Illinois", tag:"bank", scale:"$40B+ assets", cause:"Bad energy loans", detail:"At the time the largest bank failure in U.S. history. Aggressive purchases of energy-sector loan participations from a smaller Oklahoma bank (Penn Square Bank) went bad when oil prices collapsed. A run by large depositors and interbank lenders forced a federal rescue, and the episode gave rise to the \"too big to fail\" doctrine in U.S. banking policy." },
+{ y:"1980s–90s", name:"Savings & Loan Crisis", tag:"bank", scale:"~$160B taxpayer cost", cause:"Deregulation, bad real estate loans", detail:"Deregulation let thrifts move from conservative mortgage lending into speculative real estate and junk bonds, just as interest rate volatility hammered their balance sheets. Over 1,000 S&Ls failed between the early 1980s and early 1990s; cleanup (via the Resolution Trust Corporation) cost taxpayers roughly $160 billion." },
+{ y:"1987", name:"Black Monday", tag:"bank", scale:"~22% single-day drop", cause:"Program trading feedback loop", detail:"The Dow fell about 22% in a single day, the largest one-day percentage drop in its history. Portfolio insurance strategies — programmatic selling of futures to hedge equity portfolios — created a self-reinforcing feedback loop as falling prices triggered more automated selling." },
+{ y:"1990", name:"Drexel Burnham Lambert", tag:"fraud", scale:"—", cause:"Junk bond fraud, insider trading", detail:"Drexel built the modern junk bond market under Michael Milken but was undone by an insider-trading and securities-fraud scandal (tied to Ivan Boesky's cooperation with prosecutors). The firm pleaded guilty to six felonies, paid $650 million in fines, and collapsed into bankruptcy in February 1990. Milken himself later pleaded guilty to securities violations and served prison time." },
+{ y:"1994", name:"Askin Capital Management", tag:"fund", scale:"—", cause:"Leveraged MBS bets", detail:"A leveraged bet on mortgage derivatives (collateralized mortgage obligations) came undone when the Fed's surprise 1994 rate hikes triggered a bond market rout. Askin's models mispriced the securities and lenders' margin calls forced a fire sale, wiping out the funds." },
+{ y:"1995", name:"Barings Bank", subject:"Nick Leeson", tag:"bank", scale:"~$1.3B loss", cause:"Rogue derivatives trading", detail:"Rogue trader Nick Leeson, based in Singapore, built up unauthorized directional bets on Nikkei 225 futures, hiding losses in an \"error account\" for years. The Kobe earthquake in January 1995 sent the Nikkei falling further against his position, and losses reached roughly $1.3 billion — more than the bank's entire capital base. Britain's oldest merchant bank, 233 years old, was sold to ING for a nominal £1." },
+{ y:"1998", name:"Long-Term Capital Management", subject:"LTCM", tag:"fund", scale:"$100B+ AUM; $3.6B bailout", cause:"Extreme leverage, Russian default", detail:"Founded in 1994 by John Meriwether with Nobel laureates Myron Scholes and Robert Merton on the board, LTCM ran highly leveraged relative-value arbitrage strategies (leverage estimated at 25:1 to 100:1 depending on measure). Assets under management exceeded $100 billion at their peak on a much smaller capital base. Russia's August 1998 sovereign default triggered a global flight to quality that broke LTCM's arbitrage relationships simultaneously across markets. The New York Fed organized a $3.6 billion private-sector bailout from 14 banks to prevent a disorderly unwind from cascading through the financial system." },
+{ y:"2001", name:"Enron", tag:"fraud", scale:"~$74B market cap wiped out", cause:"Accounting fraud", detail:"Used mark-to-market accounting and off-balance-sheet special purpose entities (run partly by CFO Andrew Fastow) to hide debt and inflate earnings. Once the structures unraveled, roughly $74 billion in market value was wiped out and the company filed the then-largest bankruptcy in U.S. history. Auditor Arthur Andersen collapsed as a result. Many hedge funds and pension funds that had invested based on Enron's reported financials suffered heavy losses." },
+{ y:"2002", name:"WorldCom", tag:"fraud", scale:"~$107B bankruptcy", cause:"Accounting fraud", detail:"Improperly capitalized billions in ordinary operating expenses as capital expenditures to inflate profits. The $107 billion bankruptcy that followed was, at the time, the largest in U.S. history, surpassing Enron. CEO Bernard Ebbers was convicted and sentenced to 25 years." },
+{ y:"2002", name:"Tyco International", tag:"fraud", scale:"—", cause:"Executive theft", detail:"CEO Dennis Kozlowski and CFO Mark Swartz were found to have looted the industrial conglomerate of hundreds of millions of dollars through unauthorized bonuses, loans, and extravagant personal spending (including the infamous $2 million Sardinia birthday party). Both were convicted of grand larceny." },
+{ y:"2002", name:"Adelphia Communications", tag:"fraud", scale:"~$2.3B", cause:"Family looting", detail:"The founding Rigas family used the cable company as a personal piggy bank, running up roughly $2.3 billion in off-balance-sheet debt guaranteed by the company while family members drew improper loans and perks. Founder John Rigas and his son were convicted of fraud." },
+{ y:"2003", name:"Parmalat", tag:"fraud", scale:"~€14B hole", cause:"Accounting fraud", detail:"The Italian dairy giant's founder fabricated a €14 billion hole in the balance sheet, including a fictitious bank account purportedly holding €4 billion at Bank of America. Dubbed \"Europe's Enron,\" the collapse triggered Italy's largest-ever corporate bankruptcy." },
+{ y:"2005", name:"Bayou Group", tag:"fraud", scale:"~$450M", cause:"Ponzi scheme", detail:"A Connecticut hedge fund complex run by Samuel Israel III that was, in reality, a Ponzi scheme dressed up with a fake in-house \"auditing\" firm to certify fabricated returns. Roughly $450 million in investor money was lost; Israel later faked his own suicide while awaiting a prison surrender." },
+{ y:"2005", name:"Refco", tag:"fraud", scale:"~$430M hidden debt", cause:"Hidden bad debt", detail:"A major commodities and futures brokerage that went public in August 2005, only to disclose weeks later that CEO Phillip Bennett had hidden roughly $430 million in bad debt from auditors and investors by shuffling it into a related entity before each earnings report. The stock collapsed and Refco filed for bankruptcy within a month of its IPO; Bennett was convicted of fraud." },
+{ y:"2006", name:"Amaranth Advisors", tag:"fund", scale:"$9.2B AUM; $6B+ lost", cause:"Natural gas bet", detail:"Once one of the largest multi-strategy hedge funds at $9.2 billion in assets, Amaranth's energy desk (led by trader Brian Hunter) built an outsized, poorly hedged bet on natural gas futures spreads. An unexpectedly mild 2006 hurricane season and warm winter outlook moved prices against the position; the fund lost over $6 billion in about a week and was forced to liquidate — at the time the largest known hedge fund trading loss." },
+{ y:"2007", name:"Northern Rock", tag:"bank", scale:"—", cause:"Wholesale funding run", detail:"A UK mortgage lender that had grown aggressively by funding long-term mortgages with short-term wholesale borrowing rather than deposits. When the credit markets seized up in 2007, Northern Rock couldn't roll over its funding, and depositors queued outside branches in the first UK bank run in roughly 150 years. It was nationalized in February 2008." },
+{ y:"2007", name:"Sowood Capital", tag:"fund", scale:"$3B AUM; ~$1.5B lost", cause:"Leveraged credit turmoil", detail:"Founded by former Harvard Management Company manager Jeffrey Larson (Harvard seeded it with $500 million), Sowood held leveraged credit and corporate bond positions that were hit hard by the July 2007 credit market turmoil, one of the earliest hedge-fund casualties of what became the financial crisis. The fund lost roughly half of its $3 billion capital in under a month; Citadel bought out the remaining positions (and profited handsomely when markets later recovered)." },
+{ y:"2007", name:"Bear Stearns' two credit funds", tag:"fund", scale:"~$1.6B+", cause:"Subprime MBS exposure", detail:"The High-Grade Structured Credit Strategies Fund and its more leveraged sibling held large positions in subprime mortgage-backed CDOs. As housing began to weaken in early 2007, both funds' NAVs collapsed; they were effectively wiped out by mid-2007, an early tremor of the coming crisis and a reputational blow to Bear Stearns itself." },
+{ y:"2007–08", name:"Countrywide Financial", tag:"bank", scale:"—", cause:"Subprime origination", detail:"The largest U.S. subprime mortgage originator, Countrywide's aggressive underwriting standards left it exposed when defaults spiked. Facing a liquidity crisis, it was acquired by Bank of America in a distressed 2008 sale that later saddled BofA with massive mortgage-related litigation." },
+{ y:"2008", name:"Bear Stearns", tag:"bank", scale:"—", cause:"Liquidity crisis", detail:"Facing a rapid loss of confidence and a run by repo lenders and counterparties over its mortgage-securities exposure, the 85-year-old investment bank was forced into a Fed-brokered emergency sale to JPMorgan Chase in March 2008 at roughly $2 per share (later raised to $10), a fraction of its prior value." },
+{ y:"2008", name:"Peloton Partners", tag:"fund", scale:"~$3B AUM", cause:"Leveraged subprime credit", detail:"A credit hedge fund that ran leveraged subprime-linked positions and imploded early in the 2008 credit crisis when lenders pulled financing, forcing a rapid, loss-making unwind." },
+{ y:"2008", name:"IndyMac", tag:"bank", scale:"~$32B assets", cause:"Subprime exposure", detail:"A major thrift heavily exposed to Alt-A and subprime mortgages. Depositor withdrawals accelerated after Senator Chuck Schumer publicly questioned its solvency; regulators seized it in July 2008 in one of the largest bank failures in U.S. history at that point." },
+{ y:"2008", name:"Lehman Brothers", tag:"bank", scale:"~$639B assets", cause:"Leverage, hidden repo", detail:"Heavily leveraged exposure to subprime mortgage securities and commercial real estate, combined with aggressive use of \"Repo 105\" transactions to temporarily hide leverage from investors, left Lehman unable to raise capital as confidence evaporated. Its September 15, 2008 bankruptcy filing remains the largest in U.S. history and is widely seen as the acute trigger of the global financial crisis." },
+{ y:"2008", name:"Washington Mutual", tag:"bank", scale:"~$307B assets", cause:"Depositor run", detail:"The largest U.S. bank failure in history by assets. A depositor run following Lehman's collapse led the OTS to seize WaMu; its banking operations were sold to JPMorgan Chase for $1.9 billion, wiping out shareholders and bondholders." },
+{ y:"2008", name:"AIG", tag:"bank", scale:"~$182B bailout", cause:"CDS exposure", detail:"AIG Financial Products had written enormous volumes of credit default swaps insuring mortgage-backed CDOs without adequately reserving against losses. As mortgage securities collapsed in value, AIG faced roughly $182 billion in eventual federal bailout support to avoid a disorderly default that would have hit banks worldwide as counterparties." },
+{ y:"2008", name:"Bernie Madoff", subject:"and feeder funds", tag:"fraud", scale:"~$65B", cause:"Ponzi scheme", detail:"Not a hedge fund itself, but the largest Ponzi scheme in history (roughly $65 billion in claimed value), run for decades through Madoff's investment advisory arm. Its collapse in December 2008 took down numerous hedge fund \"feeder funds\" (e.g., Fairfield Sentry, Tremont) that had funneled client money to Madoff without adequate due diligence. Madoff was sentenced to 150 years and died in prison in 2021." },
+{ y:"2008", name:"Iceland's banking system", subject:"Kaupthing, Glitnir, Landsbanki", tag:"bank", scale:"~$85B combined", cause:"Overleverage vs. GDP", detail:"Iceland's three major banks had grown their combined balance sheets to roughly 10x the country's GDP through aggressive foreign expansion and wholesale funding. When global credit markets froze, all three collapsed within days of each other in October 2008, and the government could not backstop them — an entire national banking system failing at once." },
+{ y:"2009", name:"Scoop Management", subject:"Arthur Nadel", tag:"fraud", scale:"~$300M overstated", cause:"Fraud, disappearance", detail:"Nadel ran six hedge funds claiming active equity trading strategies while overstating their value by roughly $300 million and diverting client money. He disappeared in January 2009, left a note that read as a suicide note, and was arrested weeks later; he died in federal prison in 2014." },
+{ y:"2009", name:"WG Trading / Westridge Capital", tag:"fraud", scale:"~$1.8B", cause:"13-year fraud", detail:"Sold to endowments and pension funds as a market-neutral index arbitrage strategy, WG Trading was in fact a 13-year, roughly $1.8 billion fraud whose proceeds funded houses, racehorses, and a multimillion-dollar teddy bear collection for its principals. It persisted partly because regulators hadn't examined the firm since 1995, and unraveled once the National Futures Association finally did." },
+{ y:"2009", name:"Galleon Group", tag:"fund", scale:"—", cause:"Insider trading", detail:"A large hedge fund run by Raj Rajaratnam that collapsed amid what was then the largest insider-trading prosecution in U.S. history, built on a network of corporate insiders feeding Galleon material nonpublic information. Rajaratnam was convicted in 2011 and sentenced to 11 years." },
+{ y:"2009", name:"Dubai World", tag:"bank", scale:"~$59B debt", cause:"Real estate overexpansion", detail:"The state-owned conglomerate behind Dubai's real-estate boom (including the Palm Islands developments) sought a debt standstill on roughly $59 billion in liabilities in November 2009 after overexpanding during the boom, rattling global markets briefly amid fears of a sovereign-linked default." },
+{ y:"2009", name:"Anglo Irish Bank", tag:"bank", scale:"~€30B bailout", cause:"Property lending", detail:"Reckless property development lending during Ireland's \"Celtic Tiger\" boom left Anglo Irish insolvent when the property bubble burst. Its nationalization and roughly €30 billion bailout became a symbol of the Irish banking crisis and contributed to Ireland's 2010 EU/IMF bailout." },
+{ y:"2011", name:"MF Global", subject:"Jon Corzine", tag:"bank", scale:"~$1.6B client funds", cause:"Sovereign debt bets, comingled funds", detail:"Under former Goldman Sachs CEO and New Jersey governor Jon Corzine, the futures brokerage made large proprietary bets on European sovereign debt. As losses mounted, roughly $1.6 billion in customer segregated funds were improperly used to meet margin calls and cover losses. MF Global's bankruptcy was the 8th-largest in U.S. history; Corzine faced civil penalties but no criminal charges." },
+{ y:"2012", name:"JPMorgan \"London Whale\"", tag:"bank", scale:"~$6.2B loss", cause:"Outsized derivatives bet", detail:"A single trader (Bruno Iksil) in JPMorgan's Chief Investment Office built an outsized, illiquid credit derivatives position that moved markets by its own size. Attempts to unwind it led to a loss of roughly $6.2 billion, a major embarrassment for the bank widely seen as a well-managed risk shop, and prompted congressional hearings." },
+{ y:"2013–14", name:"SAC Capital Advisors", tag:"fund", scale:"$1.8B penalty", cause:"Insider trading", detail:"Steven Cohen's fund pleaded guilty to insider trading charges after a string of employee convictions, paying a record $1.8 billion in fines and penalties. SAC was barred from managing outside money and converted into Cohen's family office, Point72." },
+{ y:"2015", name:"1MDB", subject:"Malaysia sovereign fund", tag:"fraud", scale:"~$4.5B embezzled", cause:"Sovereign fund looting", detail:"Malaysia's sovereign wealth fund, 1Malaysia Development Berhad, was looted of an estimated $4.5 billion through bond offerings arranged by Goldman Sachs, with proceeds diverted to fund a lavish lifestyle for financier Jho Low and associates (financing, among other things, the film \"The Wolf of Wall Street\"). Goldman later paid roughly $2.9 billion in penalties over its role; former Malaysian PM Najib Razak was convicted domestically." },
+{ y:"2015", name:"Glenview Capital Management", tag:"fund", scale:"—", cause:"Healthcare stock drawdown", detail:"A well-regarded fund run by Larry Robbins suffered a sharp drawdown from concentrated bets on healthcare stocks that fell out of favor amid pricing-scandal-driven sector selloffs (e.g., Valeant). Not a full collapse, but a notable stumble for a previously top-performing fund." },
+{ y:"2020", name:"Wirecard", tag:"fraud", scale:"~€1.9B \"missing\"", cause:"Fabricated cash balances", detail:"The German payments fintech, once a DAX-30 darling, was revealed to have fabricated roughly €1.9 billion in cash balances supposedly held in Philippine trustee accounts that didn't exist. COO Jan Marsalek fled and remains a fugitive; CEO Markus Braun was later convicted of fraud." },
+{ y:"2021", name:"Greensill Capital", tag:"bank", scale:"~$10B", cause:"Supply-chain finance concentration", detail:"A supply-chain finance firm that packaged short-term trade receivables (including speculative, undrawn future receivables tied to single clients like Sanjeev Gupta's GFG Alliance) into investment products insured by a small Australian insurer. When that insurer refused to renew coverage, the roughly $10 billion structure collapsed, taking down Credit Suisse's linked supply-chain finance funds and damaging the bank's reputation ahead of its eventual failure." },
+{ y:"2021", name:"Archegos Capital Management", subject:"Bill Hwang", tag:"fund", scale:"$10B+ bank losses", cause:"Hidden swap leverage", detail:"Hwang's family office built roughly $160 billion of exposure to a concentrated set of stocks (ViacomCBS, Discovery, several Chinese ADRs) using total return swaps with at least nine banks, which let him hide the size and concentration of the position from each bank individually. When target stocks fell, margin calls he couldn't meet forced a disorderly unwind that cost banks a combined $10 billion+ (Credit Suisse alone lost roughly $5.5 billion). Hwang was convicted in July 2024 on 10 counts including racketeering conspiracy, securities fraud, and market manipulation, and was sentenced in November 2024 to 18 years in prison plus over $9 billion in restitution." },
+{ y:"2021–22", name:"Melvin Capital", tag:"fund", scale:"50%+ loss", cause:"GameStop short squeeze", detail:"Gabe Plotkin's fund held large short positions in GameStop and other heavily shorted \"meme stocks.\" A coordinated buying campaign by retail traders on Reddit's r/WallStreetBets triggered a short squeeze in January 2021, forcing Melvin to close positions at steep losses despite a $2.75 billion emergency capital injection from Citadel and Point72. The fund never recovered and shut down in May 2022." },
+{ y:"2022", name:"Three Arrows Capital", subject:"3AC", tag:"crypto", scale:"~$3B+", cause:"Crypto leverage, Terra exposure", detail:"A crypto-focused fund run by Su Zhu and Kyle Davies that used heavy leverage across crypto lending platforms and directional bets, including large exposure to the Terra/Luna ecosystem. The May 2022 Terra collapse triggered margin calls 3AC couldn't meet; the fund (estimated peak AUM north of $10 billion) collapsed into liquidation, rippling through crypto lenders like Voyager and Celsius that had lent to it." },
+{ y:"2022", name:"Terra/Luna", subject:"Do Kwon", tag:"crypto", scale:"~$40B wiped out", cause:"Stablecoin de-peg", detail:"Terra's algorithmic stablecoin, UST, was meant to hold its dollar peg through an arbitrage mechanism with its sister token, Luna. A combination of large withdrawals from the Anchor Protocol (which had offered unsustainable ~20% yields) and coordinated selling broke the peg in May 2022; the death spiral wiped out roughly $40 billion in combined value within days. Founder Do Kwon was later arrested and faces fraud charges in both South Korea and the U.S." },
+{ y:"2022", name:"Alameda Research / FTX", subject:"Sam Bankman-Fried", tag:"crypto", scale:"~$8B customer funds", cause:"Hidden customer credit line", detail:"Alameda, a crypto trading firm run by Sam Bankman-Fried, had its balance sheet propped up largely by FTT, a token issued by its affiliated exchange FTX, and was funded in part through a hidden line of credit drawing on FTX customer deposits. When a leaked balance sheet exposed the concentration in November 2022, FTT collapsed, triggering exchange withdrawals FTX couldn't honor — roughly $8 billion in customer funds were found to be missing. Bankman-Fried was convicted of fraud and conspiracy in 2023 and sentenced to 25 years in prison." },
+{ y:"2022", name:"Ikigai Asset Management", tag:"crypto", scale:"—", cause:"FTX custody freeze", detail:"A crypto hedge fund that held the large majority of its assets on the FTX exchange for custody and trading convenience. When FTX froze withdrawals in November 2022, that capital became inaccessible; the fund's actual trading strategy was largely irrelevant to the outcome." },
+{ y:"2023", name:"Galois Capital", tag:"crypto", scale:"~$100M (half of fund)", cause:"Assets stuck on FTX", detail:"A roughly $200 million crypto quantitative and market-neutral fund that had about half its assets stuck on FTX when the exchange collapsed, rendering that portion of the fund effectively unrecoverable and forcing a wind-down." },
+{ y:"2023", name:"Silicon Valley Bank", subject:"SVB", tag:"bank", scale:"~$209B assets", cause:"Duration mismatch, deposit run", detail:"SVB had invested a large share of deposits (concentrated among tech startups and venture-backed companies) into long-duration Treasury and agency mortgage bonds during the low-rate era. As the Fed raised rates through 2022–23, those bonds lost significant market value, and when depositors — many with balances far above FDIC insurance limits — got wind of the mismatch, a rapid, largely digital bank run drained the bank in about 48 hours. Regulators seized it in March 2023; it was the second-largest U.S. bank failure ever at the time." },
+{ y:"2023", name:"Signature Bank", tag:"bank", scale:"~$110B assets", cause:"Contagion run", detail:"A New York bank with significant crypto-industry deposits that suffered a contagion-driven depositor run in the days immediately following SVB's failure. Regulators closed it days later — the third-largest U.S. bank failure in history." },
+{ y:"2023", name:"Credit Suisse", tag:"bank", scale:"167-year-old bank", cause:"Accumulated scandals", detail:"Years of scandals and losses — including the Archegos unwind (~$5.5 billion loss) and the Greensill Capital collapse, on top of a long history of compliance failures — eroded confidence in the 167-year-old Swiss institution. A renewed depositor and counterparty flight in March 2023, amid the broader U.S. regional bank turmoil, forced a Swiss-government-brokered emergency takeover by UBS." },
+{ y:"2023", name:"First Republic Bank", tag:"bank", scale:"~$229B assets", cause:"Deposit flight", detail:"Similar business model to SVB — a wealthy, concentrated depositor base with a large book of low-rate jumbo mortgages and loans made partly as relationship-building perks. Deposit flight following the SVB and Signature failures accelerated despite a $30 billion rescue deposit from major banks; regulators seized it in May 2023 and sold it to JPMorgan Chase — the largest U.S. bank failure since Washington Mutual in 2008." },
+{ y:"2026", name:"Situational Awareness", subject:"Leopold Aschenbrenner", tag:"fund", scale:"$45B → ~$10B", cause:"Leveraged AI/semiconductor bets", detail:"A concentrated, AI-themed hedge fund run by former OpenAI researcher Leopold Aschenbrenner, built around leveraged long positions in semiconductor and AI-infrastructure names (including SK Hynix and CoreWeave). A sharp selloff in those names forced margin calls the fund couldn't meet, and holdings were unwound — including a forced sale of positions to Citadel at a discount — with fund assets falling from roughly $45 billion to around $10 billion within days." },
+];
+
+function decadeOf(y) {
+  const n = parseInt(y, 10);
+  if (n < 1980) return "1970s";
+  if (n < 1990) return "1980s";
+  if (n < 2000) return "1990s";
+  if (n < 2010) return "2000s";
+  if (n < 2020) return "2010s";
+  return "2020s";
+}
+
+const ledger = document.getElementById('ledger');
+const countLabel = document.getElementById('countLabel');
+
+function render(filter) {
+  ledger.innerHTML = '';
+  const rows = DATA.filter(d => filter === 'all' || d.tag === filter);
+  countLabel.textContent = rows.length + ' entries';
+
+  let currentDecade = null;
+  let ul = null;
+
+  rows.forEach((d, i) => {
+    const dec = decadeOf(d.y);
+    if (dec !== currentDecade) {
+      currentDecade = dec;
+      const label = document.createElement('div');
+      label.className = 'decade-label';
+      label.textContent = dec;
+      ledger.appendChild(label);
+      ul = document.createElement('ul');
+      ul.className = 'entries';
+      ledger.appendChild(ul);
+    }
+
+    const li = document.createElement('li');
+    li.className = 'entry';
+
+    const head = document.createElement('div');
+    head.className = 'entry-head';
+    head.innerHTML = `
+      <span class="entry-year">${d.y}</span>
+      <span class="entry-name">${d.name}${d.subject ? `<span class="subject">${d.subject}</span>` : ''}</span>
+      <span class="entry-scale">${d.scale}</span>
+      <span class="chevron">&#9656;</span>
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'entry-body';
+    body.innerHTML = `
+      <div class="entry-body-inner">
+        <span class="entry-scale-mobile">${d.scale}</span>
+        <span class="cause-tag">${d.cause}</span>
+        <p class="entry-detail">${d.detail}</p>
+      </div>
+    `;
+
+    head.addEventListener('click', () => {
+      li.classList.toggle('open');
+    });
+
+    li.appendChild(head);
+    li.appendChild(body);
+    ul.appendChild(li);
+  });
+}
+
+document.getElementById('filters').addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  document.querySelectorAll('#filters button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render(btn.dataset.filter);
+});
+
+render('all');
+</script>
+</body>
+</html>
