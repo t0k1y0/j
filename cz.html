@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>What Went Wrong for CZ — Texte parallèle EN/FR (v2)</title>
+<style>
+  :root {
+    --navy: #1b2a4a;
+    --navy-deep: #0f1830;
+    --paper: #f6f3ec;
+    --paper-line: #d9d2c2;
+    --ink: #22252b;
+    --ink-soft: #55585f;
+    --gold: #a5824a;
+    --rule: #c9bfa5;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    line-height: 1.55;
+  }
+
+  header {
+    background: var(--navy-deep);
+    color: var(--paper);
+    padding: 48px 24px 36px;
+    text-align: center;
+    border-bottom: 4px solid var(--gold);
+  }
+
+  header .kicker {
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  header h1 {
+    font-weight: 400;
+    font-size: 28px;
+    margin: 0 0 8px;
+    letter-spacing: 0.01em;
+  }
+
+  header .sub {
+    font-size: 14px;
+    font-style: italic;
+    color: #cfd3de;
+  }
+
+  .lang-labels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 18px 24px 0;
+  }
+
+  .lang-labels div {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--navy);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 10px;
+  }
+
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 8px 24px 80px;
+  }
+
+  .doc-title {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    margin-top: 30px;
+    padding: 16px 18px;
+    background: #ece6d6;
+    border-top: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+  }
+  .doc-title p { margin: 0; font-weight: 700; font-size: 15px; color: var(--navy-deep); }
+  .doc-title .fr p { text-align: right; }
+
+  .section-title {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 44px;
+    margin-bottom: 6px;
+  }
+
+  .section-title h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 0;
+    padding: 10px 18px;
+    background: #ece6d6;
+    border-left: 3px solid var(--gold);
+  }
+
+  .section-title h2.fr { border-left: none; border-right: 3px solid var(--gold); text-align: right; }
+
+  .subhead-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 22px;
+  }
+
+  .subhead-row h3 {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--navy-deep);
+    margin: 0;
+    padding: 6px 18px;
+  }
+
+  .subhead-row h3.fr { text-align: right; font-style: italic; }
+
+  .para-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    padding: 10px 18px;
+    border-bottom: 1px dotted var(--paper-line);
+  }
+
+  .para-row:hover { background: #efe9d9; }
+
+  .en p, .fr p { margin: 0 0 8px; font-size: 15px; }
+  .en p:last-child, .fr p:last-child { margin-bottom: 0; }
+
+  .fr p { text-align: right; }
+
+  .en { border-right: 1px solid var(--rule); padding-right: 18px; }
+  .fr { padding-left: 0; }
+
+  ul.bl {
+    margin: 4px 0 4px 0;
+    padding-left: 18px;
+  }
+  .fr ul.bl { padding-left: 0; padding-right: 18px; list-style-position: outside; }
+  .fr ul.bl li { text-align: right; list-style: none; }
+  .fr ul.bl li::after { content: " ◆"; color: var(--gold); font-size: 9px; }
+  .en ul.bl li::marker { color: var(--gold); }
+
+  li { font-size: 15px; margin-bottom: 4px; }
+
+  .toggle-bar {
+    max-width: 1080px;
+    margin: 16px auto 0;
+    padding: 0 24px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .toggle-bar button {
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--navy);
+    color: var(--paper);
+    border: 1px solid var(--navy);
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+
+  .toggle-bar button.inactive {
+    background: transparent;
+    color: var(--navy);
+  }
+
+  body.hide-fr .fr { display: none; }
+  body.hide-en .en { display: none; }
+  body.hide-fr .en,
+  body.hide-en .fr {
+    border-right: none;
+    grid-column: span 2;
+  }
+  body.hide-fr .section-title h2.fr,
+  body.hide-en .section-title h2.en,
+  body.hide-fr .subhead-row h3.fr,
+  body.hide-en .subhead-row h3.en,
+  body.hide-fr .doc-title .fr,
+  body.hide-en .doc-title .en,
+  body.hide-fr .lang-labels div:nth-child(2),
+  body.hide-en .lang-labels div:nth-child(1) {
+    display: none;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 24px 50px;
+    color: var(--ink-soft);
+    font-size: 12px;
+    font-style: italic;
+    border-top: 1px solid var(--rule);
+  }
+
+  @media (max-width: 760px) {
+    .para-row, .section-title, .subhead-row, .lang-labels, .doc-title { grid-template-columns: 1fr; }
+    .en { border-right: none; padding-right: 0; border-bottom: 1px dashed var(--rule); padding-bottom: 8px; margin-bottom: 8px; }
+    .fr p, .fr ul.bl li { text-align: left; }
+    .fr ul.bl { padding-right: 0; padding-left: 18px; }
+    .fr ul.bl li::after { content: ""; }
+    .section-title h2.fr, .subhead-row h3.fr { text-align: left; border-right: none; border-left: 3px solid var(--gold); font-style: italic; }
+    .doc-title .fr p { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Legal &amp; Regulatory Memorandum · Texte parallèle · Version révisée</div>
+  <h1>What Went Wrong for Changpeng Zhao (CZ)</h1>
+  <div class="sub">Ce qui a mal tourné pour Changpeng Zhao (CZ) — édition bilingue anglais–français, version révisée</div>
+</header>
+
+<div class="toggle-bar">
+  <button onclick="document.body.classList.remove('hide-fr','hide-en'); setActive(this)">EN + FR</button>
+  <button onclick="document.body.classList.add('hide-fr'); document.body.classList.remove('hide-en'); setActive(this)">EN only</button>
+  <button onclick="document.body.classList.add('hide-en'); document.body.classList.remove('hide-fr'); setActive(this)">FR only</button>
+</div>
+
+<div class="lang-labels">
+  <div>English</div>
+  <div>Français</div>
+</div>
+
+<main>
+
+  <div class="doc-title">
+    <div class="en"><p>Detailed Report: What Went Wrong for Changpeng Zhao (CZ) and What His Counsel Should Have Done</p></div>
+    <div class="fr"><p>Rapport détaillé : ce qui a mal tourné pour Changpeng Zhao (CZ) et ce que ses avocats auraient dû faire</p></div>
+  </div>
+
+  <div class="section-title">
+    <h2 class="en">I. Executive Summary</h2>
+    <h2 class="fr">I. Résumé exécutif</h2>
+  </div>
+
+  <div class="para-row">
+    <div class="en"><p>Changpeng Zhao's 2023 resolution with the U.S. Department of Justice produced a survivable corporate outcome for Binance (a $4.3 billion multi-agency settlement, monitorship, and continued global operations) while imposing real personal costs on CZ: resignation as CEO, a felony conviction, a four-month prison sentence, a $50 million fine, and temporary operational restrictions.</p></div>
+    <div class="fr"><p>Le règlement conclu en 2023 par Changpeng Zhao avec le ministère américain de la Justice a produit, pour Binance, un résultat soutenable au niveau de l'entreprise (un accord multi-agences de 4,3 milliards de dollars, un dispositif de surveillance et la poursuite des activités à l'échelle mondiale), tout en imposant à CZ des coûts personnels bien réels : démission de son poste de PDG, condamnation pour crime, peine de quatre mois de prison, amende de 50 millions de dollars, et restrictions opérationnelles temporaires.</p></div>
+  </div>
+
+  <div class="para-row">
+    <div class="en"><p>In hindsight—particularly after the 2024 U.S. election, the rapid shift in crypto policy, and the October 2025 full presidential pardon—the personal path looks suboptimal. The core failures were not primarily technical drafting errors but strategic ones: insufficient pre-return leverage extraction, weak conversion of corporate value into personal protections, and inadequate contingency planning around political timing.</p></div>
+    <div class="fr"><p>Avec le recul — en particulier après l'élection américaine de 2024, le revirement rapide de la politique en matière de cryptomonnaies, et la grâce présidentielle complète d'octobre 2025 — le chemin personnel apparaît sous-optimal. Les défaillances essentielles n'étaient pas d'abord des erreurs techniques de rédaction, mais des erreurs stratégiques : une exploitation insuffisante du levier disponible avant le retour, une conversion faible de la valeur créée pour l'entreprise en protections personnelles, et une planification insuffisante des scénarios liés au calendrier politique.</p></div>
+  </div>
+
+  <div class="para-row">
+    <div class="en"><p>Even elite, high-paid counsel could not fully overcome the structural constraints of the case, client decision-making, conflicting advice, limited real-time leverage against a determined DOJ, and the impossibility of reliably forecasting the subsequent political reversal. High fees buy expertise and process management; they do not guarantee perfect foresight or the ability to rewrite the government's bottom line.</p></div>
+    <div class="fr"><p>Même des avocats d'élite, grassement rémunérés, n'ont pu surmonter pleinement les contraintes structurelles de l'affaire : les décisions du client, des conseils contradictoires, un levier limité en temps réel face à un ministère de la Justice déterminé, et l'impossibilité de prévoir de façon fiable le revirement politique ultérieur. Des honoraires élevés achètent de l'expertise et une gestion rigoureuse du processus ; ils ne garantissent ni une clairvoyance parfaite, ni la capacité de réécrire la position de fond du gouvernement.</p></div>
+  </div>
+
+  <div class="section-title">
+    <h2 class="en">II. What Went Wrong</h2>
+    <h2 class="fr">II. Ce qui a mal tourné</h2>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">1. Premature voluntary return and surrender of geographic leverage</h3>
+    <h3 class="fr">1. Un retour volontaire prématuré et l'abandon du levier géographique</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>CZ returned to the United States and pleaded guilty while still outside U.S. custody. Once physically present, the government's leverage increased dramatically and the realistic options narrowed to plea or trial under U.S. jurisdiction. Pre-return negotiations never fully converted the threat of prolonged non-cooperation or non-extradition into binding personal protections (especially non-custodial sentencing).</p></div>
+    <div class="fr"><p>CZ est rentré aux États-Unis et a plaidé coupable alors qu'il se trouvait encore hors de la garde des autorités américaines. Une fois physiquement présent, le levier du gouvernement s'est accru de façon spectaculaire, et les options réalistes se sont réduites au plaidoyer ou au procès sous juridiction américaine. Les négociations menées avant le retour n'ont jamais pleinement converti la menace d'une non-coopération prolongée ou d'un refus d'extradition en protections personnelles contraignantes (en particulier l'absence de peine d'incarcération).</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">2. Inadequate structure of the personal plea agreement</h3>
+    <h3 class="fr">2. Une structure inadéquate de l'accord de plaidoyer personnel</h3>
+  </div>
+  <div class="para-row">
+    <div class="en">
+      <p>The plea successfully narrowed the charge to a single Bank Secrecy Act count—a meaningful achievement. However, it left excessive residual risk on the personal side:</p>
+      <ul class="bl">
+        <li>No binding or near-binding ceiling that constrained the government's ability to seek a substantially above-guidelines sentence (DOJ recommended 36 months against a 12–18 month range).</li>
+        <li>Insufficiently cabined factual admissions and enhancement language that still allowed "unprecedented scale" rhetoric at sentencing.</li>
+        <li>Weak linkage between corporate remediation/monitorship performance and personal sentencing outcomes.</li>
+        <li>Incomplete advance resolution of immigration, travel, bond, and post-release collateral consequences for a non-citizen.</li>
+      </ul>
+      <p>The eventual four-month sentence reflected favorable judicial discretion more than ironclad agreement architecture.</p>
+    </div>
+    <div class="fr">
+      <p>Le plaidoyer a réussi à restreindre l'accusation à un seul chef de violation du Bank Secrecy Act — une réussite notable. Il a néanmoins laissé un risque résiduel excessif du côté personnel :</p>
+      <ul class="bl">
+        <li>Aucun plafond contraignant, ni quasi contraignant, ne limitait la capacité du gouvernement à requérir une peine nettement supérieure aux lignes directrices (le ministère de la Justice a recommandé 36 mois, contre une fourchette de 12 à 18 mois).</li>
+        <li>Des aveux factuels et des formulations relatives aux aggravations de peine insuffisamment restreints, qui ont laissé place, lors du prononcé de la peine, à une rhétorique d'« ampleur sans précédent ».</li>
+        <li>Un lien ténu entre la performance en matière de remédiation et de surveillance de l'entreprise, d'une part, et les résultats de la peine personnelle, d'autre part.</li>
+        <li>Un règlement préalable incomplet des conséquences collatérales liées à l'immigration, aux voyages, à la mise en liberté sous caution et à l'après-libération pour un ressortissant étranger.</li>
+      </ul>
+      <p>La peine de quatre mois finalement prononcée relève davantage d'un exercice favorable du pouvoir d'appréciation du juge que d'une architecture d'accord verrouillée.</p>
+    </div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">3. Incomplete separation of corporate and personal tracks</h3>
+    <h3 class="fr">3. Une séparation incomplète des volets « entreprise » et « personnel »</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>The corporate resolution preserved Binance and extracted a large fine plus structural reforms. That corporate value was not fully translated into maximum personal downside protection. Once the company deal became the centerpiece, personal terms became secondary.</p></div>
+    <div class="fr"><p>Le règlement au niveau de l'entreprise a permis de préserver Binance et d'obtenir une lourde amende assortie de réformes structurelles. Cette valeur créée pour l'entreprise n'a pas été pleinement convertie en une protection maximale contre le risque personnel. Une fois l'accord de l'entreprise devenu l'élément central, les conditions personnelles sont passées au second plan.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">4. Insufficient contingency planning for political change</h3>
+    <h3 class="fr">4. Une planification insuffisante des scénarios de changement politique</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>In late 2023 the enforcement climate was hostile. Counsel and client reasonably treated the then-current DOJ posture as the binding constraint. They under-weighted (or could not reliably price) the possibility of rapid political reversal, a pro-crypto administration, and eventual clemency. The result was a path optimized for immediate certainty rather than optionality under changed political conditions.</p></div>
+    <div class="fr"><p>Fin 2023, le climat répressif était hostile. Les avocats comme le client ont raisonnablement traité la posture alors adoptée par le ministère de la Justice comme une contrainte incontournable. Ils ont sous-pondéré — ou n'ont pu évaluer de façon fiable — la possibilité d'un revirement politique rapide, d'une administration favorable aux cryptomonnaies, et d'une éventuelle clémence. Il en a résulté un chemin optimisé pour la certitude immédiate plutôt que pour la préservation d'options en cas d'évolution du contexte politique.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">5. Over-reliance on post-plea judicial mercy</h3>
+    <h3 class="fr">5. Une confiance excessive placée dans la clémence judiciaire postérieure au plaidoyer</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>The defense achieved a meaningful downward variance at sentencing. That success does not erase the fact that the plea structure still left CZ dependent on judicial discretion rather than contractual constraints.</p></div>
+    <div class="fr"><p>La défense a obtenu, lors du prononcé de la peine, une réduction substantielle par rapport aux lignes directrices. Ce succès n'efface pas le fait que la structure du plaidoyer laissait CZ tributaire du pouvoir d'appréciation du juge, plutôt que protégé par des contraintes contractuelles.</p></div>
+  </div>
+
+  <div class="section-title">
+    <h2 class="en">III. What Counsel Should Have Done</h2>
+    <h2 class="fr">III. Ce que les avocats auraient dû faire</h2>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">1. Maximize pre-return leverage for a non-custodial or tightly capped personal outcome</h3>
+    <h3 class="fr">1. Maximiser, avant le retour, le levier en vue d'un résultat personnel sans incarcération ou strictement plafonné</h3>
+  </div>
+  <div class="para-row">
+    <div class="en">
+      <p>Before any physical return, counsel should have treated geographic distance and the credible threat of non-cooperation as primary bargaining chips. The goal should have been an agreement that either:</p>
+      <ul class="bl">
+        <li>Locked a non-custodial recommendation or home-confinement range, or</li>
+        <li>Created a binding or near-binding personal sentencing ceiling far tighter than what was ultimately achieved.</li>
+      </ul>
+      <p>Only after those terms were secured should return have been contemplated.</p>
+    </div>
+    <div class="fr">
+      <p>Avant tout retour physique, les avocats auraient dû traiter la distance géographique et la menace crédible d'une non-coopération comme des monnaies d'échange de premier plan. L'objectif aurait dû être un accord qui, soit :</p>
+      <ul class="bl">
+        <li>verrouillait une recommandation sans incarcération ou une fourchette d'assignation à domicile,</li>
+        <li>soit créait un plafond contraignant, ou quasi contraignant, sur la peine personnelle, bien plus strict que celui finalement obtenu.</li>
+      </ul>
+      <p>Le retour n'aurait dû être envisagé qu'une fois ces conditions sécurisées.</p>
+    </div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">2. Structure the plea agreement with stronger personal protections</h3>
+    <h3 class="fr">2. Structurer l'accord de plaidoyer avec des protections personnelles plus solides</h3>
+  </div>
+  <div class="para-row">
+    <div class="en">
+      <p>Even within a resolution framework, the personal agreement needed tighter architecture:</p>
+      <ul class="bl">
+        <li>Explicit government recommendation of non-custodial or low-end guidelines treatment, or a hard cap on the government's ability to seek upward variance.</li>
+        <li>Narrower Statement of Facts that minimized ammunition for enhancements and "scale" rhetoric.</li>
+        <li>Pre-agreed guidelines calculations that resolved or limited contested enhancements.</li>
+        <li>Explicit mechanisms linking corporate monitorship compliance and remediation to personal sentencing credit.</li>
+        <li>Advance written resolution of immigration, travel, bond, and post-release conditions.</li>
+        <li>Preservation of future optionality regarding ownership, advisory roles, and potential later political relief.</li>
+      </ul>
+    </div>
+    <div class="fr">
+      <p>Même dans le cadre d'un règlement global, l'accord personnel appelait une architecture plus rigoureuse :</p>
+      <ul class="bl">
+        <li>Une recommandation explicite du gouvernement en faveur d'un traitement sans incarcération ou situé au bas des lignes directrices, ou un plafond ferme sur la capacité du gouvernement à requérir une peine majorée.</li>
+        <li>Un exposé des faits (Statement of Facts) plus restreint, réduisant les arguments disponibles pour les aggravations de peine et la rhétorique d'« ampleur ».</li>
+        <li>Des calculs de lignes directrices convenus au préalable, réglant ou limitant les aggravations contestées.</li>
+        <li>Des mécanismes explicites reliant le respect du dispositif de surveillance et la remédiation de l'entreprise à un crédit sur la peine personnelle.</li>
+        <li>Un règlement écrit préalable des conditions relatives à l'immigration, aux voyages, à la mise en liberté sous caution et à l'après-libération.</li>
+        <li>La préservation d'une marge de manœuvre future concernant la propriété, les fonctions consultatives, et une éventuelle clémence politique ultérieure.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">3. Maintain clearer separation (or sequenced prioritization) of corporate and personal tracks</h3>
+    <h3 class="fr">3. Maintenir une séparation plus nette (ou une priorisation séquencée) des volets « entreprise » et « personnel »</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>Counsel should have more aggressively used the company's willingness to pay a massive fine and accept structural reforms as leverage specifically for personal non-custodial or tightly constrained outcomes, rather than allowing corporate survival to become the dominant and somewhat independent objective.</p></div>
+    <div class="fr"><p>Les avocats auraient dû utiliser plus résolument la disposition de l'entreprise à payer une amende considérable et à accepter des réformes structurelles comme un levier destiné spécifiquement à obtenir, sur le plan personnel, un résultat sans incarcération ou strictement encadré, plutôt que de laisser la survie de l'entreprise devenir un objectif dominant et quelque peu autonome.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">4. Build explicit political and timing contingencies</h3>
+    <h3 class="fr">4. Élaborer des scénarios explicites tenant compte du contexte politique et du calendrier</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>While no lawyer can reliably predict elections, counsel should have modeled scenarios under both continued hostile enforcement and potential regime change. This would have informed the relative value of immediate certainty versus delayed resolution that preserved optionality.</p></div>
+    <div class="fr"><p>Si aucun avocat ne peut prédire de façon fiable l'issue d'une élection, les conseils de CZ auraient dû modéliser des scénarios envisageant à la fois la poursuite d'un climat répressif hostile et un éventuel changement de régime. Cela aurait permis d'éclairer la valeur relative d'une certitude immédiate par rapport à un règlement différé préservant davantage d'options.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">5. Prepare a more robust trial-or-walk-away alternative</h3>
+    <h3 class="fr">5. Préparer une alternative plus solide de type « procès ou retrait »</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>A credible, fully prepared alternative path (continued non-extradition posture or readiness for trial under more favorable future conditions) would have strengthened the negotiating position even if never exercised.</p></div>
+    <div class="fr"><p>Une voie alternative crédible et pleinement préparée (maintien d'une posture de non-extradition, ou disponibilité pour un procès dans des conditions futures plus favorables) aurait renforcé la position de négociation, même si elle n'avait finalement jamais été exercée.</p></div>
+  </div>
+
+  <div class="section-title">
+    <h2 class="en">IV. Why High-Paid Elite Counsel Still Produced These Outcomes</h2>
+    <h2 class="fr">IV. Pourquoi des avocats d'élite, grassement rémunérés, ont malgré tout produit ces résultats</h2>
+  </div>
+
+  <div class="para-row">
+    <div class="en"><p>CZ retained multiple top-tier firms and more than a dozen high-priced lawyers who frequently gave conflicting advice. The suboptimal personal results were not primarily the product of incompetence. Several structural realities limited what even the best counsel could achieve:</p></div>
+    <div class="fr"><p>CZ avait retenu les services de plusieurs cabinets de premier plan et de plus d'une douzaine d'avocats de haut niveau, qui donnaient fréquemment des conseils contradictoires. Les résultats personnels sous-optimaux ne procédaient pas d'abord d'une incompétence. Plusieurs réalités structurelles limitaient ce que même les meilleurs conseils pouvaient obtenir :</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">1. Lawyers advise; the client decides</h3>
+    <h3 class="fr">1. Les avocats conseillent ; le client décide</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>Counsel can quantify risks, draft protective language, and negotiate hard. Ultimate decisions—whether to return, accept the available package, prioritize corporate survival, or reject a deal and live with fugitive risk—belonged to CZ. His own account describes conflicting advice and his preparation for possible life as a fugitive. Once the decision to resolve and return was made, the lawyers optimized within those constraints.</p></div>
+    <div class="fr"><p>Les avocats peuvent quantifier les risques, rédiger des clauses protectrices et négocier fermement. Les décisions ultimes — rentrer ou non, accepter le dispositif proposé, privilégier la survie de l'entreprise, ou refuser un accord et assumer le risque d'une vie de fugitif — appartenaient à CZ. Son propre récit décrit des conseils contradictoires et sa préparation à une possible vie de fugitif. Une fois la décision de régler l'affaire et de rentrer prise, les avocats ont optimisé leur action dans le cadre de ces contraintes.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">2. Conflicting advice across multiple elite teams is common</h3>
+    <h3 class="fr">2. Des conseils contradictoires entre plusieurs équipes d'élite : un phénomène courant</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>When several leading white-collar practices are retained simultaneously, they often disagree on core strategy: the relative value of geographic leverage, how hard to push non-custodial terms, the strength of a trial defense, and the weight to assign political timing. Conflicting recommendations can produce compromise positions that fully satisfy no single theory of the case.</p></div>
+    <div class="fr"><p>Lorsque plusieurs cabinets de premier plan spécialisés en droit pénal des affaires sont mandatés simultanément, ils divergent souvent sur la stratégie de fond : la valeur relative du levier géographique, l'intensité avec laquelle pousser des conditions sans incarcération, la solidité d'une défense au procès, et le poids à accorder au calendrier politique. Des recommandations contradictoires peuvent produire des positions de compromis qui ne satisfont pleinement aucune théorie unique de l'affaire.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">3. Hard limits on leverage against a determined DOJ</h3>
+    <h3 class="fr">3. Des limites strictes au levier disponible face à un ministère de la Justice déterminé</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>Even the most expensive defense faces real constraints when the government possesses substantial evidence, multi-agency coordination, and the ability to threaten corporate viability (banking access, continued operations, broader charging). In 2023 the political and enforcement climate toward crypto was hostile. Prosecutors held significant cards. Securing a single BSA count, preserving Binance as a going concern, and obtaining a sentence far below the government's ask already required substantial skill. Fully locking non-custodial personal terms or ironclad sentencing constraints was not always achievable.</p></div>
+    <div class="fr"><p>Même la défense la plus onéreuse rencontre des contraintes réelles lorsque le gouvernement dispose de preuves substantielles, d'une coordination inter-agences, et de la capacité de menacer la viabilité même de l'entreprise (accès bancaire, poursuite des activités, extension des chefs d'accusation). En 2023, le climat politique et répressif à l'égard des cryptomonnaies était hostile. Le parquet détenait des atouts significatifs. Obtenir un chef d'accusation unique au titre du BSA, préserver la continuité d'exploitation de Binance, et obtenir une peine très inférieure à celle requise par le gouvernement exigeaient déjà un savoir-faire considérable. Verrouiller pleinement des conditions personnelles sans incarcération, ou des contraintes de peine inébranlables, n'était pas toujours réalisable.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">4. Hindsight bias and unpredictable political change</h3>
+    <h3 class="fr">4. Le biais rétrospectif et l'imprévisibilité du changement politique</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>Many of the identified shortcomings look clearer only after the 2024 election, the pro-crypto policy shift, and the 2025 pardon. In late 2023, betting that a change in administration would produce personal clemency within roughly two years was highly speculative. Counsel operating under contemporaneous information reasonably treated the then-current DOJ posture as the binding constraint. Predicting election outcomes and clemency decisions lies outside the reliable skill set of white-collar lawyers.</p></div>
+    <div class="fr"><p>Nombre des lacunes identifiées n'apparaissent plus clairement qu'après coup — après l'élection de 2024, le revirement de politique favorable aux cryptomonnaies, et la grâce de 2025. Fin 2023, parier qu'un changement d'administration produirait une clémence personnelle dans un délai d'environ deux ans relevait d'une spéculation hautement incertaine. Des avocats agissant sur la base des informations disponibles à l'époque ont raisonnablement traité la posture alors adoptée par le ministère de la Justice comme une contrainte incontournable. Prédire l'issue d'une élection et les décisions de grâce ne relève pas des compétences fiables des avocats spécialisés en droit pénal des affaires.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">5. Corporate versus personal priority tension</h3>
+    <h3 class="fr">5. La tension entre priorité de l'entreprise et priorité personnelle</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>The dominant institutional interest was keeping Binance alive and functional under a large fine and monitorship. Once the corporate resolution became the centerpiece, personal protections became secondary negotiating chips. Elite firms are often more practiced and better incentivized at corporate survival deals than at extracting every last personal concession when the two objectives conflict.</p></div>
+    <div class="fr"><p>L'intérêt institutionnel dominant consistait à maintenir Binance en activité et fonctionnelle, moyennant une lourde amende et un dispositif de surveillance. Une fois le règlement de l'entreprise devenu l'élément central, les protections personnelles sont devenues des monnaies d'échange secondaires. Les cabinets d'élite sont souvent plus rompus, et mieux incités, à conclure des accords assurant la survie de l'entreprise qu'à arracher la moindre concession personnelle supplémentaire lorsque ces deux objectifs entrent en conflit.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">6. The inherent nature of high-end white-collar practice</h3>
+    <h3 class="fr">6. La nature même de la pratique du droit pénal des affaires haut de gamme</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>Top counsel excel at narrowing exposure, managing process risk, and positioning cases for the best available outcome under imperfect information. They cannot eliminate prosecutorial discretion, judicial variance under 18 U.S.C. § 3553(a), or external political shifts. Comparable high-profile cases routinely show residual downside even after expensive representation. A "good" result in this environment is often survivable rather than optimal in hindsight.</p></div>
+    <div class="fr"><p>Les meilleurs avocats excellent à restreindre l'exposition, à gérer le risque procédural, et à positionner un dossier vers le meilleur résultat disponible dans un contexte d'information imparfaite. Ils ne peuvent éliminer ni le pouvoir discrétionnaire du parquet, ni la variation judiciaire permise par l'article 18 U.S.C. § 3553(a), ni les évolutions politiques externes. Des affaires comparables et très médiatisées présentent régulièrement un risque résiduel, même après une représentation coûteuse. Dans ce contexte, un « bon » résultat est souvent soutenable plutôt qu'optimal, vu rétrospectivement.</p></div>
+  </div>
+
+  <div class="section-title">
+    <h2 class="en">V. Comparative Context and Overall Assessment</h2>
+    <h2 class="fr">V. Contexte comparatif et évaluation d'ensemble</h2>
+  </div>
+
+  <div class="para-row">
+    <div class="en"><p>Relative to the exposure CZ faced (potential multi-count indictment, far longer custody, and existential corporate risk), the actual resolution was not a disaster. The company survived, the personal charge was narrowed, the sentence was short, and ownership was retained. The later pardon further reduced long-term collateral consequences.</p></div>
+    <div class="fr"><p>Rapporté à l'exposition à laquelle CZ faisait face (une mise en accusation potentielle à plusieurs chefs, une incarcération bien plus longue, et un risque existentiel pour l'entreprise), le règlement effectivement obtenu n'a rien d'un désastre. L'entreprise a survécu, l'accusation personnelle a été restreinte, la peine a été courte, et la propriété a été conservée. La grâce ultérieure a réduit davantage encore les conséquences collatérales à long terme.</p></div>
+  </div>
+
+  <div class="para-row">
+    <div class="en"><p>The primary criticism is therefore not that counsel failed to achieve a viable outcome, but that they (and the client) left more personal downside on the table than necessary and under-weighted the option value of delay or non-return in a period of potential political change. The high cost of counsel purchased sophisticated process management and meaningful charge-narrowing; it could not fully overcome the structural limits of the case or the unpredictability of subsequent events.</p></div>
+    <div class="fr"><p>La critique principale n'est donc pas que les avocats aient échoué à obtenir un résultat viable, mais qu'eux-mêmes — et le client — aient laissé sur la table davantage de risque personnel qu'il n'était nécessaire, et qu'ils aient sous-pondéré la valeur d'option offerte par un délai ou par une absence de retour, dans une période de changement politique potentiel. Le coût élevé de la représentation a permis d'acheter une gestion sophistiquée du processus et une restriction significative des chefs d'accusation ; il n'a pu surmonter pleinement ni les limites structurelles de l'affaire, ni l'imprévisibilité des événements ultérieurs.</p></div>
+  </div>
+
+  <div class="subhead-row">
+    <h3 class="en">Final assessment</h3>
+    <h3 class="fr">Évaluation finale</h3>
+  </div>
+  <div class="para-row">
+    <div class="en"><p>The lawyers delivered a competent, high-end white-collar resolution under difficult contemporaneous conditions. The personal path was suboptimal primarily because of strategic choices made under uncertainty, limited leverage, client prioritization of corporate survival and certainty, and the later political reversal that no one could reliably forecast in 2023.</p></div>
+    <div class="fr"><p>Les avocats ont livré un règlement compétent, de haut niveau en droit pénal des affaires, dans des conditions difficiles au moment des faits. Le chemin personnel s'est révélé sous-optimal principalement en raison de choix stratégiques opérés dans l'incertitude, d'un levier limité, de la priorité accordée par le client à la survie de l'entreprise et à la certitude, et du revirement politique ultérieur que personne ne pouvait prévoir de façon fiable en 2023.</p></div>
+  </div>
+
+</main>
+
+<footer>
+  English source report translated into French for parallel reading · Traduction française réalisée à des fins de lecture parallèle — version révisée
+</footer>
+
+<script>
+  function setActive(btn) {
+    document.querySelectorAll('.toggle-bar button').forEach(b => b.classList.add('inactive'));
+    btn.classList.remove('inactive');
+  }
+</script>
+
+</body>
+</html>
