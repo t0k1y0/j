@@ -200,6 +200,61 @@
     display: none;
   }
 
+  .vocab-wrap {
+    margin-top: 8px;
+  }
+
+  .vocab-cat {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    font-style: normal;
+    margin: 34px 0 10px;
+    padding: 0 18px;
+  }
+
+  .vocab-cat:first-child { margin-top: 6px; }
+
+  .vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 8px;
+  }
+
+  .vocab-table th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--navy);
+    border-bottom: 1px solid var(--gold);
+    padding: 6px 18px;
+  }
+
+  .vocab-table td {
+    font-size: 14.5px;
+    padding: 8px 18px;
+    border-bottom: 1px dotted var(--paper-line);
+  }
+
+  .vocab-table td:first-child {
+    font-style: italic;
+    color: var(--navy-deep);
+    width: 42%;
+  }
+
+  .vocab-table tr:hover td {
+    background: #efe9d9;
+  }
+
+  @media (max-width: 760px) {
+    .vocab-table td { font-size: 14px; padding: 8px 10px; }
+    .vocab-table th { padding: 6px 10px; }
+    .vocab-cat { padding: 0 10px; }
+  }
+
   footer {
     text-align: center;
     padding: 30px 24px 50px;
@@ -504,6 +559,76 @@
   <div class="para-row">
     <div class="en"><p>The lawyers delivered a competent, high-end white-collar resolution under difficult contemporaneous conditions. The personal path was suboptimal primarily because of strategic choices made under uncertainty, limited leverage, client prioritization of corporate survival and certainty, and the later political reversal that no one could reliably forecast in 2023.</p></div>
     <div class="fr"><p>Les avocats ont livré un règlement compétent, de haut niveau en droit pénal des affaires, dans des conditions difficiles au moment des faits. Le chemin personnel s'est révélé sous-optimal principalement en raison de choix stratégiques opérés dans l'incertitude, d'un levier limité, de la priorité accordée par le client à la survie de l'entreprise et à la certitude, et du revirement politique ultérieur que personne ne pouvait prévoir de façon fiable en 2023.</p></div>
+  </div>
+
+  <div class="section-title">
+    <h2 class="en">Appendix: Vocabulary</h2>
+    <h2 class="fr">Annexe : lexique</h2>
+  </div>
+
+  <div class="vocab-wrap">
+
+    <h4 class="vocab-cat">Legal &amp; Judicial · Droit &amp; procédure judiciaire</h4>
+    <table class="vocab-table">
+      <thead><tr><th>Français</th><th>English</th></tr></thead>
+      <tbody>
+        <tr><td>plaider coupable</td><td>to plead guilty</td></tr>
+        <tr><td>un plaidoyer</td><td>a plea</td></tr>
+        <tr><td>un chef d'accusation</td><td>a count (of an indictment)</td></tr>
+        <tr><td>une mise en accusation</td><td>an indictment</td></tr>
+        <tr><td>le pouvoir d'appréciation (du juge)</td><td>judicial discretion</td></tr>
+        <tr><td>une peine</td><td>a sentence</td></tr>
+        <tr><td>l'incarcération (f.)</td><td>incarceration</td></tr>
+        <tr><td>une assignation à domicile</td><td>home confinement</td></tr>
+        <tr><td>la mise à l'épreuve</td><td>probation</td></tr>
+        <tr><td>le sursis</td><td>a suspended sentence</td></tr>
+        <tr><td>une mise en liberté sous caution</td><td>bail / bond</td></tr>
+        <tr><td>une grâce présidentielle</td><td>a presidential pardon</td></tr>
+        <tr><td>la clémence</td><td>clemency</td></tr>
+        <tr><td>un exposé des faits</td><td>a statement of facts</td></tr>
+        <tr><td>un aveu / des aveux</td><td>an admission / admissions</td></tr>
+        <tr><td>une aggravation de peine</td><td>a sentencing enhancement</td></tr>
+        <tr><td>les lignes directrices (f. pl.)</td><td>(sentencing) guidelines</td></tr>
+        <tr><td>une majoration</td><td>an upward variance/increase</td></tr>
+        <tr><td>le parquet</td><td>the prosecution / D.A.'s office</td></tr>
+        <tr><td>un ressortissant étranger</td><td>a foreign national</td></tr>
+        <tr><td>l'extradition (f.)</td><td>extradition</td></tr>
+      </tbody>
+    </table>
+
+    <h4 class="vocab-cat">Financial &amp; Corporate · Finance &amp; entreprise</h4>
+    <table class="vocab-table">
+      <thead><tr><th>Français</th><th>English</th></tr></thead>
+      <tbody>
+        <tr><td>un règlement</td><td>a settlement</td></tr>
+        <tr><td>une amende</td><td>a fine</td></tr>
+        <tr><td>un dispositif de surveillance</td><td>a monitorship</td></tr>
+        <tr><td>la remédiation</td><td>remediation</td></tr>
+        <tr><td>la continuité d'exploitation</td><td>going-concern status</td></tr>
+        <tr><td>soutenable</td><td>survivable / sustainable</td></tr>
+        <tr><td>une réforme structurelle</td><td>a structural reform</td></tr>
+      </tbody>
+    </table>
+
+    <h4 class="vocab-cat">Strategy &amp; Abstract Nouns · Stratégie &amp; notions abstraites</h4>
+    <table class="vocab-table">
+      <thead><tr><th>Français</th><th>English</th></tr></thead>
+      <tbody>
+        <tr><td>le levier</td><td>leverage</td></tr>
+        <tr><td>la marge de manœuvre</td><td>room to maneuver / optionality</td></tr>
+        <tr><td>un monnaie d'échange</td><td>a bargaining chip</td></tr>
+        <tr><td>contraignant / -e</td><td>binding</td></tr>
+        <tr><td>un plafond</td><td>a ceiling / cap</td></tr>
+        <tr><td>un risque résiduel</td><td>residual risk</td></tr>
+        <tr><td>une conséquence collatérale</td><td>a collateral consequence</td></tr>
+        <tr><td>le biais rétrospectif</td><td>hindsight bias</td></tr>
+        <tr><td>sous-pondérer</td><td>to under-weight</td></tr>
+        <tr><td>sous-optimal / -e</td><td>suboptimal</td></tr>
+        <tr><td>un revirement</td><td>a reversal / U-turn</td></tr>
+        <tr><td>un savoir-faire</td><td>expertise / know-how</td></tr>
+      </tbody>
+    </table>
+
   </div>
 
 </main>
