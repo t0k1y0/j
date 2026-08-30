@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\definecolor{headingblue}{RGB}{31,73,125}
+\definecolor{subblue}{RGB}{68,114,196}
+
+\titleformat{\section}{\Large\bfseries\color{headingblue}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\large\bfseries\color{subblue}}{}{0em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\small Page \thepage\ of \pageref{LastPage}}
+\usepackage{lastpage}
+
+\newcommand{\li}{\operatorname{li}}
+
+\title{\color{headingblue}\huge\bfseries {\small\textcircled{y}}Notes on the Riemann Hypothesis}
+%\title{\color{headingblue}\Huge\bfseries The Greatest Unsolved Problem in Mathematics\\[0.3em]
+%\color{subblue}\Large\itshape How the Zeros of the Riemann Zeta Function Encode the Primes}
+%\author{YY}
+%\date{\small A detailed written reconstruction following the narrative structure of the video by Physics Explained (Part 2)}
+\date{}
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\section*{Opening: A Staircase Built from Zeros}
+
+What you are seeing on screen is something that for thousands of years would have seemed impossible. On the right-hand side, a staircase is slowly starting to emerge, with every jump in the staircase marking the location of a prime number. But this staircase is not being built by testing numbers one by one. It is being built from the zeros of the Riemann zeta function --- special points where the function becomes zero.
+
+On the left, each circle marks one of those zeros. As more zeros are included, the prime-counting staircase becomes sharper and more detailed. Somehow these zeros know where the primes are located. And what makes this even more tantalizing is that it relates to one of the greatest unsolved problems in mathematics: the Riemann Hypothesis.
+
+So how can the locations of these zeros determine the hidden pattern of the primes? This is what we are going to find out. But to understand Riemann's discovery, we first need to understand the problem he was trying to solve. And that means starting with the primes themselves.
+
+\section{The Primes Themselves}
+
+A prime number is a whole number bigger than one whose only positive divisors are one and itself. Numbers like 2, 3, 5, 7, 11, 13, and so on. Primes can be thought of as the building blocks of all other numbers. Any whole number greater than 1 can be written as a product of prime numbers. For example, 522 can be written as $2 \times 3 \times 3 \times 29$, and 7,761 is equal to $3 \times 13 \times 199$, each of which is prime.
+
+However, prime numbers don't announce themselves. They don't appear to follow any obvious pattern --- sometimes appearing close together, other times far apart. Once you start looking at the primes, the questions come flooding in: Can you predict which numbers are prime? Do the prime numbers thin out or become more dense? And is it even possible to uncover an underlying pattern?
+
+\section{The Sieve of Eratosthenes}
+
+One of the first systematic approaches to locating primes was developed by Eratosthenes of Cyrene more than 2,000 years ago. To see how it works, consider every whole number between 2 and 100.
+
+The first step is to consider every multiple of two, then remove every multiple of two except two itself. Next, highlight every multiple of three and remove these except three itself. Then repeat for five and for seven. At this point we can stop, because what remains are all the primes between 2 and 100. Every composite number has been crossed out. This is the Sieve of Eratosthenes. What is left are the 25 primes less than or equal to 100.
+
+Although the sieve works by hand, the method is very labour-intensive and becomes impractical when dealing with large numbers. However, it did offer a way of filtering out the primes and therefore provided crucial data to mathematicians who were studying them.
+
+\section{Gauss and the Prime-Counting Function $\pi(x)$}
+
+One such individual was Carl Friedrich Gauss who, as a teenager around 1792, turned his attention to the distribution of the primes. Gauss focused on what mathematicians today call the prime-counting function, written $\pi(x)$. Despite the symbol, this has nothing to do with the number $\pi$ related to the area of a circle. Here $\pi(x)$ simply means the number of primes less than or equal to $x$.
+
+For example, $\pi(10) = 4$ because the primes up to 10 are 2, 3, 5 and 7. If we count the primes up to 100 we find $\pi(100) = 25$.
+
+We can visualise the prime-counting function. If we plot $\pi(x)$ up to $x = 30$ we find a jagged staircase. A few key features stand out. First, more than one $x$-value can give the same output: for $x = 14, 15$ and $16$ the corresponding $\pi(x)$ value is 6. But the graph jumps every time we encounter a prime. In this sense the plot contains information about the location of the primes.
+
+From a mathematician's perspective it would be rather nice if one could reconstruct this plot without having to know in advance where all the primes are located. That is not an easy task. A first clue comes from looking at larger and larger values of $x$. Extending the range to 100, then to 1{,}000, then to 10{,}000, we notice that as we go to larger numbers the individual steps get lost and a smooth curve begins to emerge. A helpful first step is therefore to understand the shape of this curve rather than the location of every individual step.
+
+\section{Density, Average Gaps, and the Prime Number Theorem}
+
+Rather than simply counting the number of primes less than a given number, we can calculate the ratio $\pi(x)/x$, which tells us the proportion of numbers that are prime up to $x$. In the first thousand integers about 16.8\% are prime. By the time we reach 10{,}000 only about 12.3\% of the numbers are prime. This steady decline hints that the primes are thinning out.
+
+Instead of asking how many primes there are up to $x$, we can flip the fraction and ask about the average spacing between primes up to $x$. This can be estimated by $x/\pi(x)$. At 1{,}000 the average gap is just under six; at 10{,}000 it is just over eight. That is a surprisingly gentle rise across an entire order of magnitude.
+
+If we plot $x/\pi(x)$ against $x$ the result is a curve that rises quickly at first but then slows. The average gap between the primes is growing, but at a decreasing rate. This reminded Gauss of a well-known function: the natural logarithm. Plotting $x/\pi(x)$ and $\ln(x)$ over the same range shows that the shapes are unmistakable. It looks as if the average spacing of the primes at a given value of $x$ is roughly equal to the natural logarithm of $x$.
+
+The curves have the same shape but do not perfectly overlap; $\ln(x)$ gives values that are too high. Tracking the percentage difference as $x$ increases shows that the difference is decreasing. Extending to extremely large values (factors of a thousand up to a thousand trillion trillion) makes the percentage error reduce ever closer to zero. In the limit as $x \to \infty$ the average spacing $x/\pi(x)$ grows like $\ln(x)$.
+
+Flipping the expression around we obtain the statement that $\pi(x)$ is asymptotically equivalent to $x/\ln(x)$. More precisely, the ratio of $\pi(x)$ to $x/\ln(x)$ approaches 1 as $x$ grows without bound. This extraordinary relationship is the Prime Number Theorem. It captures the large-scale behaviour of the primes in the limit $x \to \infty$. Yet for finite values of $x$ a significant error remains between the predicted value and the actual value.
+
+\section{The Logarithmic Integral --- A Better Approximation}
+
+Gauss realised that a better fit to $\pi(x)$ could be found by considering the logarithmic integral
+\[
+\li(x) = \int_{2}^{x} \frac{1}{\ln(t)}\, dt.
+\]
+If we plot the function $1/\ln(t)$ and calculate the area under this curve from 2 to $x$, the shape of that area function turns out to be a better approximation to the prime-counting function. Overlaying $\li(x)$ on $\pi(x)$ and comparing it with the earlier approximation $x/\ln(x)$ shows that the logarithmic integral is a much closer fit.
+
+With the logarithmic integral in hand the Prime Number Theorem can be stated in either of two equivalent ways: $\pi(x) \sim x/\ln(x)$ or $\pi(x) \sim \li(x)$. But as impressive as Gauss's work was, the simple fact remained that the logarithmic-integral curve only describes some sort of average behaviour of the primes. All information regarding the specific steps in the staircase is absent. What was needed was a way of correcting the error at every stage and recovering the hidden step-like structure behind the primes.
+
+\section{Bernhard Riemann Enters the Story}
+
+This is where Bernhard Riemann enters the story. Riemann wanted to understand whether it was possible to do better than the average curve and whether it was possible to reconstruct the exact prime-counting staircase. It was precisely this problem that he took up in one of the most extraordinary papers in the history of mathematics. In 1859 he published a short paper titled ``On the Number of Primes Less Than a Given Magnitude.'' The title tells you exactly what he was trying to do.
+
+Riemann wanted to understand how many primes there are below a given number. But instead of trying to find primes one by one or simply improving the smooth approximation found by Gauss, he approached the problem from a completely unexpected direction. He turned to a function that at first sight seems to have nothing to do with primes at all --- the zeta function.
+
+\section{The Zeta Function}
+
+The zeta function is an infinite series of the form
+\[
+\zeta(s) = 1 + \frac{1}{2^s} + \frac{1}{3^s} + \frac{1}{4^s} + \cdots = \sum_{n=1}^{\infty} \frac{1}{n^s}.
+\]
+The most famous example is the case $s = 2$: $\zeta(2) = 1 + \tfrac{1}{4} + \tfrac{1}{9} + \tfrac{1}{16} + \cdots$. This infinite sum of inverse squares was shown by Leonhard Euler to equal exactly $\pi^2/6$.
+
+At first glance it is not immediately obvious that the zeta function has anything to do with the prime numbers. So if Riemann's aim was to understand the primes, why would he turn his attention to this function? How can this infinite sum possibly know anything about where the primes are located?
+
+\section{Euler's Bridge --- The Product Formula}
+
+The first step towards a bridge between the zeta function and the primes was uncovered by Euler himself. Euler showed that the zeta function could be rewritten not as a sum over all whole numbers but as an infinite product over the primes.
+
+Starting with the zeta series, multiply the whole series by $1/2^s$. This creates a new series containing exactly the terms with even denominators. Subtract this new series from the original: all the even-denominator terms disappear. The left-hand side can be factorised, leaving a series from which every denominator divisible by 2 has been sieved out.
+
+Euler repeats the same idea with the next prime, 3: multiply the remaining series by $1/3^s$ and subtract again. All terms divisible by 3 disappear. The pattern is the Sieve of Eratosthenes applied not to a list of numbers but to the zeta series itself.
+
+Continuing through every prime, every composite denominator eventually disappears. After the sieving is complete every term has been removed except the very first term, which is simply 1. Rearranging then yields Euler's product formula:
+\[
+\zeta(s) = \prod_{p} \left(1 - p^{-s}\right)^{-1},
+\]
+where the product is taken over all primes $p$. This is the first astonishing bridge between the zeta function and the prime numbers. Euler had shown that hidden inside the infinite sum of the zeta function is the prime-factorisation structure of the integers. When Riemann chose the zeta function as the object through which to study the primes, he was building directly on Euler's discovery.
+
+\section{Taking the Logarithm --- From Product to Double Sum}
+
+Riemann needed something sharper. He needed a way to extract prime-counting information from this analytic function. The first step is simple yet powerful: take the logarithm of Euler's product formula. The logarithm of a product becomes a sum of logarithms, so the product over primes becomes a sum over primes:
+\[
+\ln \zeta(s) = -\sum_{p} \ln\left(1 - p^{-s}\right).
+\]
+Using the power-series expansion $-\ln(1-u) = u + u^2/2 + u^3/3 + u^4/4 + \cdots$ with $u = p^{-s}$, one obtains an infinite sum for each prime. The result can be written compactly as a double sum:
+\[
+\ln \zeta(s) = \sum_{p} \sum_{m=1}^{\infty} \frac{1}{m}\, p^{-ms}.
+\]
+Writing out the first few terms makes the structure clear. The first bracket comes from the prime 2, the second from 3, the third from 5, and so on. Inside each bracket appear not only the prime itself but also its powers: $2^2, 2^3, 2^4, \ldots$; $3^2, 3^3, \ldots$; and likewise for every prime. The terms involving just the primes come with weight 1; the terms containing prime squares come with weight $\tfrac{1}{2}$; prime cubes with weight $\tfrac{1}{3}$; and in general a prime raised to the power $m$ comes with weight $1/m$.
+
+Thus the logarithm of the zeta function is not just singling out primes; it also contains information about the prime powers, but with smaller and smaller weights as the power increases.
+
+\section{The Weighted Counting Function $J(x)$}
+
+This leads us to a slightly different counting function from $\pi(x)$ --- one that also counts prime powers. We call it $J(x)$. It counts prime powers less than or equal to $x$, each given a specific weight: primes count with weight 1, prime squares with weight $\tfrac{1}{2}$, prime cubes with weight $\tfrac{1}{3}$, and in general $p^m$ contributes with weight $1/m$.
+
+\subsection*{Example: $J(10)$}
+
+The primes $\le 10$ are 2, 3, 5, 7 (each weight 1). The prime squares are $4 = 2^2$ and $9 = 3^2$ (each weight $\tfrac{1}{2}$). The only prime cube is $8 = 2^3$ (weight $\tfrac{1}{3}$). Therefore
+\[
+J(10) = 1+1+1+1 + \tfrac{1}{2}+\tfrac{1}{2} + \tfrac{1}{3} = \tfrac{16}{3} \approx 5.333.
+\]
+By contrast $\pi(10) = 4$. $J(10)$ is larger because it counts the same primes and then adds extra weighted contributions from prime powers.
+
+\subsection*{Example: $J(100)$}
+
+There are 25 primes $\le 100$ (contribution 25). The prime squares 4, 9, 25, 49 each contribute $\tfrac{1}{2}$ (total 2). The prime cubes 8 and 27 each contribute $\tfrac{1}{3}$ (total $\tfrac{2}{3}$). The fourth powers 16 and 81 each contribute $\tfrac{1}{4}$ (total $\tfrac{1}{2}$). The fifth power 32 contributes $\tfrac{1}{5}$ and the sixth power 64 contributes $\tfrac{1}{6}$. Adding everything yields
+\[
+J(100) = \tfrac{428}{15} \approx 28.533.
+\]
+When we plot $J(x)$ up to 100 it looks like a staircase, but whereas $\pi(x)$ jumps only at primes (each jump of height 1), $J(x)$ jumps at every prime power, with jumps of height $1/m$ at $p^m$. $J(x)$ follows a similar general shape but sits slightly above $\pi(x)$.
+
+In general we can write
+\[
+J(x) = \sum_{p^m \le x} \frac{1}{m}.
+\]
+Equivalently, by grouping terms according to the exponent $m$,
+\[
+J(x) = \sum_{m=1}^{\infty} \frac{1}{m}\, \pi\!\left(x^{1/m}\right).
+\]
+
+\section{Building $J(x)$ from Layers of $\pi(x)$}
+
+The $m = 1$ term is simply $\pi(x)$. The $m = 2$ term is $\tfrac{1}{2}\,\pi(\sqrt{x})$, which adds half-steps at the prime squares. The $m = 3$ term is $\tfrac{1}{3}\,\pi(x^{1/3})$, adding third-steps at the prime cubes, and so on. Starting with the ordinary prime-counting staircase and adding these extra layers gradually transforms it into the weighted prime-power staircase $J(x)$.
+
+$J(x)$ therefore contains the very thing we want --- $\pi(x)$ --- but it also contains extra layers. To recover $\pi(x)$ we need to start with $J(x)$ and somehow strip away those extra prime-power layers.
+
+\section{M\"obius Inversion --- Recovering $\pi(x)$ from $J(x)$}
+
+There is a function that does exactly this kind of inversion: the M\"obius function $\mu(n)$. It is defined by
+\begin{itemize}[nosep]
+\item $\mu(1) = 1$,
+\item $\mu(n) = (-1)^k$ if $n$ is a product of $k$ distinct primes,
+\item $\mu(n) = 0$ if $n$ contains a repeated prime factor.
+\end{itemize}
+
+Concrete values: $\mu(2) = \mu(3) = \mu(5) = \mu(7) = -1$; $\mu(6) = \mu(10) = +1$ (products of two distinct primes); $\mu(4) = \mu(8) = \mu(9) = 0$ (repeated factors).
+
+The inversion formula that recovers the ordinary prime-counting function is
+\[
+\pi(x) = \sum_{m=1}^{\infty} \frac{\mu(m)}{m}\, J\!\left(x^{1/m}\right).
+\]
+Writing out the first few terms and inserting the M\"obius values produces the concrete pattern: start with $J(x)$, subtract half of the square-root correction, subtract a third of the cube-root correction, skip the fourth-root term ($\mu(4) = 0$), subtract a fifth of the fifth-root correction, add back a sixth of the sixth-root correction, and so on --- each term $J(x^{1/m})$ enters with weight $\mu(m)/m$.
+
+\subsection*{Worked example: recovering $\pi(100)$}
+
+We already know $\pi(100) = 25$. Does the formula give the same number? Substituting $x = 100$ and terminating at the sixth-root term (higher roots of 100 are less than 2) we need:
+\begin{itemize}[nosep]
+\item $J(100) = 428/15$,
+\item $J(10) = 16/3$,
+\item $J(100^{1/3}) = J({\approx}4.64) = 1 + 1 + \tfrac{1}{2} = 5/2$,
+\item $J(100^{1/5}) = J({\approx}2.51) = 1$, and $J(100^{1/6}) = J({\approx}2.15) = 1$.
+\end{itemize}
+
+Substituting these values into the inversion formula, each weighted by $\mu(m)/m$, gives
+\[
+\pi(100) = J(100) - \tfrac{1}{2}J(10) - \tfrac{1}{3}J(100^{1/3}) - \tfrac{1}{5}J(100^{1/5}) + \tfrac{1}{6}J(100^{1/6}) = \tfrac{428}{15} - \tfrac{8}{3} - \tfrac{5}{6} - \tfrac{1}{5} + \tfrac{1}{6} = 25,
+\]
+exactly as required. Starting with the $J$-staircase and applying the successive M\"obius corrections brings it closer and closer to the ordinary prime-counting staircase until, after a finite number of terms, they perfectly overlap.
+
+\section{Linking $\ln \zeta(s)$ Explicitly to $J(x)$}
+
+Recall that the double sum appearing in $\ln \zeta(s)$ is indexed by exactly the same prime powers $p^m$ with exactly the same weights $1/m$ that appear in $J(x)$. We can make the connection fully explicit. Each term of the form $\tfrac{1}{m} p^{-ms}$ can be rewritten as an integral
+\[
+s \int_{p^m}^{\infty} x^{-s-1}\, dx.
+\]
+Splitting each integral into successive intervals that begin and end at consecutive prime powers, then collecting the overlapping integrals that share the same interval, produces coefficients that are precisely the successive heights of the staircase $J(x)$. The entire expression therefore collapses into the compact integral relation
+\[
+\ln \zeta(s) = s \int_{1}^{\infty} J(x)\, x^{-s-1}\, dx.
+\]
+As a concrete check, when $s = 2$ we have $\zeta(2) = \pi^2/6$, so $\ln(\pi^2/6) \approx 0.4977$ equals 2 times the integral from 1 to $\infty$ of $J(x)\,x^{-3}\,dx$ --- that is, twice the area under the curve $J(x)/x^3$. This is the key analytic link between the logarithm of the zeta function and the prime-power counting function.
+
+\section{Analytic Continuation and the Zeros of $\zeta(s)$}
+
+The original series for $\zeta(s)$ converges only when the real part of $s$ is greater than 1. Riemann showed, by analytic continuation, that the function can be extended far beyond that region into almost the entire complex plane, with the single exception of a simple pole at $s = 1$.
+
+Once the function has been continued one can ask where it becomes zero. When $s$ is real the zeros occur at the negative even integers $-2, -4, -6, \ldots$. These are called the trivial zeros.
+
+When $s$ is complex one marks, in the complex plane, the points that the continued zeta function sends to the real axis and the points it sends to the imaginary axis. Their intersections are the zeros. Besides the expected trivial zeros one finds a remarkable alignment of further zeros along the single vertical line where the real part of $s$ equals $\tfrac{1}{2}$. This is the content of the Riemann Hypothesis: every non-trivial zero of the zeta function lies exactly on the critical line $\operatorname{Re}(s) = \tfrac{1}{2}$.
+
+\section{Riemann's Explicit Formula}
+
+The natural next question is whether the relation between $\ln \zeta(s)$ and $J(x)$ can be inverted: can we start with the zeta function and recover $J(x)$? Riemann showed that the answer is yes. The inversion is technical, but the resulting explicit formula has a beautiful structure.
+
+The formula expresses $J(x)$ as a sum of contributions, each coming from a special feature of the zeta function in the complex plane:
+
+\begin{itemize}
+\item \textbf{Main term}: a version of the logarithmic integral that arises from the pole of $\zeta(s)$ at $s = 1$. This supplies the dominant smooth trend of $J(x)$.
+\item \textbf{Trivial-zero contribution}: a small non-oscillatory adjustment packaged as an integral over the trivial zeros.
+\item \textbf{Constant term}: $-\ln 2$, a fixed offset that emerges from the inversion.
+\item \textbf{Sum over non-trivial zeros}: the crucial term $\sum_{\rho} \li(x^{\rho})$. Each pair of conjugate non-trivial zeros contributes an oscillatory correction.
+\end{itemize}
+
+It is these oscillatory corrections that encode the step structure of the primes.
+
+\section{How the Zeros Generate the Staircase}
+
+Consider a non-trivial zero lying on the critical line, written $\rho = \tfrac{1}{2} + i\gamma$. Inside the explicit formula this zero appears in the term $x^{\rho}$. Expanding,
+\[
+x^{\rho} = x^{1/2 + i\gamma} = \sqrt{x} \cdot x^{i\gamma} = \sqrt{x} \cdot e^{i\gamma \ln x} = \sqrt{x}\left(\cos(\gamma \ln x) + i\sin(\gamma \ln x)\right).
+\]
+The imaginary part $\gamma$ therefore acts as a frequency in the natural logarithm of $x$. Each zero above the real axis is paired with its conjugate below the axis ($\tfrac{1}{2} - i\gamma$). The pair together produces a real oscillatory ripple whose amplitude is essentially $\sqrt{x}$ and whose frequency is set by $\gamma$.
+
+Adding the first few pairs of zeros produces the first few ripples. Adding more and more pairs gradually pulls the smooth logarithmic-integral baseline toward the jagged staircase of $J(x)$. The zeros are not merely mysterious points in the complex plane; they generate precisely the correction terms that control how the primes deviate from their smooth average behaviour.
+
+Once $J(x)$ has been reconstructed in this way, the ordinary prime-counting function $\pi(x)$ is recovered from it by the M\"obius inversion already described. As more non-trivial zero pairs are included, the step structure in the reconstructed $\pi(x)$ becomes clearer and clearer.
+
+\section{The Chain from Euler to Riemann}
+
+Looking back, the chain of reasoning is breathtaking:
+
+\begin{itemize}
+\item Euler wrote the zeta function as a product over primes.
+\item Taking the logarithm produced a double sum whose terms are indexed by the same weighted prime powers that define $J(x)$.
+\item That double sum can be rewritten as an integral involving $J(x)$.
+\item Inverting the integral relation recovers $J(x)$ from the analytic properties of $\zeta(s)$: the pole supplies the smooth main term, the non-trivial zeros supply the oscillatory corrections that rebuild the staircase.
+\item Finally, M\"obius inversion recovers the ordinary prime-counting function $\pi(x)$ from $J(x)$.
+\end{itemize}
+
+The remarkable insight of Riemann is that the non-trivial zeros of the zeta function supply the oscillatory correction terms needed to reconstruct the prime-counting function. Somehow the zeta function and its non-trivial zeros contain information about the distribution of the primes. As more and more non-trivial zeros are included, the approximation to the prime-counting staircase becomes more detailed. In the limit, with all the zeros included in the correct symmetric order, Riemann's formula recovers the staircase structure exactly.
+
+\section{The Riemann Hypothesis and the Hidden Rhythm}
+
+If the Riemann Hypothesis is true --- if all of the non-trivial zeros lie exactly on the critical line --- then the fluctuations in the prime-counting function are kept under the tightest possible control allowed by the symmetry and structure of the zeta function. The primes may look random, but Riemann showed that their hidden rhythm is written in the zeros of the zeta function.
+
+That is where we end.
+
+\bigskip
+\noindent\rule{\linewidth}{0.4pt}
+
+\section*{Principal Sources}
+\begin{itemize}[nosep]
+%\item The video ``The Greatest Unsolved Problem In Mathematics'' by Physics Explained (Part 2 of the Riemann Hypothesis series).
+\item Bernhard Riemann, ``\"Uber die Anzahl der Primzahlen unter einer gegebenen Gr\"o{\ss}e'' (1859).
+\item John Derbyshire, \emph{Prime Obsession}.
+\item Marcus du Sautoy, \emph{The Music of the Primes}.
+\item William Dunham, \emph{Euler: The Master of Us All}.
+\end{itemize}
+
+%\begin{center}
+%\textit{--- End of Document ---}
+%\end{center}
+
+\end{document}
