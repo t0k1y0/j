@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A Critique of the Doctrine Called Effective Altruism — Une critique de la doctrine dite altruisme efficace</title>
+<style>
+  :root {
+    --ink: #26241f;
+    --ink-soft: #55524a;
+    --rule: #d9d3c3;
+    --bg: #faf7ef;
+    --accent: #7a3b2e;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.6;
+  }
+  header.title-block {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid var(--accent);
+  }
+  header.title-block h1 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.4rem;
+  }
+  header.title-block h1 .fr {
+    display: block;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 1.15rem;
+    margin-top: 0.3rem;
+  }
+  header.title-block .subtitle {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .toggle-bar {
+    max-width: 980px;
+    margin: 1rem auto 0;
+    padding: 0 1.5rem;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.8rem;
+  }
+  .toggle-bar button {
+    background: none;
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    cursor: pointer;
+    margin: 0 0.2rem;
+    font-family: inherit;
+  }
+  .toggle-bar button.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 4rem;
+  }
+  .section-heading {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin: 2.4rem 0 0.8rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .section-heading h2 {
+    font-size: 1.05rem;
+    font-weight: normal;
+    color: var(--accent);
+    letter-spacing: 0.03em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 1.1rem;
+    align-items: start;
+  }
+  .row .en, .row .fr {
+    font-size: 1rem;
+  }
+  .fr { color: var(--ink); }
+  .colhead {
+    max-width: 980px;
+    margin: 0.5rem auto 0;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  em { color: var(--ink-soft); }
+  body.hide-fr .fr, body.hide-fr .section-heading h2.fr-h { display: none; }
+  body.hide-en .en, body.hide-en .section-heading h2.en-h { display: none; }
+  body.hide-fr .row, body.hide-en .row,
+  body.hide-fr .section-heading, body.hide-en .section-heading { grid-template-columns: 1fr; }
+  body.hide-fr .colhead .fr-label, body.hide-en .colhead .en-label { display: none; }
+  body.hide-fr .colhead, body.hide-en .colhead { grid-template-columns: 1fr; }
+  @media (max-width: 720px) {
+    .row, .section-heading, .colhead { grid-template-columns: 1fr; gap: 0.3rem; }
+    .row { border-bottom: 1px solid var(--rule); padding-bottom: 0.8rem; }
+    .fr { padding-top: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="title-block">
+  <h1>A Critique of the Doctrine Called Effective Altruism
+    <span class="fr">Une critique de la doctrine dite altruisme efficace</span>
+  </h1>
+  <div class="subtitle">in the manner of Immanuel Kant &nbsp;·&nbsp; à la manière d'Emmanuel Kant</div>
+</header>
+
+<div class="toggle-bar">
+  <button class="active" onclick="setMode('both', this)">EN + FR</button>
+  <button onclick="setMode('en', this)">English only</button>
+  <button onclick="setMode('fr', this)">Français seul</button>
+</div>
+
+<div class="colhead">
+  <div class="en-label">English</div>
+  <div class="fr-label">Français</div>
+</div>
+
+<main>
+
+  <div class="row">
+    <p class="en">It is a common error of our age—and of every age that prefers the measurable to the lawful—to mistake the <em>calculation of good consequences</em> for morality itself. The movement that styles itself <em>effective altruism</em> has given this error a method, a community, and a language of numbers. It asks, with an air of scientific sobriety, how one may <em>do the most good</em>. The question already contains the defect. Morality does not begin with a quantity of good to be maximized. It begins with the good will: a will that acts <em>from duty</em>, that is, from respect for the moral law which reason itself legislates, and not from the expected yield of an intervention, however carefully estimated.</p>
+    <p class="fr">C'est une erreur commune de notre siècle — et de tout siècle qui préfère le mesurable au légal — que de confondre le <em>calcul des bonnes conséquences</em> avec la moralité elle-même. Le mouvement qui se nomme <em>altruisme efficace</em> a donné à cette erreur une méthode, une communauté et un langage de chiffres. Il demande, avec un air de sobriété scientifique, comment on peut <em>faire le plus de bien possible</em>. La question contient déjà le défaut. La moralité ne commence pas par une quantité de bien à maximiser. Elle commence par la bonne volonté : une volonté qui agit <em>par devoir</em>, c'est-à-dire par respect pour la loi morale que la raison elle-même se donne, et non par le rendement attendu d'une intervention, si soigneusement estimé soit-il.</p>
+  </div>
+
+  <div class="section-heading">
+    <h2 class="en-h">I. On the Form of the Imperative</h2>
+    <h2 class="fr-h">I. De la forme de l'impératif</h2>
+  </div>
+
+  <div class="row">
+    <p class="en">Every practical principle is either <em>hypothetical</em> or <em>categorical</em>. The former says: <em>If</em> you will this end, <em>then</em> you must will the means. The latter says: You <em>ought</em>, without condition. Effective altruism speaks almost entirely in the first voice. "If you wish to help others as much as possible, then give to this charity rather than that; choose this career rather than that; weigh this cause by scale, neglectedness, and tractability." Such counsel may be prudent. It is not yet moral. Prudence concerns happiness—one's own or another's—and the fitting of means to ends that inclination or sympathy has already set. The moral law does not wait upon the wish to "do the most good." It commands that one act only on that maxim which one can at the same time will as a universal law, and that one treat humanity, in one's own person and in the person of every other, always as an end and never <em>merely</em> as a means.</p>
+    <p class="fr">Tout principe pratique est soit <em>hypothétique</em>, soit <em>catégorique</em>. Le premier dit : <em>Si</em> tu veux cette fin, <em>alors</em> tu dois vouloir les moyens. Le second dit : Tu <em>dois</em>, sans condition. L'altruisme efficace parle presque entièrement dans la première voix. « Si tu souhaites aider autrui autant que possible, alors donne à telle œuvre plutôt qu'à telle autre ; choisis telle carrière plutôt que telle autre ; pèse telle cause selon l'échelle, la négligence et la tractabilité. » Un tel conseil peut être prudent. Il n'est pas encore moral. La prudence concerne le bonheur — le sien propre ou celui d'autrui — et l'ajustement des moyens à des fins que l'inclination ou la sympathie ont déjà fixées. La loi morale n'attend pas le souhait de « faire le plus de bien possible ». Elle commande d'agir seulement selon la maxime que l'on peut en même temps vouloir comme loi universelle, et de traiter l'humanité, dans sa propre personne comme dans celle de tout autre, toujours comme une fin et jamais <em>simplement</em> comme un moyen.</p>
+  </div>
+
+  <div class="row">
+    <p class="en">A doctrine that ranks lives by cost per life saved, or by quality-adjusted years, or by the expected value of a speculative future, has already converted persons into <em>prices</em>. What has a price can be replaced by something else as its equivalent. What has <em>dignity</em> admits of no equivalent. The drowning child at one's feet and the distant stranger are not two entries in a ledger whose sum one is to maximize. Each is an end in itself. To refuse the near duty because a more "effective" use of the same hour or coin is imaginable elsewhere is not a higher morality. It is the substitution of a technical problem for a moral one.</p>
+    <p class="fr">Une doctrine qui classe les vies selon le coût par vie sauvée, ou selon les années de vie ajustées sur la qualité, ou selon la valeur espérée d'un avenir spéculatif, a déjà converti les personnes en <em>prix</em>. Ce qui a un prix peut être remplacé par autre chose qui lui est équivalent. Ce qui a une <em>dignité</em> n'admet aucun équivalent. L'enfant qui se noie à nos pieds et l'étranger lointain ne sont pas deux entrées d'un registre dont on doit maximiser la somme. Chacun est une fin en soi. Refuser le devoir proche parce qu'un usage plus « efficace » de la même heure ou de la même pièce est imaginable ailleurs n'est pas une morale supérieure. C'est la substitution d'un problème technique à un problème moral.</p>
+  </div>
+
+  <div class="section-heading">
+    <h2 class="en-h">II. On Using Persons as Means</h2>
+    <h2 class="fr-h">II. De l'usage des personnes comme moyens</h2>
+  </div>
+
+  <div class="row">
+    <p class="en">The philanthropist who "earns to give" treats his own vocation as a mere instrument of transfer. The grantmaker who compares interventions treats beneficiaries as interchangeable units of welfare. The longtermist who would sacrifice present claims to the possible existence of vast future populations treats those now living as scaffolding for a sum that does not yet exist and cannot give its consent. In each case the form is the same: humanity is used as a <em>means</em> to an aggregate that reason is invited to worship as if it were the moral law.</p>
+    <p class="fr">Le philanthrope qui « gagne pour donner » traite sa propre vocation comme un simple instrument de transfert. Le donateur qui compare les interventions traite les bénéficiaires comme des unités de bien-être interchangeables. Le longtermiste qui sacrifierait les revendications présentes à l'existence possible de vastes populations futures traite ceux qui vivent aujourd'hui comme un échafaudage pour une somme qui n'existe pas encore et qui ne peut donner son consentement. Dans chaque cas, la forme est la même : l'humanité est utilisée comme <em>moyen</em> en vue d'un agrégat que la raison est invitée à vénérer comme s'il était la loi morale.</p>
+  </div>
+
+  <div class="row">
+    <p class="en">I do not deny imperfect duties of beneficence. The duty to promote the happiness of others is real. But it is <em>imperfect</em>: it does not prescribe a determinate maximum, nor does it license the neglect of perfect duties—truthfulness, justice, the keeping of promises, the respect owed to the person standing before one—for the sake of a larger total. Beneficence that knows no limit but the calculus of outcomes ceases to be virtue and becomes administration. Administration may be useful. It does not confer moral worth.</p>
+    <p class="fr">Je ne nie pas les devoirs imparfaits de bienfaisance. Le devoir de promouvoir le bonheur d'autrui est réel. Mais il est <em>imparfait</em> : il ne prescrit aucun maximum déterminé, et il n'autorise pas non plus la négligence des devoirs parfaits — la véracité, la justice, le respect des promesses, le respect dû à la personne qui se tient devant nous — au profit d'une somme plus grande. Une bienfaisance qui ne connaît d'autre limite que le calcul des résultats cesse d'être vertu et devient administration. L'administration peut être utile. Elle ne confère aucune valeur morale.</p>
+  </div>
+
+  <div class="section-heading">
+    <h2 class="en-h">III. On Heteronomy of the Will</h2>
+    <h2 class="fr-h">III. De l'hétéronomie de la volonté</h2>
+  </div>
+
+  <div class="row">
+    <p class="en">The will is <em>autonomous</em> when it is a law to itself. It is <em>heteronomous</em> when it is determined by an object outside it: pleasure, sympathy, the authority of a community, the tables of a charity evaluator, the forecast of an existential risk. Effective altruism, for all its talk of reason and evidence, frequently hands the will over to such objects. The agent does not ask, "Can I will that my maxim be a universal law?" He asks, "What do the best estimates say will produce the greatest expected good?" The estimates change; the laboratories and funders change; the favored causes migrate from bed-nets to animals to machines that do not yet think. The will that follows them is not free in the moral sense. It is steered by appearances in the world of sense—by data, models, and the prestige of a movement.</p>
+    <p class="fr">La volonté est <em>autonome</em> quand elle est une loi pour elle-même. Elle est <em>hétéronome</em> quand elle est déterminée par un objet extérieur à elle : le plaisir, la sympathie, l'autorité d'une communauté, les tableaux d'un évaluateur d'œuvres caritatives, la prévision d'un risque existentiel. L'altruisme efficace, malgré tous ses discours sur la raison et les preuves, livre fréquemment la volonté à de tels objets. L'agent ne demande pas : « Puis-je vouloir que ma maxime devienne une loi universelle ? » Il demande : « Que disent les meilleures estimations sur ce qui produira le plus grand bien espéré ? » Les estimations changent ; les laboratoires et les bailleurs de fonds changent ; les causes favorites migrent des moustiquaires aux animaux, puis aux machines qui ne pensent pas encore. La volonté qui les suit n'est pas libre au sens moral. Elle est pilotée par des apparences dans le monde sensible — par des données, des modèles, et le prestige d'un mouvement.</p>
+  </div>
+
+  <div class="row">
+    <p class="en">A community united by "doing the most good" is not thereby a <em>kingdom of ends</em>. A kingdom of ends is a systematic union of rational beings under common laws they give themselves. It is not a coalition of donors and career-advisers coordinating transfers according to a shared metric. Where the metric becomes the legislator, persons become resources, and the moral law is replaced by a policy.</p>
+    <p class="fr">Une communauté unie par le « faire le plus de bien possible » n'est pas pour autant un <em>règne des fins</em>. Un règne des fins est une union systématique d'êtres raisonnables sous des lois communes qu'ils se donnent eux-mêmes. Ce n'est pas une coalition de donateurs et de conseillers de carrière coordonnant des transferts selon une mesure partagée. Là où la mesure devient législatrice, les personnes deviennent des ressources, et la loi morale est remplacée par une politique.</p>
+  </div>
+
+  <div class="section-heading">
+    <h2 class="en-h">IV. On Consequences We Cannot Command</h2>
+    <h2 class="fr-h">IV. Des conséquences que nous ne pouvons commander</h2>
+  </div>
+
+  <div class="row">
+    <p class="en">Morality cannot be founded on consequences, because consequences do not lie wholly in our power. The good will shines by itself, "like a jewel," even if, by some special disfavor of fate, it should accomplish nothing. Effective altruism inverts this. It locates worth in the <em>outcome</em>—lives saved, risks reduced, future generations secured—and then, because outcomes at planetary and cosmic scale are opaque, it fills the opacity with expected-value reasoning and stories of astronomical waste. Such reasoning may be an aid to judgment in the realm of skill. It cannot be the ground of obligation. One cannot have a duty to a total one cannot know, nor may one treat the uncertainty of the future as license to discount the determinate claims of the present person.</p>
+    <p class="fr">La moralité ne peut être fondée sur les conséquences, car les conséquences ne sont pas entièrement en notre pouvoir. La bonne volonté brille par elle-même, « comme un joyau », même si, par quelque disgrâce particulière du destin, elle n'accomplissait rien. L'altruisme efficace inverse ce principe. Il situe la valeur dans le <em>résultat</em> — vies sauvées, risques réduits, générations futures mises en sécurité — puis, parce que les résultats à l'échelle planétaire et cosmique sont opaques, il comble cette opacité par un raisonnement en valeur espérée et par des récits de gaspillage astronomique. Un tel raisonnement peut aider le jugement dans le domaine de l'habileté. Il ne peut pas être le fondement de l'obligation. On ne saurait avoir un devoir envers une somme que l'on ne peut connaître, ni traiter l'incertitude de l'avenir comme une licence pour rabaisser les revendications déterminées de la personne présente.</p>
+  </div>
+
+  <div class="row">
+    <p class="en">The so-called drowning-child argument proves only that we have a duty of rescue when we can help without violating a perfect duty or destroying our own moral integrity. It does not prove that we are standing, at every moment, in an infinite pond, obligated to empty our substance into the most efficient channel a research organization can name. To live under that image is not holiness. It is a new form of tutelage: the understanding in the service of an unbounded hypothetical imperative.</p>
+    <p class="fr">L'argument dit de l'enfant qui se noie prouve seulement que nous avons un devoir de secours quand nous pouvons aider sans violer un devoir parfait ni détruire notre propre intégrité morale. Il ne prouve pas que nous nous tenons, à chaque instant, dans un étang infini, obligés de déverser notre substance dans le canal le plus efficace qu'une organisation de recherche puisse nommer. Vivre sous cette image n'est pas la sainteté. C'est une nouvelle forme de tutelle : l'entendement au service d'un impératif hypothétique sans limites.</p>
+  </div>
+
+  <div class="section-heading">
+    <h2 class="en-h">V. Conclusion</h2>
+    <h2 class="fr-h">V. Conclusion</h2>
+  </div>
+
+  <div class="row">
+    <p class="en">Help others. Give when you can without making yourself a mere tool or treating another as one. Choose a calling compatible with honesty and with the dignity of those you serve. Use evidence so that you do not waste what you give. All this is consistent with duty. What is not consistent is to let <em>effectiveness</em> usurp the place of the law; to let aggregation erase the person; to let a movement's research agenda legislate for the will.</p>
+    <p class="fr">Aidez autrui. Donnez quand vous le pouvez sans faire de vous-même un simple outil ni traiter autrui comme tel. Choisissez une vocation compatible avec l'honnêteté et avec la dignité de ceux que vous servez. Usez des preuves afin de ne pas gaspiller ce que vous donnez. Tout cela est conforme au devoir. Ce qui ne l'est pas, c'est de laisser l'<em>efficacité</em> usurper la place de la loi ; de laisser l'agrégation effacer la personne ; de laisser le programme de recherche d'un mouvement légiférer pour la volonté.</p>
+  </div>
+
+  <div class="row">
+    <p class="en">The maxim of effective altruism, stated honestly, is this: <em>I will promote the greatest expected good, as estimated by the best available analysis, even when this requires that particular persons be used as means and that perfect duties yield to a calculation.</em> Can this maxim be willed as a universal law? Then every human being would be, in principle, a fungible input to a total. No rational being can will that law without contradicting the dignity that makes him a legislator in the kingdom of ends.</p>
+    <p class="fr">La maxime de l'altruisme efficace, énoncée honnêtement, est celle-ci : <em>Je promouvrai le plus grand bien espéré, tel qu'estimé par la meilleure analyse disponible, même quand cela exige que des personnes particulières soient utilisées comme moyens et que des devoirs parfaits cèdent devant un calcul.</em> Peut-on vouloir cette maxime comme loi universelle ? Alors tout être humain serait, en principe, une ressource fongible pour une somme. Aucun être raisonnable ne peut vouloir cette loi sans contredire la dignité qui fait de lui un législateur dans le règne des fins.</p>
+  </div>
+
+  <div class="row">
+    <p class="en">Therefore the doctrine, insofar as it claims to <em>be</em> morality and not merely a technique of benevolence, fails. Technique may still have its place—under the moral law, never above it.</p>
+    <p class="fr">La doctrine, dans la mesure où elle prétend <em>être</em> la moralité et non pas simplement une technique de bienveillance, échoue donc. La technique peut encore avoir sa place — sous la loi morale, jamais au-dessus d'elle.</p>
+  </div>
+
+</main>
+
+<script>
+function setMode(mode, btn) {
+  document.body.classList.remove('hide-fr', 'hide-en');
+  if (mode === 'en') document.body.classList.add('hide-fr');
+  if (mode === 'fr') document.body.classList.add('hide-en');
+  document.querySelectorAll('.toggle-bar button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
