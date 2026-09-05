@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>A Critique of the Doctrine Called Effective Altruism — Une critique de la doctrine dite altruisme efficace</title>
+<title>On Effective Altruism -- A Kantian Critique</title>
 <style>
   :root {
     --ink: #26241f;
@@ -120,6 +120,37 @@
   body.hide-fr .section-heading, body.hide-en .section-heading { grid-template-columns: 1fr; }
   body.hide-fr .colhead .fr-label, body.hide-en .colhead .en-label { display: none; }
   body.hide-fr .colhead, body.hide-en .colhead { grid-template-columns: 1fr; }
+  .glossary {
+    max-width: 980px;
+    margin: 3rem auto 0;
+    padding: 2rem 1.5rem 4rem;
+    border-top: 2px solid var(--accent);
+  }
+  .glossary h2 {
+    font-size: 1.05rem;
+    font-weight: normal;
+    color: var(--accent);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin: 0 0 1.5rem;
+    text-align: center;
+  }
+  .glossary dl { margin: 0; }
+  .glossary dt {
+    font-weight: bold;
+    color: var(--ink);
+    margin-top: 1.1rem;
+  }
+  .glossary dt .de {
+    font-weight: normal;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.9em;
+  }
+  .glossary dd {
+    margin: 0.2rem 0 0;
+    color: var(--ink-soft);
+  }
   @media (max-width: 720px) {
     .row, .section-heading, .colhead { grid-template-columns: 1fr; gap: 0.3rem; }
     .row { border-bottom: 1px solid var(--rule); padding-bottom: 0.8rem; }
@@ -130,10 +161,9 @@
 <body>
 
 <header class="title-block">
-  <h1>A Critique of the Doctrine Called Effective Altruism
-    <span class="fr">Une critique de la doctrine dite altruisme efficace</span>
+  <h1>On Effective Altruism -- A Kantian Critique
+    <span class="fr">De l'altruisme efficace — une critique kantienne</span>
   </h1>
-  <div class="subtitle">in the manner of Immanuel Kant &nbsp;·&nbsp; à la manière d'Emmanuel Kant</div>
 </header>
 
 <div class="toggle-bar">
@@ -235,6 +265,65 @@
   </div>
 
 </main>
+
+<section class="glossary">
+  <h2>Glossary</h2>
+  <dl>
+    <dt>Autonomy</dt>
+    <dd>The will's property of being a law to itself. Moral freedom is not doing whatever one likes, but giving oneself the moral law through reason.</dd>
+
+    <dt>Categorical imperative</dt>
+    <dd>An unconditional command of reason: you ought, regardless of what you happen to want. Kant's main tests: act only on maxims you can will as universal law; treat humanity always as an end, never merely as a means.</dd>
+
+    <dt>Dignity</dt>
+    <dd>The inner worth of a rational being. Dignity has no equivalent and cannot be traded. Contrasted with price, which admits substitution (so much money, so many QALYs, so much expected value).</dd>
+
+    <dt>Duty</dt>
+    <dd>Necessity of an action from respect for the moral law. Moral worth belongs to action from duty, not merely in accordance with duty (e.g. giving because it feels good or scores well).</dd>
+
+    <dt>End in itself</dt>
+    <dd>A rational being, who must never be used only as an instrument for someone else's purpose—including a philanthropic total.</dd>
+
+    <dt>Good will</dt>
+    <dd>The only thing good without qualification. It is good through its willing, not through what it achieves. Kant: it would "like a jewel, still shine by itself" even if it accomplished nothing.</dd>
+
+    <dt>Heteronomy</dt>
+    <dd>The opposite of autonomy: the will determined by something outside it (inclination, sympathy, data, a movement's metric, fear of risk). Such a will is not morally self-legislating.</dd>
+
+    <dt>Hypothetical imperative</dt>
+    <dd>A conditional rule of skill or prudence: if you want X, then do Y. Useful for technique; not the form of moral obligation.</dd>
+
+    <dt>Imperfect duty</dt>
+    <dd>A real duty that leaves latitude in how and how much (beneficence, developing one's talents). It does not command a unique maximum and cannot override perfect duties.</dd>
+
+    <dt>Kingdom of ends</dt>
+    <dd>The ideal systematic union of rational beings under laws they give themselves, each a legislator and a subject, none a mere resource.</dd>
+
+    <dt>Maxim</dt>
+    <dd>The subjective principle on which one actually acts ("I will donate wherever the expected lives-saved per dollar is highest"). Morality tests whether that maxim can be willed as a universal law.</dd>
+
+    <dt>Means / mere means</dt>
+    <dd>To use someone as a means is ordinary and often legitimate (hiring, asking help). To use them as a mere means is to disregard their status as an end—treating them as a replaceable unit in a calculation.</dd>
+
+    <dt>Perfect duty</dt>
+    <dd>A strict, determinate duty that admits no exception for better outcomes (do not lie, do not break a promise, do not use a person as a mere tool).</dd>
+
+    <dt>Practical reason</dt>
+    <dd>Reason insofar as it determines the will—what we ought to do—not merely what is.</dd>
+
+    <dt>Prudence</dt>
+    <dd>Skill in securing happiness or chosen ends. Distinct from morality. EA's "effectiveness," on this view, is often refined prudence.</dd>
+
+    <dt>Tutelage <span class="de">(Unmündigkeit)</span></dt>
+    <dd>Remaining under another's direction when one could think for oneself. Here: letting evaluators, forecasts, and a community's agenda replace one's own moral legislation.</dd>
+
+    <dt>Universal law <span class="de">(Formula of Universal Law)</span></dt>
+    <dd>Act only according to that maxim whereby you can at the same time will that it should become a universal law. If everyone adopted the maxim and the practice would contradict itself or could not be willed, the maxim fails.</dd>
+
+    <dt>World of sense</dt>
+    <dd>The empirical world of appearances, data, and consequences. Moral law is not derived from it, though it must be applied in it.</dd>
+  </dl>
+</section>
 
 <script>
 function setMode(mode, btn) {
