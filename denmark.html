@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Denmark: A Chronology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #10161d;
+    --bg-panel: #171f28;
+    --spine: #2a3644;
+    --ink: #e7e2d4;
+    --ink-dim: #8fa0ac;
+    --ink-faint: #56636e;
+    --amber: #c08a3e;
+    --amber-soft: #c08a3e33;
+    --vellum: #e9e2d0;
+    --rule: #263140;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  html { scroll-padding-top: env(safe-area-inset-top, 24px); scroll-behavior: smooth; }
+
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  a { color: inherit; }
+
+  /* ---- Header / hero ---- */
+  .hero {
+    position: relative;
+    padding: 6.5rem 6vw 4.5rem;
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    right: -6%;
+    width: 46vw;
+    height: 140%;
+    background: radial-gradient(ellipse at center, var(--amber-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-dim);
+    margin: 0 0 1.4rem;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    line-height: 1.02;
+    margin: 0 0 1.3rem;
+    max-width: 16ch;
+    color: var(--vellum);
+  }
+
+  .hero p {
+    max-width: 56ch;
+    color: var(--ink-dim);
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .hero-span {
+    display: flex;
+    gap: 2.2rem;
+    margin-top: 2.6rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-span div {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .hero-span .n {
+    color: var(--amber);
+    font-size: 1.5rem;
+    display: block;
+  }
+
+  .hero-span .l {
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ---- Layout ---- */
+  .wrap {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
+  }
+
+  nav.rail {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 2.6rem 1.4rem 2.6rem 6vw;
+    border-right: 1px solid var(--rule);
+    scrollbar-width: thin;
+  }
+
+  nav.rail::-webkit-scrollbar { width: 6px; }
+  nav.rail::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+
+  nav.rail a {
+    display: block;
+    text-decoration: none;
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    padding: 0.3rem 0;
+    border-left: 2px solid transparent;
+    padding-left: 0.9rem;
+    margin-left: -0.9rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  nav.rail a:hover { color: var(--ink); border-color: var(--amber-soft); }
+
+  main {
+    padding: 3.4rem 6vw 8rem 3.2rem;
+    max-width: 920px;
+  }
+
+  section.era {
+    position: relative;
+    padding-bottom: 4rem;
+    scroll-margin-top: 1.5rem;
+  }
+
+  section.era::before {
+    content: "";
+    position: absolute;
+    left: -1.6rem;
+    top: 0.4rem;
+    bottom: -1rem;
+    width: 1px;
+    background: var(--spine);
+  }
+
+  section.era:last-child::before { bottom: 1rem; }
+
+  .era-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .era-head::before {
+    content: "";
+    position: absolute;
+    left: -1.95rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--amber);
+    margin-top: 0.5rem;
+  }
+
+  .era-head h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.7rem;
+    color: var(--vellum);
+    margin: 0;
+  }
+
+  .era-range {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr);
+    gap: 1.6rem;
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .entry:first-of-type { border-top: none; }
+
+  .entry .date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--amber);
+    padding-top: 0.15rem;
+  }
+
+  .entry p {
+    margin: 0;
+    color: var(--ink);
+    font-size: 0.98rem;
+  }
+
+  .entry p em {
+    font-style: italic;
+    color: var(--vellum);
+  }
+
+  footer {
+    padding: 3rem 6vw 5rem 3.2rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+    max-width: 920px;
+    margin-left: 220px;
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 860px) {
+    .wrap { grid-template-columns: 1fr; }
+    nav.rail {
+      position: static;
+      height: auto;
+      overflow: visible;
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+      padding: 1.6rem 6vw;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 1.2rem;
+    }
+    nav.rail a { border-left: none; padding-left: 0; margin-left: 0; }
+    main { padding: 2.6rem 6vw 6rem; max-width: none; }
+    section.era::before { left: -1.1rem; }
+    .era-head::before { left: -1.4rem; }
+    .entry { grid-template-columns: 1fr; gap: 0.3rem; }
+    footer { margin-left: 0; padding: 2.6rem 6vw 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-eyebrow">A CHRONOLOGY — FROM THE TUNDRA TO THE THRONE</p>
+  <h1>Denmark, in order</h1>
+  <p>From reindeer hunters on post-glacial tundra to a monarchy still holding Arctic and Caribbean ground: the archaeology, the Viking diaspora, and five centuries of court, trade, and invention that follow.</p>
+  <div class="hero-span">
+    <div><span class="n">~14,800</span><span class="l">YEARS COVERED</span></div>
+    <div><span class="n">11</span><span class="l">ERAS</span></div>
+    <div><span class="n">2024</span><span class="l">MOST RECENT ENTRY</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+<nav class="rail">
+  <a href="#paleo">Palaeolithic &amp; Mesolithic</a>
+  <a href="#neolithic">Neolithic</a>
+  <a href="#bronze">Bronze &amp; Iron Age</a>
+  <a href="#viking">Viking Age</a>
+  <a href="#medieval">High &amp; Late Middle Ages</a>
+  <a href="#reformation">Reformation to Absolutism</a>
+  <a href="#enlightenment">Enlightenment</a>
+  <a href="#c19">19th Century: Losses, Golden Age</a>
+  <a href="#c20">20th–21st Century</a>
+</nav>
+
+<main>
+
+<section class="era" id="paleo">
+  <div class="era-head"><h2>Late Palaeolithic and Mesolithic</h2><span class="era-range">c. 12,800 – 3,900 BCE</span></div>
+
+  <div class="entry"><div class="date">c. 12,800–<br>12,000 BCE</div><p>Hamburg culture: reindeer hunters return to the tundra as the ice retreats.</p></div>
+  <div class="entry"><div class="date">c. 12,000–<br>9,000 BCE</div><p>Federmesser, Bromme, and Ahrensburg groups track the climate's swings.</p></div>
+  <div class="entry"><div class="date">c. 9000–<br>6400 BCE</div><p>Maglemosian: a lake-and-river world that includes Koelbjerg Man, carrying Western Hunter-Gatherer ancestry that persists for millennia.</p></div>
+  <div class="entry"><div class="date">c. 6400–<br>5400 BCE</div><p>Kongemose: rising seas begin turning Denmark into an archipelago.</p></div>
+  <div class="entry"><div class="date">c. 5400–<br>3900 BCE</div><p>Ertebølle: shell middens, the Vedbæk cemeteries, pointed-base pottery — a culture that stays wild even as farming arrives next door.</p></div>
+</section>
+
+<section class="era" id="neolithic">
+  <div class="era-head"><h2>Neolithic: two population turnovers</h2><span class="era-range">c. 3,900 – 1,700 BCE</span></div>
+
+  <div class="entry"><div class="date">c. 3900–<br>2800 BCE</div><p>Funnelbeaker culture (TRB), the first farmers: Anatolian-derived ancestry replaces most hunter-gatherers, and long barrows, dolmens, passage graves, and the Sarup enclosures follow.</p></div>
+  <div class="entry"><div class="date">c. 3100–<br>2300 BCE</div><p>Pitted Ware coastal hunters overlap the late TRB.</p></div>
+  <div class="entry"><div class="date">c. 2850–<br>2250 BCE</div><p>Single Grave culture, Denmark's version of Corded Ware: individual graves under small barrows, battle-axes, amber, and crouched burials facing south, strongest in sandy Jutland. Its cord-impressed beaker pottery is typified by the Torsted Mølleby beaker (Himmerland, National Museum). Cattle-herding and barley cultivation drive forest clearance, and ancient DNA from sites like Gjerrild shows steppe/Yamnaya ancestry — a mix genetically closer to later Danes than either the Mesolithic population or early Funnelbeaker farmers were.</p></div>
+  <div class="entry"><div class="date">c. 2350–<br>1700 BCE</div><p>The Dagger Period: flint daggers (the <em>Hindsgavl dagger</em>) and Bell Beaker contact.</p></div>
+</section>
+
+<section class="era" id="bronze">
+  <div class="era-head"><h2>Bronze Age and Iron Age</h2><span class="era-range">c. 1,700 BCE – 800 CE</span></div>
+
+  <div class="entry"><div class="date">c. 1700–<br>500 BCE</div><p>Nordic Bronze Age: oak-coffin barrows, lurs, the Trundholm sun chariot, amber trade.</p></div>
+  <div class="entry"><div class="date">c. 500 BCE–<br>800 CE</div><p>Pre-Roman through Germanic Iron Age: bog iron, Roman imports, the Gundestrup cauldron, gold hoards like Gallehus, and the first runes — laying down the regional elites behind the Viking Age.</p></div>
+</section>
+
+<section class="era" id="viking">
+  <div class="era-head"><h2>Viking Age at home and abroad</h2><span class="era-range">c. 705 – 1035</span></div>
+
+  <div class="entry"><div class="date">c. 705</div><p>Ribe is already a market town.</p></div>
+  <div class="entry"><div class="date">c. 800–825</div><p>Norse settlement of the Faroe Islands (possibly preceded by Irish hermits), later passing from Norwegian to Danish–Norwegian to Danish control.</p></div>
+  <div class="entry"><div class="date">793</div><p>The Lindisfarne raid — the event that anchors the Viking Age in Western memory.</p></div>
+  <div class="entry"><div class="date">c. 808–810</div><p>Godfred confronts Charlemagne; the Danevirke is built up.</p></div>
+  <div class="entry"><div class="date">865–954</div><p>The Danelaw: the Great Heathen Army lands in 865 and takes York (866) and East Anglia. Alfred defeats Guthrum at Edington (878), and the Treaty of Alfred and Guthrum (c. 880–886) cedes Danish custom over eastern and northern England, including the Five Boroughs and Jórvík. English reconquest follows, ending with Eric Bloodaxe's expulsion from York in 954.</p></div>
+  <div class="entry"><div class="date">c. 870–930</div><p>Iceland: settlement (Landnám) around 871 ± 2, with the Althing traditionally founded in 930. It remains a commonwealth rather than a Danish colony, converts to Christianity around 999–1000, and passes to the Norwegian crown only in 1262–64.</p></div>
+  <div class="entry"><div class="date">911</div><p>Normandy: Charles the Simple grants Rollo land on the lower Seine (Treaty of Saint-Clair-sur-Epte). Rollo's own origin — Danish or Norwegian — is still debated. The duchy assimilates over generations; when William conquers England in 1066 it is a Norman undertaking, not Danish state policy, though part of the same diaspora.</p></div>
+  <div class="entry"><div class="date">c. 936–958</div><p>Gorm the Old raises the smaller Jelling stone for Thyra — the first written use of "Denmark" as a name.</p></div>
+  <div class="entry"><div class="date">c. 958–986</div><p>Harald Bluetooth unifies Denmark, claims Norway, and converts the Danes; the large Jelling stone and the Trelleborg-type ring forts date to his reign, and Jelling stands as the kingdom's conventional birth certificate (UNESCO-listed 1994).</p></div>
+  <div class="entry"><div class="date">c. 985–986</div><p>Greenland: Erik the Red leads Icelandic settlers to the Eastern Settlement (Brattahlíð / Qassiarsuk) and later the Western Settlement (near Nuuk), sustained by livestock, ivory, and church ties to Norway.</p></div>
+  <div class="entry"><div class="date">c. 1000–<br>1021</div><p>A Greenlandic–Icelandic base at L'Anse aux Meadows in Vinland/Newfoundland; timber felled there dates to AD 1021, but the occupation is brief and never a Danish royal colony.</p></div>
+  <div class="entry"><div class="date">991–1035</div><p>Sweyn Forkbeard takes England in 1013; his son Cnut the Great (1019–35) rules Denmark, England, and Norway together, though the English crown is lost after 1042. The Norman conquest of 1066 that follows is Norwegian and Norman in origin, not Danish.</p></div>
+</section>
+
+<section class="era" id="medieval">
+  <div class="era-head"><h2>High and late Middle Ages</h2><span class="era-range">1086 – 1523</span></div>
+
+  <div class="entry"><div class="date">1086</div><p>The murder of Canute IV (the Holy).</p></div>
+  <div class="entry"><div class="date">1104</div><p>Lund becomes the first Nordic archbishopric, at the time under Danish control.</p></div>
+  <div class="entry"><div class="date">1157–82</div><p>Valdemar I the Great ends the civil war and, with Absalon, takes Rügen and founds the castle at Copenhagen (1167).</p></div>
+  <div class="entry"><div class="date">1202–41</div><p>Valdemar II claims Estonia in 1219 (the origin of the Dannebrog legend), codifies the Jutland Law (1241), and sees the Baltic high-water mark end at Bornhöved (1227).</p></div>
+  <div class="entry"><div class="date">1282</div><p>The first håndfæstning.</p></div>
+  <div class="entry"><div class="date">1332–40</div><p>An interregnum leaves the realm mortgaged.</p></div>
+  <div class="entry"><div class="date">1340–75</div><p>Valdemar IV Atterdag buys the kingdom back, weathers the plague, and reclaims Skåne (1360).</p></div>
+  <div class="entry"><div class="date">1361–70</div><p>The Danish–Hanseatic War: Visby falls in 1361, Denmark wins at Helsingborg (1362), the Cologne Confederation forms, and Copenhagen is sacked (1368). The Peace of Stralsund (24 May 1370) grants the Hansa trade rights and a fifteen-year hold on Helsingborg, Skanør, Falsterbo, and Malmö.</p></div>
+  <div class="entry"><div class="date">1387–<br>1412</div><p>Margaret I builds the Kalmar Union (1397) of Denmark, Norway, and Sweden; the Faroes, Iceland, and the Greenland claim come along with Norway, while Orkney and Shetland are pledged to Scotland in 1468–69.</p></div>
+  <div class="entry"><div class="date">1420s</div><p>Eric of Pomerania builds Krogen at Helsingør to enforce the Sound Dues, collected until 1857.</p></div>
+  <div class="entry"><div class="date">1426–35</div><p>A second Dano–Hanseatic war.</p></div>
+  <div class="entry"><div class="date">1520–23</div><p>Christian II's reign ends with the Stockholm Bloodbath and Sweden's exit from the union; Denmark–Norway continues alone.</p></div>
+</section>
+
+<section class="era" id="reformation">
+  <div class="era-head"><h2>Reformation to absolutism</h2><span class="era-range">1534 – 1721</span></div>
+
+  <div class="entry"><div class="date">1534–36</div><p>The Count's Feud brings Christian III to power, and the Lutheran Reformation follows in 1536.</p></div>
+  <div class="entry"><div class="date">1559–88</div><p>Frederick II rebuilds Krogen as Kronborg (1574–85).</p></div>
+  <div class="entry"><div class="date">1560/<br>1600–20</div><p>Frederiksborg begins as Frederick II's hunting seat; his son Christian IV (born there in 1577, reigned 1588–1648) rebuilds it into Scandinavia's largest Dutch Renaissance palace at Hillerød, with the coronation chapel serving from 1671 to 1840.</p></div>
+  <div class="entry"><div class="date">c. 1600–01</div><p>Shakespeare sets <em>Hamlet</em> at Elsinore (Helsingør/Kronborg), drawing on Saxo's Amleth in the <em>Gesta Danorum</em> (c. 1200); the play has been staged at the castle since 1816, and the site was UNESCO-listed in 2000.</p></div>
+  <div class="entry"><div class="date">1629/<br>1658</div><p>Kronborg burns and is rebuilt, then falls to Sweden in the war that ends at Roskilde in 1658, costing Denmark Skåne, Halland, and Blekinge.</p></div>
+  <div class="entry"><div class="date">1660</div><p>Frederick III establishes hereditary absolutism.</p></div>
+  <div class="entry"><div class="date">1672–<br>1733</div><p>The Danish West Indies take shape: St. Thomas (1672), St. John (1718), and St. Croix (bought from France, 1733), built on sugar and enslaved labor, centered on Charlotte Amalie.</p></div>
+  <div class="entry"><div class="date">1700–21</div><p>The Great Northern War; the provinces lost stay lost.</p></div>
+  <div class="entry"><div class="date">1721</div><p>Hans Egede's mission marks the Danish recolonization of Greenland, where Norse farms now stand as ruins among living Inuit societies.</p></div>
+</section>
+
+<section class="era" id="enlightenment">
+  <div class="era-head"><h2>Enlightenment</h2><span class="era-range">1766 – 1803</span></div>
+
+  <div class="entry"><div class="date">1766–<br>1808</div><p>Christian VII, mentally ill, marries Caroline Matilda (sister of George III) in 1766.</p></div>
+  <div class="entry"><div class="date">1770–72</div><p>The period dramatized in <em>A Royal Affair</em>: the royal physician Johann Friedrich Struensee governs in the king's name, issuing Enlightenment-era decrees while conducting an affair with the queen, until Juliane Marie's coup on 17 January 1772. Struensee is executed on 28 April 1772; Caroline Matilda is banished and dies in 1775. (Film: <em>En kongelig affære</em>, 2012.)</p></div>
+  <div class="entry"><div class="date">1775</div><p>Royal Copenhagen porcelain is founded, sponsored by the same Juliane Marie who engineered the coup. Its mark uses three wavy lines — for the Storebælt, Lillebælt, and Øresund straits — and its first pattern is Blue Fluted. The king takes over the factory's finances in 1779, and it becomes the Royal Danish Porcelain Factory.</p></div>
+  <div class="entry"><div class="date">1790</div><p>The Flora Danica service, painted from the botanical atlas and originally intended for Catherine the Great (who dies before receiving it), is still hand-painted in Denmark today; it first appears in grand use at Christian VII's birthday in 1803.</p></div>
+</section>
+
+<section class="era" id="c19">
+  <div class="era-head"><h2>19th century: losses, Golden Age</h2><span class="era-range">1801 – 1867</span></div>
+
+  <div class="entry"><div class="date">1801 &amp;<br>1807</div><p>Britain attacks Copenhagen twice.</p></div>
+  <div class="entry"><div class="date">1814</div><p>The Treaty of Kiel cedes Norway to Sweden, while Iceland, the Faroes, and Greenland remain with Denmark.</p></div>
+  <div class="entry"><div class="date">1805–75</div><p>Hans Christian Andersen: his first fairy-tale booklet appears on 8 May 1835, followed by <em>The Little Mermaid</em> and <em>The Emperor's New Clothes</em> (1837), <em>The Ugly Duckling</em> (1843), <em>The Snow Queen</em> (1844), and <em>The Little Match Girl</em> (1845).</p></div>
+  <div class="entry"><div class="date">1847</div><p>J.C. Jacobsen founds Carlsberg on Valby hill, naming it for his son Carl; the Carlsberg Laboratory and Foundation follow in 1875–76, pure lager yeast is isolated in 1883, and the Foundation later funds both the rebuilding of Frederiksborg and much of Danish science.</p></div>
+  <div class="entry"><div class="date">1848–49</div><p>The March Revolution leads Frederick VII to sign the constitution, and slavery ends in the Danish West Indies that same year.</p></div>
+  <div class="entry"><div class="date">1853</div><p>Bing &amp; Grøndahl porcelain is founded (mark: three towers), later merging with Royal Copenhagen in 1987.</p></div>
+  <div class="entry"><div class="date">1859</div><p>Frederiksborg burns and is rebuilt with Carlsberg money, becoming the Museum of National History in 1878.</p></div>
+  <div class="entry"><div class="date">1864</div><p>Christian IX takes the throne as Schleswig-Holstein is lost, leaving a small nation that still holds Arctic and Caribbean territories.</p></div>
+  <div class="entry"><div class="date">1867</div><p>A U.S. attempt to purchase St. Thomas and St. John fails.</p></div>
+</section>
+
+<section class="era" id="c20">
+  <div class="era-head"><h2>20th and 21st centuries</h2><span class="era-range">1916 – 2024</span></div>
+
+  <div class="entry"><div class="date">1916–17</div><p>The Danish West Indies are sold to the United States for $25 million in gold, with the handover (Transfer Day) on 31 March 1917; in exchange, the U.S. recognizes Danish interests across all of Greenland. The islands become the U.S. Virgin Islands.</p></div>
+  <div class="entry"><div class="date">1918</div><p>Iceland becomes sovereign in personal union with Denmark, later a republic in 1944.</p></div>
+  <div class="entry"><div class="date">1920</div><p>North Schleswig is returned to Denmark; Christian X becomes the public face of the country during the later occupation years.</p></div>
+  <div class="entry"><div class="date">1923</div><p>August and Marie Krogh, with H.C. Hagedorn, found the Nordisk Insulinlaboratorium, the root of Novo Nordisk; it merges with Novo in 1989 after decades split between insulin and, later, GLP-1 drugs, backed by the Novo Nordisk Foundation.</p></div>
+  <div class="entry"><div class="date">1932–58</div><p>LEGO: Ole Kirk Christiansen starts a wooden-toy workshop in Billund during the Depression, names it LEGO ("leg godt") in 1934, moves into plastic, launches the System of Play in 1955, and patents the stud-and-tube brick on 28 January 1958. His son Godtfred succeeds him; Legoland Billund opens in 1968 and LEGO House in 2017.</p></div>
+  <div class="entry"><div class="date">1940–45</div><p>German occupation, punctuated by the ferrying of Danish Jews to Sweden in October 1943; the Faroes, Iceland, and Greenland remain under Allied control throughout.</p></div>
+  <div class="entry"><div class="date">1948/53/<br>79/09</div><p>Faroese home rule and Greenland's evolving status — first equal part of the realm, then home rule, then Self-Government — unfold in stages.</p></div>
+  <div class="entry"><div class="date">1973</div><p>Denmark joins the EEC/EU while keeping the krone; Greenland leaves the Communities in 1985.</p></div>
+  <div class="entry"><div class="date">1982</div><p>Per and Winnie Enevoldsen found Pandora jewellery in Copenhagen.</p></div>
+  <div class="entry"><div class="date">14 Jan<br>2024</div><p>Margrethe II abdicates after 52 years on the throne; Frederik X is proclaimed king, with Crown Prince Christian as heir.</p></div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  A working chronology — dates marked <em>c.</em> are approximate or debated among archaeologists and historians.
+</footer>
+
+</body>
+</html>
