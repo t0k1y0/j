@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pace the Frontier — English / Français</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDF0F3; --sheet:#F8F9FB; --ink:#1B2230; --muted:#5E6878;
+  --fr:#24427A; --rule:#CBD2DC; --mark:#8A6A1F;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#141A23; --sheet:#1A212C; --ink:#E3E7EE; --muted:#9AA4B3;
+    --fr:#9DB7E8; --rule:#2E3846; --mark:#D2B36A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141A23; --sheet:#1A212C; --ink:#E3E7EE; --muted:#9AA4B3;
+  --fr:#9DB7E8; --rule:#2E3846; --mark:#D2B36A;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+  font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+main{max-width:68rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
+
+header{display:grid;grid-template-columns:1fr 1fr;gap:0 3rem;margin-bottom:2.5rem}
+header h1{margin:0;font-weight:600;font-size:clamp(2rem,4.5vw,3.1rem);line-height:1.08;letter-spacing:-.01em}
+header h1.fr{color:var(--fr);font-style:italic;font-weight:400}
+.sub{grid-column:1/-1;margin-top:1.25rem;font-family:var(--sans);font-size:.9rem;color:var(--muted)}
+
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);
+  padding:.75rem 0;border-bottom:1px solid var(--rule);margin-bottom:2rem;
+  display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-family:var(--sans);font-size:.875rem}
+.controls span{color:var(--muted);margin-right:.25rem}
+.controls button{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--rule);
+  padding:.35rem .9rem;border-radius:999px;cursor:pointer}
+.controls button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.controls button:focus-visible{outline:2px solid var(--fr);outline-offset:2px}
+.dl{margin-left:auto;display:flex;gap:.5rem;align-items:center}
+.dl[hidden]{display:none}
+.dl button{border-color:var(--fr);color:var(--fr)}
+.dl-status{color:var(--muted);font-size:.8rem}
+
+.text{background:var(--sheet);border:1px solid var(--rule);border-radius:4px}
+.pair{display:grid;grid-template-columns:2.5rem 1fr 1fr;gap:0 2.25rem;padding:1.6rem 2rem 1.6rem 1rem;
+  border-top:1px solid var(--rule)}
+.pair:first-child{border-top:0}
+.n{font-family:var(--sans);font-size:.8rem;color:var(--muted);text-align:right;padding-top:.3rem}
+.pair p{margin:0;hyphens:auto}
+.pair .fr{color:var(--fr)}
+.pair:hover .n{color:var(--mark)}
+
+body.only-en .pair .fr, body.only-fr .pair .en{display:none}
+body.only-en .pair, body.only-fr .pair{grid-template-columns:2.5rem minmax(0,40rem)}
+
+.notes{max-width:44rem;margin:3.5rem 0 0 3.5rem}
+.notes h2{font-size:1.25rem;font-weight:600;margin:0 0 1rem}
+.notes dl{margin:0}
+.notes dt{font-weight:600;margin-top:1rem}
+.notes dt i{color:var(--fr);font-weight:400}
+.notes dd{margin:.2rem 0 0;color:var(--muted);font-size:.975rem}
+
+@media (max-width:760px){
+  main{padding:2rem 1rem 4rem}
+  header{grid-template-columns:1fr;gap:.5rem}
+  .pair,body.only-en .pair,body.only-fr .pair{grid-template-columns:1fr;padding:1.25rem 1.1rem;gap:.8rem}
+  .n{text-align:left;padding:0}
+  .notes{margin-left:0}
+}
+@media print{
+  .controls{display:none}
+  body{background:#fff}
+  .text{border:0}
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 lang="en">Pace the frontier</h1>
+    <h1 class="fr" lang="fr">Maîtriser le rythme de la frontière</h1>
+    <p class="sub">Parallel text, English and French. The French is a working translation; notes on key terms follow the text.</p>
+  </header>
+
+  <nav class="controls" aria-label="Language view">
+    <span>Show</span>
+    <button type="button" data-view="both" aria-pressed="true">Both</button>
+    <button type="button" data-view="only-en" aria-pressed="false">English</button>
+    <button type="button" data-view="only-fr" aria-pressed="false">Français</button>
+    <div class="dl" hidden>
+      <span class="dl-status" aria-live="polite"></span>
+      <button type="button" id="dl-html">Download HTML</button>
+      <button type="button" id="dl-md">Download Markdown</button>
+    </div>
+  </nav>
+
+  <article class="text">
+    <div class="pair"><div class="n">1</div>
+      <p class="en" lang="en">Dario has written that we need to “pace the frontier,” and Sam has agreed. People may be surprised by my response: go ahead.</p>
+      <p class="fr" lang="fr">Dario a écrit qu’il fallait «&nbsp;maîtriser le rythme de la frontière&nbsp;», et Sam s’est dit d’accord. Ma réponse en surprendra peut-être certains&nbsp;: allez-y.</p>
+    </div>
+    <div class="pair"><div class="n">2</div>
+      <p class="en" lang="en">You guys are the frontier. By any reasonable metric — market share, revenue growth, model capability — the two of you have a duopoly on frontier intelligence. You’ve also claimed the lead is widening because of recursive self-improvement.</p>
+      <p class="fr" lang="fr">C’est vous, la frontière. Selon tout critère raisonnable (part de marché, croissance du chiffre d’affaires, capacités des modèles), vous détenez à vous deux un duopole sur l’intelligence de pointe. Vous affirmez aussi que votre avance se creuse grâce à l’auto-amélioration récursive.</p>
+    </div>
+    <div class="pair"><div class="n">3</div>
+      <p class="en" lang="en">I don’t see what you see in the lab. If the unreleased models are scary enough that you think you should slow down, I support your decision to be responsible.</p>
+      <p class="fr" lang="fr">Je ne vois pas ce que vous voyez dans vos laboratoires. Si les modèles non encore publiés sont suffisamment inquiétants pour que vous jugiez devoir ralentir, je soutiens votre décision d’agir de manière responsable.</p>
+    </div>
+    <div class="pair"><div class="n">4</div>
+      <p class="en" lang="en">But stop pretending you need anyone else’s permission. Stop pretending antitrust law has to be suspended so you can form a cartel. Stop pretending you need a regulatory approval process that supersedes product liability. Stop pretending METR is independent when it is intertwined with Anthropic’s investors and staff. Stop pretending you need those same evaluators to police competitors who aren’t even at the frontier.</p>
+      <p class="fr" lang="fr">Mais cessez de prétendre que vous avez besoin de la permission de qui que ce soit. Cessez de prétendre que le droit de la concurrence doit être suspendu pour que vous puissiez former un cartel. Cessez de prétendre qu’il vous faut une procédure d’autorisation réglementaire qui prime sur la responsabilité du fait des produits. Cessez de prétendre que METR est indépendant alors qu’il est étroitement lié aux investisseurs et au personnel d’Anthropic. Cessez de prétendre qu’il vous faut ces mêmes évaluateurs pour surveiller des concurrents qui ne sont même pas à la frontière.</p>
+    </div>
+    <div class="pair"><div class="n">5</div>
+      <p class="en" lang="en">Most of all, stop pretending the motivation to slow down is purely altruistic. You face massive product-liability exposure if your products enable a truly damaging cyberattack. The market already punishes models that behave in unpredictable or unauthorized ways. After the Hugging Face episode, it is simply good business for OpenAI and Anthropic to trade some raw power for reliability and predictability. Call it alignment if you want. It is also just giving customers what they want.</p>
+      <p class="fr" lang="fr">Surtout, cessez de prétendre que la volonté de ralentir est purement altruiste. Votre responsabilité du fait des produits serait colossale si ceux-ci rendaient possible une cyberattaque réellement dévastatrice. Le marché sanctionne déjà les modèles qui se comportent de manière imprévisible ou non autorisée. Après l’épisode Hugging Face, il est tout simplement de bonne gestion pour OpenAI et Anthropic de sacrifier un peu de puissance brute au profit de la fiabilité et de la prévisibilité. Appelez cela de l’alignement si vous voulez. C’est aussi, tout simplement, donner aux clients ce qu’ils veulent.</p>
+    </div>
+    <div class="pair"><div class="n">6</div>
+      <p class="en" lang="en">Pacing the frontier would also create breathing room for a more intelligent conversation about regulation than Bernie Sanders’ “shut it all down.” China is very unlikely to join a global agreement, as you know, and that has to be taken into account as well.</p>
+      <p class="fr" lang="fr">Maîtriser le rythme de la frontière permettrait aussi de ménager un espace pour un débat sur la réglementation plus intelligent que le «&nbsp;on arrête tout&nbsp;» de Bernie Sanders. Il est très peu probable que la Chine adhère à un accord mondial, vous le savez, et il faut également en tenir compte.</p>
+    </div>
+    <div class="pair"><div class="n">7</div>
+      <p class="en" lang="en">So go ahead and pace the frontier. You are the ones setting it. The easiest way not to build superintelligence is for you to agree not to build it. Demanding your preferred regulatory framework as the price of that will look like blackmail of the public and the political system. So just do it.</p>
+      <p class="fr" lang="fr">Alors allez-y, maîtrisez le rythme de la frontière. C’est vous qui la fixez. Le moyen le plus simple de ne pas construire de superintelligence, c’est que vous conveniez de ne pas la construire. Exiger en contrepartie le cadre réglementaire de votre choix ressemblera à un chantage exercé sur le public et sur le système politique. Alors faites-le, tout simplement.</p>
+    </div>
+    <div class="pair"><div class="n">8</div>
+      <p class="en" lang="en">If you do, you’ll buy goodwill for the next conversation. If you don’t, we’ll know this was just another bid for regulatory capture — or an election-season psyop.</p>
+      <p class="fr" lang="fr">Si vous le faites, vous gagnerez de la bienveillance pour la prochaine discussion. Sinon, nous saurons qu’il ne s’agissait que d’une nouvelle tentative de capture réglementaire, ou d’une opération de guerre psychologique en pleine saison électorale.</p>
+    </div>
+  </article>
+
+  <section class="notes" aria-labelledby="notes-h">
+    <h2 id="notes-h">Translator’s notes</h2>
+    <dl>
+      <dt>pace the frontier → <i>maîtriser le rythme de la frontière</i></dt>
+      <dd>No fixed French equivalent exists. This phrasing is kept constant so the refrain stays recognizable; <i>ralentir la frontière</i> is punchier but loses the sense of setting the pace.</dd>
+      <dt>product liability → <i>responsabilité du fait des produits</i></dt>
+      <dd>The standard legal term in French and EU law.</dd>
+      <dt>antitrust law → <i>droit de la concurrence</i></dt>
+      <dd>The usual European framing; <i>droit antitrust</i> also exists but reads as an Americanism.</dd>
+      <dt>regulatory capture → <i>capture réglementaire</i></dt>
+      <dd>The accepted term in French economics.</dd>
+      <dt>psyop → <i>opération de guerre psychologique</i></dt>
+      <dd>The literal military sense. <i>Manœuvre de manipulation</i> would be a softer alternative.</dd>
+    </dl>
+  </section>
+</main>
+<script>
+(function(){
+  var buttons=document.querySelectorAll('.controls button[data-view]');
+  function setView(v){
+    document.body.classList.remove('only-en','only-fr');
+    if(v!=='both') document.body.classList.add(v);
+    buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.view===v));});
+    try{localStorage.setItem('ptf-view',v);}catch(e){}
+  }
+  buttons.forEach(function(b){b.addEventListener('click',function(){setView(b.dataset.view);});});
+  try{var saved=localStorage.getItem('ptf-view');if(saved)setView(saved);}catch(e){}
+})();
+(function(){
+  var box=document.querySelector('.dl'), status=document.querySelector('.dl-status');
+  // Snapshot a clean copy before any view changes.
+  var clone=document.documentElement.cloneNode(true);
+  clone.querySelector('body').removeAttribute('class');
+  var d=clone.querySelector('.dl'); if(d) d.remove();
+  var cleanHTML='<!DOCTYPE html>\n'+clone.outerHTML;
+
+  function toMarkdown(){
+    var out=['# Pace the frontier / Maîtriser le rythme de la frontière',''];
+    document.querySelectorAll('.pair').forEach(function(p){
+      out.push('## '+p.querySelector('.n').textContent.trim(),'');
+      out.push(p.querySelector('.en').textContent.trim(),'');
+      out.push('> '+p.querySelector('.fr').textContent.trim(),'');
+    });
+    out.push('## Translator’s notes','');
+    var dts=document.querySelectorAll('.notes dt'), dds=document.querySelectorAll('.notes dd');
+    dts.forEach(function(dt,i){out.push('- **'+dt.textContent.trim()+'** — '+dds[i].textContent.trim());});
+    return out.join('\n')+'\n';
+  }
+
+  if(!(window.claude && typeof window.claude.use==='function')) return;
+  window.claude.use('downloads').then(function(dl){
+    if(!dl) return;
+    box.hidden=false;
+    function save(filename,data){
+      status.textContent='';
+      dl.save({filename:filename,data:data}).then(function(){
+        status.textContent='Saved '+filename;
+      }).catch(function(e){
+        var c=e&&e.code;
+        if(c==='declined') status.textContent='';
+        else if(c==='rate_limited') status.textContent='A save prompt is already open.';
+        else if(c==='too_large') status.textContent='File is too large to save here.';
+        else { status.textContent='Download isn’t available in this view.'; box.hidden=true; }
+      });
+    }
+    document.getElementById('dl-html').addEventListener('click',function(){save('pace-the-frontier-parallel.html',cleanHTML);});
+    document.getElementById('dl-md').addEventListener('click',function(){save('pace-the-frontier-parallel.md',toMarkdown());});
+  });
+})();
+</script>
+</body>
+</html>
