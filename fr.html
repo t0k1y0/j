@@ -94,18 +94,27 @@ let frVoice = null, speechUnlocked = false, playing = false, playTimer = null;
 const PLAY_DELAY = 3200;
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-// Preferred voice name substrings, highest quality first (desktop/Android)
-const VOICE_PREFS = ['Google français', 'Google fr', 'Microsoft Julie', 'Microsoft Henri',
-                     'Thomas', 'Amelie', 'Marie', 'Lea', 'Léa'];
+// Preferred voice name substrings, highest quality first.
+// iOS voices: "Amélie" and "Thomas" are the enhanced system voices;
+// compact fallbacks are "Marie" and others. All work fine when set by object
+// as long as voices are loaded after the first user gesture.
+const VOICE_PREFS = [
+  'Google français', 'Google fr',           // Chrome desktop
+  'Microsoft Julie', 'Microsoft Henri',      // Edge/Windows
+  'Amélie', 'Amlie',                         // iOS/macOS enhanced
+  'Thomas',                                  // iOS/macOS enhanced (male)
+  'Marie', 'Lea', 'Léa', 'Audrey',           // iOS/macOS standard
+];
 
 function pickVoice(voices) {
-  // On iOS, setting a voice by object can cause silent failure —
-  // rely on lang='fr-FR' alone; iOS will pick its own French voice.
-  if (isIOS) return null;
+  // Prefer named high-quality voices on all platforms including iOS
   for (const pref of VOICE_PREFS) {
     const v = voices.find(x => x.name.includes(pref));
     if (v) return v;
   }
+  // Prefer enhanced/premium voices over compact ones
+  const enhanced = voices.find(x => x.lang === 'fr-FR' && /enhanced|premium/i.test(x.name));
+  if (enhanced) return enhanced;
   return voices.find(x => x.lang === 'fr-FR')
       || voices.find(x => x.lang.startsWith('fr'))
       || null;
@@ -115,8 +124,7 @@ function loadVoices() {
   const v = window.speechSynthesis.getVoices();
   if (!v.length) return;
   frVoice = pickVoice(v);
-  const name = frVoice ? frVoice.name : (isIOS ? 'iOS fr-FR' : 'system default');
-  document.getElementById('voiceName').textContent = 'Voice: ' + name;
+  document.getElementById('voiceName').textContent = 'Voice: ' + (frVoice ? frVoice.name : 'system default');
 }
 
 if (window.speechSynthesis) {
@@ -126,14 +134,12 @@ if (window.speechSynthesis) {
 
 // iOS CRITICAL: speechSynthesis is gated behind a user-gesture unlock.
 // Fire a silent empty utterance on the very first touchend to open the gate.
-// Without this, every subsequent speak() is silently dropped.
 function unlockSpeech() {
   if (speechUnlocked || !window.speechSynthesis) return;
   speechUnlocked = true;
   const u = new SpeechSynthesisUtterance('');
   u.volume = 0; u.lang = 'fr-FR';
   window.speechSynthesis.speak(u);
-  // Also load voices now — they become available after the first gesture on iOS
   setTimeout(loadVoices, 200);
 }
 document.addEventListener('touchend', unlockSpeech, { passive: true, once: true });
@@ -153,7 +159,6 @@ function startIosPing() {
 function stopIosPing() { clearInterval(iosPingInterval); iosPingInterval = null; }
 
 // Single utterance: "word. word. sentence."
-// Chained utterances via setTimeout break iOS's user-gesture chain.
 function speakText(word, sentence, onDone) {
   if (!window.speechSynthesis) { onDone && onDone(); return; }
   window.speechSynthesis.cancel();
@@ -163,7 +168,7 @@ function speakText(word, sentence, onDone) {
   utt.lang = 'fr-FR';
   utt.rate = 0.82;
   utt.pitch = 1.0;
-  if (frVoice) utt.voice = frVoice;  // null on iOS — lang alone is enough
+  if (frVoice) utt.voice = frVoice;
 
   let done = false;
   function finish() { stopIosPing(); if (!done) { done = true; onDone && onDone(); } }
@@ -177,7 +182,6 @@ function speakText(word, sentence, onDone) {
 function speakCurrent(e) {
   e && e.stopPropagation();
   if (!cards[idx]) return;
-  // Ensure unlock has happened (belt-and-suspenders for iOS)
   if (!speechUnlocked) unlockSpeech();
   const btn = document.getElementById('speakBtn'), lbl = document.getElementById('speakLabel');
   btn.classList.add('speaking'); lbl.textContent = 'Speaking…';
