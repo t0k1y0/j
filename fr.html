@@ -90,7 +90,7 @@ ALL_CARDS.forEach(c => {
 });
 
 let current = DECK_ALL, cards = [], idx = 0, flipped = false;
-let frVoice = null, playing = false, playTimer = null;
+let frVoice = null, voicesLoaded = false, playing = false, playTimer = null;
 const PLAY_DELAY = 3200;
 
 // Preferred voice name substrings, highest quality first
@@ -98,70 +98,67 @@ const VOICE_PREFS = ['Google français', 'Google fr', 'Microsoft Julie', 'Micros
                      'Thomas', 'Amelie', 'Marie', 'Lea', 'Léa'];
 
 function pickVoice(voices) {
-  // 1. Try preferred high-quality voices by name
   for (const pref of VOICE_PREFS) {
     const v = voices.find(x => x.name.includes(pref));
     if (v) return v;
   }
-  // 2. Exact fr-FR
-  const exact = voices.find(x => x.lang === 'fr-FR');
-  if (exact) return exact;
-  // 3. Any fr-* not remote (prefer local)
-  const local = voices.find(x => x.lang.startsWith('fr') && !x.localService === false);
-  if (local) return local;
-  // 4. Any French voice
-  return voices.find(x => x.lang.startsWith('fr')) || null;
+  return voices.find(x => x.lang === 'fr-FR')
+      || voices.find(x => x.lang.startsWith('fr'))
+      || null;
 }
 
 function loadVoices() {
   const v = window.speechSynthesis.getVoices();
   if (!v.length) return;
   frVoice = pickVoice(v);
-  const lbl = frVoice ? frVoice.name : 'system default';
-  document.getElementById('voiceName').textContent = 'Voice: ' + lbl;
-}
-if (window.speechSynthesis) { window.speechSynthesis.onvoiceschanged = loadVoices; loadVoices(); }
-
-// Speak via a chain of utterances: word (slow) → pause → sentence (natural pace)
-function makeUtt(text, rate, pitch) {
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'fr-FR'; u.rate = rate; u.pitch = pitch;
-  if (frVoice) u.voice = frVoice;
-  return u;
+  voicesLoaded = true;
+  document.getElementById('voiceName').textContent = 'Voice: ' + (frVoice ? frVoice.name : 'system default');
 }
 
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+  // iOS: voices only available after first user touch
+  document.addEventListener('touchstart', function iosVoiceInit() {
+    if (!voicesLoaded) loadVoices();
+    document.removeEventListener('touchstart', iosVoiceInit);
+  }, { once: true });
+}
+
+// iOS Safari pauses synthesis after ~15 s; this ping keeps it alive
+let iosPingInterval = null;
+function startIosPing() {
+  if (iosPingInterval) return;
+  iosPingInterval = setInterval(() => {
+    if (window.speechSynthesis && window.speechSynthesis.speaking) {
+      window.speechSynthesis.pause();
+      window.speechSynthesis.resume();
+    }
+  }, 10000);
+}
+function stopIosPing() { clearInterval(iosPingInterval); iosPingInterval = null; }
+
+// Single utterance: "word. word. sentence." — safest across all browsers/iOS
+// (Chained utterances via setTimeout break iOS's user-gesture requirement)
 function speakText(word, sentence, onDone) {
   if (!window.speechSynthesis) { onDone && onDone(); return; }
   window.speechSynthesis.cancel();
 
-  // Utterance 1: word slowly and clearly
-  const u1 = makeUtt(word, 0.72, 1.05);
-  // Utterance 2: word again at normal pace (repetition aids retention)
-  const u2 = makeUtt(word, 0.90, 1.0);
-  // Utterance 3: full sentence at natural reading pace
-  const u3 = makeUtt(sentence, 0.85, 1.0);
+  // Repeat the word so learners hear it twice before the example
+  const text = word + '. ' + word + '. ' + sentence;
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'fr-FR';
+  utt.rate = 0.82;   // slightly slow for clarity; natural enough for the sentence
+  utt.pitch = 1.0;
+  if (frVoice) utt.voice = frVoice;
 
-  // Chain: after u1 ends, pause then queue u2; after u2 ends, pause then queue u3
   let done = false;
-  function finish() { if (!done) { done = true; onDone && onDone(); } }
+  function finish() { stopIosPing(); if (!done) { done = true; onDone && onDone(); } }
+  utt.onend = finish;
+  utt.onerror = finish;
 
-  u1.onend = () => {
-    setTimeout(() => {
-      if (!window.speechSynthesis) { finish(); return; }
-      u2.onend = () => {
-        setTimeout(() => {
-          if (!window.speechSynthesis) { finish(); return; }
-          u3.onend = finish;
-          u3.onerror = finish;
-          window.speechSynthesis.speak(u3);
-        }, 320); // pause between word repeat and sentence
-      };
-      u2.onerror = finish;
-      window.speechSynthesis.speak(u2);
-    }, 280); // pause between slow word and repeat
-  };
-  u1.onerror = finish;
-  window.speechSynthesis.speak(u1);
+  startIosPing();
+  window.speechSynthesis.speak(utt);
 }
 
 function speakCurrent(e) {
