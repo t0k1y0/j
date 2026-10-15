@@ -90,14 +90,18 @@ ALL_CARDS.forEach(c => {
 });
 
 let current = DECK_ALL, cards = [], idx = 0, flipped = false;
-let frVoice = null, voicesLoaded = false, playing = false, playTimer = null;
+let frVoice = null, speechUnlocked = false, playing = false, playTimer = null;
 const PLAY_DELAY = 3200;
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-// Preferred voice name substrings, highest quality first
+// Preferred voice name substrings, highest quality first (desktop/Android)
 const VOICE_PREFS = ['Google français', 'Google fr', 'Microsoft Julie', 'Microsoft Henri',
                      'Thomas', 'Amelie', 'Marie', 'Lea', 'Léa'];
 
 function pickVoice(voices) {
+  // On iOS, setting a voice by object can cause silent failure —
+  // rely on lang='fr-FR' alone; iOS will pick its own French voice.
+  if (isIOS) return null;
   for (const pref of VOICE_PREFS) {
     const v = voices.find(x => x.name.includes(pref));
     if (v) return v;
@@ -111,21 +115,31 @@ function loadVoices() {
   const v = window.speechSynthesis.getVoices();
   if (!v.length) return;
   frVoice = pickVoice(v);
-  voicesLoaded = true;
-  document.getElementById('voiceName').textContent = 'Voice: ' + (frVoice ? frVoice.name : 'system default');
+  const name = frVoice ? frVoice.name : (isIOS ? 'iOS fr-FR' : 'system default');
+  document.getElementById('voiceName').textContent = 'Voice: ' + name;
 }
 
 if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = loadVoices;
   loadVoices();
-  // iOS: voices only available after first user touch
-  document.addEventListener('touchstart', function iosVoiceInit() {
-    if (!voicesLoaded) loadVoices();
-    document.removeEventListener('touchstart', iosVoiceInit);
-  }, { once: true });
 }
 
-// iOS Safari pauses synthesis after ~15 s; this ping keeps it alive
+// iOS CRITICAL: speechSynthesis is gated behind a user-gesture unlock.
+// Fire a silent empty utterance on the very first touchend to open the gate.
+// Without this, every subsequent speak() is silently dropped.
+function unlockSpeech() {
+  if (speechUnlocked || !window.speechSynthesis) return;
+  speechUnlocked = true;
+  const u = new SpeechSynthesisUtterance('');
+  u.volume = 0; u.lang = 'fr-FR';
+  window.speechSynthesis.speak(u);
+  // Also load voices now — they become available after the first gesture on iOS
+  setTimeout(loadVoices, 200);
+}
+document.addEventListener('touchend', unlockSpeech, { passive: true, once: true });
+document.addEventListener('click', unlockSpeech, { once: true });
+
+// iOS Safari pauses synthesis after ~14 s; periodic ping keeps it alive
 let iosPingInterval = null;
 function startIosPing() {
   if (iosPingInterval) return;
@@ -138,19 +152,18 @@ function startIosPing() {
 }
 function stopIosPing() { clearInterval(iosPingInterval); iosPingInterval = null; }
 
-// Single utterance: "word. word. sentence." — safest across all browsers/iOS
-// (Chained utterances via setTimeout break iOS's user-gesture requirement)
+// Single utterance: "word. word. sentence."
+// Chained utterances via setTimeout break iOS's user-gesture chain.
 function speakText(word, sentence, onDone) {
   if (!window.speechSynthesis) { onDone && onDone(); return; }
   window.speechSynthesis.cancel();
 
-  // Repeat the word so learners hear it twice before the example
   const text = word + '. ' + word + '. ' + sentence;
   const utt = new SpeechSynthesisUtterance(text);
   utt.lang = 'fr-FR';
-  utt.rate = 0.82;   // slightly slow for clarity; natural enough for the sentence
+  utt.rate = 0.82;
   utt.pitch = 1.0;
-  if (frVoice) utt.voice = frVoice;
+  if (frVoice) utt.voice = frVoice;  // null on iOS — lang alone is enough
 
   let done = false;
   function finish() { stopIosPing(); if (!done) { done = true; onDone && onDone(); } }
@@ -164,6 +177,8 @@ function speakText(word, sentence, onDone) {
 function speakCurrent(e) {
   e && e.stopPropagation();
   if (!cards[idx]) return;
+  // Ensure unlock has happened (belt-and-suspenders for iOS)
+  if (!speechUnlocked) unlockSpeech();
   const btn = document.getElementById('speakBtn'), lbl = document.getElementById('speakLabel');
   btn.classList.add('speaking'); lbl.textContent = 'Speaking…';
   speakText(cards[idx][0], cards[idx][2], () => {
