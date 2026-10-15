@@ -32,8 +32,8 @@
       var(--paper);
     color: var(--ink);
     font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
-    font-size: 30px;
-    line-height: 1.7;
+    font-size: 21px;
+    line-height: 1.65;
     min-height: 100vh;
   }
 
@@ -65,7 +65,7 @@
   .titlepage h1 {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
-    font-size: clamp(2.5rem, 6vw, 4.8rem);
+    font-size: clamp(2.1rem, 5vw, 3.8rem);
     line-height: 1.05;
     margin: 0;
     color: var(--ink);
@@ -177,7 +177,7 @@
   .chapter-roman {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
     color: var(--accent);
     line-height: 1;
     letter-spacing: .05em;
@@ -255,7 +255,7 @@
 
   /* ---------- Responsive: stack on mobile ---------- */
   @media (max-width: 780px) {
-    body { font-size: 17px; }
+    body { font-size: 15.5px; }
     .pair {
       grid-template-columns: 1fr;
       gap: .25rem;
@@ -281,6 +281,50 @@
     .chapter { page-break-inside: avoid; }
     .pair:hover { background: transparent; }
   }
+
+  /* ---------- Text-to-speech ---------- */
+  .cell.fr { position: relative; }
+  .tts-btn {
+    position: absolute; left: -1.9em; top: .15em;
+    width: 1.5em; height: 1.5em; padding: 0;
+    border: 1px solid var(--rule); border-radius: 50%;
+    background: var(--paper); color: var(--gold);
+    font-size: .8em; line-height: 1; cursor: pointer;
+    display: grid; place-items: center;
+    opacity: 0; transition: opacity .15s ease, background .15s ease;
+  }
+  .pair:hover .tts-btn, .tts-btn:focus-visible, .tts-btn.playing { opacity: 1; }
+  .tts-btn:hover { background: var(--hover-bg); }
+  .tts-btn.playing { background: var(--gold); color: var(--paper); border-color: var(--gold); }
+  .tts-btn svg { width: 60%; height: 60%; fill: currentColor; }
+  .cell.fr.speaking p { background: rgba(160,123,44,0.14); border-radius: 2px; box-shadow: 0 0 0 .2em rgba(160,123,44,0.14); }
+
+  .tts-bar {
+    position: fixed; z-index: 10; right: 1rem; bottom: 1rem;
+    display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
+    max-width: calc(100vw - 2rem);
+    padding: .45rem .8rem;
+    background: var(--paper-2); color: var(--ink-soft);
+    border: 1px solid var(--rule); border-radius: 999px;
+    box-shadow: 0 4px 18px var(--shadow);
+    font-family: 'EB Garamond', serif; font-size: 14px; line-height: 1.2;
+  }
+  .tts-bar label { display: flex; align-items: center; gap: .35rem; cursor: pointer; }
+  .tts-bar select, .tts-bar button {
+    font: inherit; color: inherit; background: var(--paper);
+    border: 1px solid var(--rule); border-radius: 999px; padding: .2rem .6rem;
+  }
+  .tts-bar select { max-width: 11rem; }
+  .tts-bar button { cursor: pointer; }
+  .tts-bar input[type=range] { width: 70px; accent-color: var(--gold); }
+  .tts-bar .ttl { color: var(--accent); font-style: italic; }
+
+  @media (max-width: 780px) {
+    .tts-btn { opacity: .75; position: static; float: right; margin: .1em 0 .2em .5em; }
+    .tts-bar { left: .5rem; right: .5rem; bottom: .5rem; border-radius: 14px; justify-content: center; }
+    .tts-bar select { max-width: 8rem; }
+  }
+  @media print { .tts-btn, .tts-bar { display: none !important; } }
 </style>
 </head>
 <body>
@@ -3705,5 +3749,137 @@
   <em>It is only with the heart that one can see rightly; what is essential is invisible to the eye.</em>
 </footer>
 
+
+<script>
+(function () {
+  if (!('speechSynthesis' in window)) return;
+  var synth = window.speechSynthesis;
+  var ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+  var ICON_STOP = '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>';
+
+  var cells = Array.prototype.filter.call(document.querySelectorAll('.cell.fr'), function (c) {
+    return c.textContent.replace(/ /g, ' ').trim().length > 0;
+  });
+
+  // ---- control bar ----
+  var bar = document.createElement('div');
+  bar.className = 'tts-bar';
+  bar.innerHTML =
+    '<span class="ttl">Écouter</span>' +
+    '<select aria-label="Voix française"></select>' +
+    '<label title="Vitesse">vitesse <input type="range" min="0.6" max="1.3" step="0.05" value="0.9"></label>' +
+    '<label title="Lire les paragraphes à la suite"><input type="checkbox" checked> continu</label>' +
+    '<button type="button" hidden>■ arrêter</button>';
+  document.body.appendChild(bar);
+  var sel = bar.querySelector('select'),
+      rate = bar.querySelector('input[type=range]'),
+      cont = bar.querySelector('input[type=checkbox]'),
+      stopBtn = bar.querySelector('button');
+
+  function store(k, v) { try { localStorage.setItem('pp-tts-' + k, v); } catch (e) {} }
+  function load(k) { try { return localStorage.getItem('pp-tts-' + k); } catch (e) { return null; } }
+  if (load('rate')) rate.value = load('rate');
+  if (load('cont') !== null) cont.checked = load('cont') === '1';
+  rate.addEventListener('change', function () { store('rate', rate.value); });
+  cont.addEventListener('change', function () { store('cont', cont.checked ? '1' : '0'); });
+
+  var voices = [];
+  function rank(v) {
+    var s = 0;
+    if (/^fr[-_]FR/i.test(v.lang)) s += 10;
+    if (/google|premium|enhanced|natural|neural|amélie|thomas|audrey|aurélie|denise|henri/i.test(v.name)) s += 5;
+    if (v.localService) s += 1;
+    return s;
+  }
+  function loadVoices() {
+    voices = synth.getVoices().filter(function (v) { return /^fr/i.test(v.lang); })
+      .sort(function (a, b) { return rank(b) - rank(a); });
+    var saved = load('voice');
+    sel.innerHTML = '';
+    voices.forEach(function (v, i) {
+      var o = document.createElement('option');
+      o.value = v.name; o.textContent = v.name.replace(/^(Microsoft|Google)\s+/, '') + ' (' + v.lang + ')';
+      if (saved ? v.name === saved : i === 0) o.selected = true;
+      sel.appendChild(o);
+    });
+    sel.hidden = voices.length < 2;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+  sel.addEventListener('change', function () { store('voice', sel.value); });
+
+  // ---- playback ----
+  var current = -1, runId = 0;
+
+  function chunks(text) {
+    // Chrome cuts off long utterances, so speak sentence by sentence.
+    var parts = text.match(/[^.!?…;:]+[.!?…;:»"]*\s*/g) || [text];
+    var out = [], buf = '';
+    parts.forEach(function (p) {
+      if ((buf + p).length > 220 && buf) { out.push(buf); buf = ''; }
+      buf += p;
+    });
+    if (buf.trim()) out.push(buf);
+    return out;
+  }
+
+  function clearUI() {
+    cells.forEach(function (c) {
+      c.classList.remove('speaking');
+      var b = c.querySelector('.tts-btn');
+      if (b) { b.classList.remove('playing'); b.innerHTML = ICON_PLAY; b.setAttribute('aria-label', 'Écouter ce paragraphe'); }
+    });
+    stopBtn.hidden = true;
+  }
+
+  function stop() { runId++; synth.cancel(); current = -1; clearUI(); }
+
+  function play(i) {
+    runId++; var my = runId;
+    synth.cancel(); clearUI();
+    if (i < 0 || i >= cells.length) { current = -1; return; }
+    current = i;
+    var cell = cells[i], btn = cell.querySelector('.tts-btn');
+    cell.classList.add('speaking');
+    btn.classList.add('playing'); btn.innerHTML = ICON_STOP; btn.setAttribute('aria-label', 'Arrêter');
+    stopBtn.hidden = false;
+    var r = cell.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > window.innerHeight) cell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    var text = cell.textContent.replace(/ /g, ' ').replace(/[–—]\s*/g, '').replace(/(\w)- (\w)/g, '$1$2').trim();
+    var list = chunks(text), voice = voices.filter(function (v) { return v.name === sel.value; })[0] || voices[0];
+    list.forEach(function (t, k) {
+      var u = new SpeechSynthesisUtterance(t);
+      u.lang = voice ? voice.lang : 'fr-FR';
+      if (voice) u.voice = voice;
+      u.rate = parseFloat(rate.value);
+      if (k === list.length - 1) {
+        u.onend = function () {
+          if (my !== runId) return;
+          if (cont.checked) setTimeout(function () { if (my === runId) play(i + 1); }, 350);
+          else stop();
+        };
+      }
+      u.onerror = function (e) { if (my === runId && e.error !== 'interrupted' && e.error !== 'canceled') stop(); };
+      synth.speak(u);
+    });
+  }
+
+  cells.forEach(function (cell, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'tts-btn';
+    b.innerHTML = ICON_PLAY; b.setAttribute('aria-label', 'Écouter ce paragraphe');
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (current === i) stop(); else play(i);
+    });
+    cell.insertBefore(b, cell.firstChild);
+  });
+
+  stopBtn.addEventListener('click', stop);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && current >= 0) stop(); });
+  window.addEventListener('pagehide', function () { synth.cancel(); });
+})();
+</script>
 </body>
 </html>
