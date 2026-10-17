@@ -1,0 +1,570 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Le Petit Prince à voix haute</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+<style>
+/* Layout: one reading column with glosses in the right margin; sticky listening bar. Night-blue ink, star-yellow highlight. */
+:root{
+  --bg:#f4f3ef; --paper:#fbfaf7; --fg:#1e2230; --muted:#5f6475; --rule:#d9d7cf;
+  --accent:#28407a; --mark:#f6e7b0; --mark-fg:#3a2c05;
+  --display:"Libre Caslon Display", "Georgia", serif;
+  --body:"Source Serif 4", "Georgia", serif;
+  --ui:"IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#13151d; --paper:#1a1d27; --fg:#e4e4e8; --muted:#9a9eae; --rule:#2d3140;
+  --accent:#9db3e6; --mark:#4a3d12; --mark-fg:#f8edc9; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#13151d; --paper:#1a1d27; --fg:#e4e4e8; --muted:#9a9eae; --rule:#2d3140;
+  --accent:#9db3e6; --mark:#4a3d12; --mark-fg:#f8edc9; color-scheme:dark }
+
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:1.15rem;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:40rem;margin:0 auto;padding-block:2.5rem 5rem}
+.kicker{font-family:var(--ui);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(2.2rem,7vw,3.2rem);line-height:1.05;margin:.4rem 0 .7rem;text-wrap:balance}
+.meta{font-family:var(--ui);font-size:.9rem;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:1.2rem;margin:0}
+
+/* Loader */
+.load{margin-top:1.8rem;display:grid;gap:1rem}
+.drop{border:1.5px dashed var(--rule);border-radius:10px;background:var(--paper);padding:1.6rem 1.2rem;display:grid;gap:.8rem;justify-items:start;transition:border-color .15s,background .15s}
+.drop.over{border-color:var(--accent);background:color-mix(in srgb,var(--mark) 35%,var(--paper))}
+.drop h2{font-family:var(--display);font-weight:400;font-size:1.6rem;line-height:1.2;margin:0}
+.drop p{margin:0;font-family:var(--ui);font-size:.95rem;line-height:1.5;color:var(--muted);max-width:34rem}
+.file{position:relative}
+.file .btn{font-family:var(--ui)}
+[hidden]{display:none!important}
+.file input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.status{font-family:var(--ui);font-size:.9rem;color:var(--muted);min-height:1.4em}
+.status.err{color:#a3361f}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .status.err{color:#f19a85} }
+:root[data-theme="dark"] .status.err{color:#f19a85}
+
+/* Player bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);
+  border-bottom:1px solid var(--rule);padding-block:.7rem;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;font-family:var(--ui);font-size:.9rem}
+.btn{font:inherit;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:var(--paper);
+  border-radius:999px;padding:.45rem 1.1rem;cursor:pointer;display:inline-flex;align-items:center;gap:.45rem;min-width:7.2rem;justify-content:center}
+.btn.ghost{background:transparent;color:var(--accent);min-width:0;padding:.45rem .8rem}
+.btn:focus-visible,select:focus-visible,input:focus-visible,.s:focus-visible,.file:focus-within .btn{outline:2px solid var(--accent);outline-offset:2px}
+.ctrl{display:flex;align-items:center;gap:.4rem;color:var(--muted)}
+select{font:inherit;color:var(--fg);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:.3rem .4rem;max-width:12rem}
+input[type=range]{accent-color:var(--accent);width:6.5rem}
+.rate{font-variant-numeric:tabular-nums;color:var(--fg);min-width:2.6rem}
+.prog{flex-basis:100%;height:2px;background:var(--rule);position:relative;overflow:hidden;border-radius:2px}
+.prog i{position:absolute;inset:0 auto 0 0;width:0;background:var(--accent);transition:width .25s}
+.note{font-family:var(--ui);font-size:.85rem;color:var(--muted);margin:.9rem 0 0}
+kbd{font-family:var(--ui);border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 .3em;font-size:.8em}
+
+/* Text */
+article{position:relative;margin-top:1.6rem}
+article p{margin:0 0 1.05em}
+article h2.ch{font-family:var(--display);font-weight:400;font-size:1.55rem;line-height:1.2;margin:2.6rem 0 1.1rem;padding-top:1.3rem;border-top:1px solid var(--rule);text-wrap:balance}
+article h2.ch:first-of-type{margin-top:.5rem}
+.s{cursor:pointer;border-radius:3px;transition:background .15s}
+.s:hover{background:color-mix(in srgb,var(--mark) 55%,transparent)}
+.s.on{background:var(--mark);color:var(--mark-fg);box-shadow:0 0 0 2px var(--mark)}
+
+/* Glosses */
+.vt{text-decoration:underline dotted var(--accent);text-decoration-thickness:1.5px;text-underline-offset:3px;border-radius:2px;transition:background .15s}
+.vt.hot{background:var(--mark);color:var(--mark-fg)}
+.gloss{display:grid;gap:.55rem;margin:-.35rem 0 1.4rem;padding:.75rem .85rem;background:var(--paper);border:1px solid var(--rule);border-radius:6px}
+.gn{display:grid;grid-template-columns:1.7rem minmax(0,1fr);column-gap:.55rem;align-items:start;font-family:var(--ui);font-size:.86rem;line-height:1.38;border-radius:4px;transition:background .15s}
+.gn .t{font-family:var(--body);font-weight:600;font-size:1rem;line-height:1.3}
+.gn .g{font-family:var(--ui);font-weight:400;font-size:.72rem;letter-spacing:.04em;color:var(--muted);margin-left:.35rem}
+.gn .en{color:var(--muted)}
+.gn .say{width:1.7rem;height:1.7rem;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--accent);font-size:.62rem;cursor:pointer;display:grid;place-items:center;padding:0}
+.gn .say:hover{border-color:var(--accent)}
+.gn .say:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.gn.hot{background:var(--mark)}
+.gn.hot .en{color:var(--mark-fg)}
+.mhead{display:none}
+
+footer{font-family:var(--ui);font-size:.82rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:1rem;margin-top:2rem;display:grid;gap:.6rem;justify-items:start}
+.linkbtn{font:inherit;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+
+@media (min-width:1000px){
+  .wrap{max-width:61rem}
+  .wrap > :not(.bar){max-width:40rem}
+  body.wide .gloss{display:contents}
+  body.wide .gn{position:absolute;left:calc(100% + 2.75rem);width:17.5rem;padding:.2rem .45rem .3rem .3rem}
+  body.wide .mhead{display:block;position:absolute;left:calc(100% + 2.75rem);top:-1.9rem;width:17.5rem;padding-left:.3rem;margin:0}
+}
+@media (max-width:480px){input[type=range]{width:5rem} select{max-width:9rem}}
+@media (prefers-reduced-motion:reduce){.s,.prog i,.gn,.vt,.drop{transition:none}}
+</style>
+
+<div class="wrap">
+  <div class="kicker">Antoine de Saint-Exupéry · 1943</div>
+  <h1>Le Petit Prince</h1>
+  <p class="meta">Lecture à voix haute, phrase par phrase, avec le vocabulaire en marge</p>
+
+  <section class="load" id="loader">
+    <div class="drop" id="drop">
+      <h2>Ouvrez votre exemplaire</h2>
+      <p>Choisissez le PDF du livre (ou un fichier texte). Le texte est lu sur votre appareil et n’est envoyé nulle part. Cet appareil s’en souviendra pour vos prochaines visites.</p>
+      <label class="file" for="fileIn"><span class="btn">Choisir un fichier</span><input id="fileIn" type="file" accept=".pdf,.txt,application/pdf,text/plain"></label>
+      <p>Ou glissez-déposez le fichier ici.</p>
+    </div>
+    <div class="status" id="status" role="status"></div>
+  </section>
+
+  <div class="bar" role="toolbar" aria-label="Lecture audio" id="bar" hidden>
+    <button class="btn" id="play" type="button"><span id="playIcon">▶</span><span id="playLbl">Écouter</span></button>
+    <button class="btn ghost" id="prev" type="button" aria-label="Phrase précédente">⏮</button>
+    <button class="btn ghost" id="next" type="button" aria-label="Phrase suivante">⏭</button>
+    <label class="ctrl" for="chap">Chapitre <select id="chap"></select></label>
+    <label class="ctrl" for="rate">Vitesse <input id="rate" type="range" min="0.6" max="1.4" step="0.05" value="0.95"><span class="rate" id="rateOut">0,95×</span></label>
+    <label class="ctrl" for="voice">Voix <select id="voice"><option>Chargement…</option></select></label>
+    <div class="prog" aria-hidden="true"><i id="progFill"></i></div>
+  </div>
+  <p class="note" id="note" hidden>Touchez une phrase pour l’entendre à partir de là. Les mots soulignés en pointillé sont expliqués en marge. <kbd>Espace</kbd> lecture/pause, <kbd>←</kbd> <kbd>→</kbd> phrase par phrase.</p>
+
+  <article id="text"></article>
+
+  <footer>
+    <span>La synthèse vocale utilise les voix françaises installées sur votre appareil ; leur qualité varie selon le navigateur et le système. Le vocabulaire est prêt pour le texte intégral (édition de 1943).</span>
+    <button class="linkbtn" id="forget" type="button" hidden>Ouvrir un autre fichier</button>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var V = [
+    ['les grandes personnes','n. f. pl.','grown-ups','grandes personnes'],
+    ['avaler','v. tr.','to swallow','avalait'],
+    ['un fauve','n. m.','a wild beast','fauve'],
+    ['la proie','n. f.','prey','proie'],
+    ['mâcher','v. tr.','to chew','mâcher'],
+    ['un chef-d’œuvre','n. m.','a masterpiece','chef-d’œuvre'],
+    ['laisser de côté','loc. v.','to set aside, give up','laisser de côté'],
+    ['l’insuccès','n. m.','failure, lack of success','insuccès'],
+    ['égaré, -e','adj.','lost, astray','égaré'],
+    ['des tas de','loc. fam.','loads of, heaps of','des tas de'],
+    ['une panne','n. f.','a breakdown (engine failure)','panne'],
+    ['la soif','n. f.','thirst','soif'],
+    ['un naufragé','n. m.','a castaway','naufragé'],
+    ['un radeau','n. m.','a raft','radeau'],
+    ['la foudre','n. f.','lightning','foudre'],
+    ['un bonhomme','n. m. fam.','a little fellow','bonhomme'],
+    ['griffonner','v. tr.','to scribble, dash off','griffonnai'],
+    ['une caisse','n. f.','a box, crate','caisse'],
+    ['un éclat de rire','n. m.','a burst of laughter','éclat de rire'],
+    ['un astéroïde','n. m.','an asteroid','astéroïde'],
+    ['un arbuste','n. m.','a shrub','arbustes'],
+    ['une graine','n. f.','a seed','graines'],
+    ['une brindille','n. f.','a twig, sprig','brindille'],
+    ['arracher','v. tr.','to pull up, uproot','arracher'],
+    ['s’astreindre à','v. pron.','to make oneself (do something)','astreindre'],
+    ['un paresseux','n. m.','a lazy person','paresseux'],
+    ['un coucher de soleil','n. m.','a sunset','couchers de soleil'],
+    ['bâiller','v. intr.','to yawn','bâillant'],
+    ['une épine','n. f.','a thorn','épines'],
+    ['un boulon','n. m.','a bolt','boulon'],
+    ['la honte','n. f.','shame','honte'],
+    ['la muselière','n. f.','a muzzle','muselière'],
+    ['un courant d’air','n. m.','a draft','courants d’air'],
+    ['un paravent','n. m.','a folding screen','paravent'],
+    ['tousser','v. intr.','to cough','toussé'],
+    ['une ruse','n. f.','a ploy, trick','ruses'],
+    ['ramoner','v. tr.','to sweep (a chimney, a volcano)','ramona'],
+    ['une chenille','n. f.','a caterpillar','chenilles'],
+    ['l’hermine','n. f.','ermine','hermine'],
+    ['un monarque','n. m.','a monarch','monarque'],
+    ['un vaniteux','n. m.','a vain, conceited man','vaniteux'],
+    ['un buveur','n. m.','a drinker, tippler','buveur'],
+    ['un fainéant','n. m.','an idler, loafer','fainéants'],
+    ['un réverbère','n. m.','a streetlamp','réverbère'],
+    ['la consigne','n. f.','orders, instructions','consigne'],
+    ['éphémère','adj.','ephemeral, short-lived','éphémères'],
+    ['la cheville','n. f.','the ankle','cheville'],
+    ['une énigme','n. f.','a riddle','énigmes'],
+    ['l’écho','n. m.','the echo','écho'],
+    ['apprivoiser','v. tr.','to tame','apprivoiser'],
+    ['créer des liens','loc. v.','to establish ties','créer des liens'],
+    ['un chasseur','n. m.','a hunter','chasseurs'],
+    ['un terrier','n. m.','a burrow, den','terrier'],
+    ['un malentendu','n. m.','a misunderstanding','malentendus'],
+    ['un rite','n. m.','a ritual, rite','rites'],
+    ['un aiguilleur','n. m.','a railway switchman','aiguilleur'],
+    ['une pilule','n. f.','a pill','pilules'],
+    ['un puits','n. m.','a well','puits'],
+    ['la poulie','n. f.','the pulley','poulie'],
+    ['un seau','n. m.','a bucket','seau'],
+    ['le venin','n. m.','venom','venin'],
+    ['un cache-nez','n. m.','a muffler, scarf','cache-nez'],
+    ['un grelot','n. m.','a little (sleigh) bell','grelots']
+  ];
+
+  var KEY_BOOK = 'pp-book-v1', KEY_POS = 'pp-pos';
+  function store(k, v){ try{ localStorage.setItem(k, v) }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+  function forget(k){ try{ localStorage.removeItem(k) }catch(e){} }
+
+  var loader = document.getElementById('loader'), drop = document.getElementById('drop'), statusEl = document.getElementById('status');
+  var fileIn = document.getElementById('fileIn'), art = document.getElementById('text');
+  var bar = document.getElementById('bar'), noteEl = document.getElementById('note'), forgetBtn = document.getElementById('forget');
+  function status(msg, err){ statusEl.textContent = msg; statusEl.classList.toggle('err', !!err) }
+
+  // ---------- Parsing ----------
+  var HEAD = /^(PREMIER CHAPITRE|CHAPITRE\s+[IVXLC]+|À LÉON WERTH)$/;
+  var KEEP_HYPHEN = /^(?:(?:être|il|ils|elle|elles|on|ce|ci|là|même|moi|toi|lui|nous|vous|le|la|les|leur|y|en|je|tu|t|un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|vingt|trente|quarante|cinquante|soixante|cent|et)(?![a-zà-ÿœ])|[dl][’'])/;
+  function joinLine(cur, next){
+    if(!cur) return next;
+    if(/[A-Za-zÀ-ÿœ]-$/.test(cur) && /^[a-zà-ÿœ]/.test(next)){
+      return KEEP_HYPHEN.test(next) ? cur + next : cur.slice(0, -1) + next;
+    }
+    return cur + ' ' + next;
+  }
+  function tidy(s){ return s.replace(/\s+/g, ' ').replace(/'/g, '’').trim() }
+
+  function parseLines(lines){
+    // lines: [{t, ind}] ; returns [{h, paras:[]}]
+    var book = [], ch = null, para = '', started = false;
+    function flush(){ if(para && ch){ ch.paras.push(tidy(para)) } para = '' }
+    for(var i=0;i<lines.length;i++){
+      var L = lines[i], t = L.t.trim();
+      if(!t) { if(L.blank) flush(); continue; }
+      if(/^[–-]\s*\d+\s*[–-]$/.test(t) || /^\d+$/.test(t)) continue;
+      if(!started){ if(t === 'À LÉON WERTH'){ started = true } else continue; }
+      if(/^À propos de cette édition/.test(t)) break;
+      if(HEAD.test(t) && !(ch && t === 'À LÉON WERTH')){
+        flush();
+        ch = { h: t === 'À LÉON WERTH' ? 'À Léon Werth' : (t === 'PREMIER CHAPITRE' ? 'Chapitre I' : 'Chapitre ' + t.replace(/^CHAPITRE\s+/, '')), paras: [] };
+        book.push(ch); continue;
+      }
+      if(L.ind || (/^[–—-]\s/.test(t) && /[.!?…»:]$/.test(para))) flush();
+      para = joinLine(para, t);
+    }
+    flush();
+    if(!started) return null;
+    return book.filter(function(c){ return c.paras.length });
+  }
+
+  function fromPdf(buf){
+    var lib = window.pdfjsLib;
+    if(!lib) return Promise.reject(new Error('nolib'));
+    try{ lib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js' }catch(e){}
+    return lib.getDocument({ data: buf, isEvalSupported: false }).promise.then(function(doc){
+      var lines = [], p = Promise.resolve();
+      for(var n=1;n<=doc.numPages;n++){
+        (function(n){
+          p = p.then(function(){
+            status('Lecture du PDF… page ' + n + ' sur ' + doc.numPages);
+            return doc.getPage(n).then(function(pg){ return pg.getTextContent() }).then(function(tc){
+              var items = tc.items.filter(function(it){ return typeof it.str === 'string' && it.str.length });
+              items.sort(function(a,b){ return (b.transform[5] - a.transform[5]) || (a.transform[4] - b.transform[4]) });
+              var pl = [], cur = null;
+              items.forEach(function(it){
+                var x = it.transform[4], y = it.transform[5];
+                if(!cur || Math.abs(cur.y - y) > 2){ cur = { y: y, x: x, t: '', end: x }; pl.push(cur) }
+                if(cur.t && x > cur.end + 1 && !/\s$/.test(cur.t) && !/^\s/.test(it.str)) cur.t += ' ';
+                cur.t += it.str; cur.end = x + (it.width || 0);
+              });
+              var minX = Infinity;
+              pl.forEach(function(l){ if(l.t.trim().length > 30) minX = Math.min(minX, l.x) });
+              if(!isFinite(minX)) pl.forEach(function(l){ minX = Math.min(minX, l.x) });
+              pl.forEach(function(l){ lines.push({ t: l.t, ind: l.x > minX + 8 }) });
+            });
+          });
+        })(n);
+      }
+      return p.then(function(){ return lines });
+    });
+  }
+  function fromText(txt){
+    var out = [];
+    txt.replace(/\r/g, '').split('\n').forEach(function(l){
+      if(!l.trim()) out.push({ t: '', blank: true });
+      else out.push({ t: l, ind: /^\s{2,}|^\t/.test(l) });
+    });
+    // texts without the dedication: start at the first chapter heading
+    if(!out.some(function(l){ return l.t.trim() === 'À LÉON WERTH' })){
+      out.unshift({ t: 'À LÉON WERTH' });
+    }
+    return out;
+  }
+
+  function handleFile(f){
+    if(!f) return;
+    status('Ouverture de « ' + f.name + ' »…');
+    var isPdf = /\.pdf$/i.test(f.name) || f.type === 'application/pdf';
+    var rd = new FileReader();
+    rd.onerror = function(){ status('Impossible de lire ce fichier. Réessayez avec une autre copie.', true) };
+    rd.onload = function(){
+      var job = isPdf ? fromPdf(new Uint8Array(rd.result)) : Promise.resolve(fromText(String(rd.result)));
+      job.then(function(lines){
+        var book = parseLines(lines);
+        if(!book || !book.length || book.length < 3){
+          status('Je n’ai pas trouvé le texte du Petit Prince dans ce fichier (chapitres introuvables). Essayez un PDF avec du texte sélectionnable, ou un fichier .txt.', true);
+          return;
+        }
+        store(KEY_BOOK, JSON.stringify(book)); forget(KEY_POS);
+        status('');
+        render(book, 0);
+      }).catch(function(e){
+        status(e && e.message === 'nolib'
+          ? 'Le lecteur PDF n’a pas pu se charger. Rechargez la page, ou ouvrez un fichier .txt.'
+          : 'Ce PDF n’a pas pu être lu. Vérifiez que le texte y est sélectionnable (et non une image scannée).', true);
+      });
+    };
+    if(isPdf) rd.readAsArrayBuffer(f); else rd.readAsText(f, 'utf-8');
+  }
+  fileIn.addEventListener('change', function(){ handleFile(fileIn.files[0]); fileIn.value = '' });
+  ['dragenter','dragover'].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.add('over') }) });
+  ['dragleave','drop'].forEach(function(t){ drop.addEventListener(t, function(){ drop.classList.remove('over') }) });
+  drop.addEventListener('drop', function(e){ e.preventDefault(); handleFile(e.dataTransfer.files[0]) });
+  forgetBtn.addEventListener('click', function(){
+    if(window.__stop) window.__stop();
+    forget(KEY_BOOK); forget(KEY_POS);
+    art.innerHTML = ''; bar.hidden = true; noteEl.hidden = true; forgetBtn.hidden = true; loader.hidden = false;
+    document.body.classList.remove('wide');
+  });
+
+  // ---------- Rendering ----------
+  var spans = [], notes = [], heads = [];
+  function splitSentences(t){
+    var parts = t.match(/[^.!?…]+(?:[.!?…]+|$)(?:\s*[»”])?/g) || [t];
+    // keep "« … »" closing quotes and leading dashes with their sentence
+    var out = [];
+    parts.forEach(function(s){
+      s = s.trim(); if(!s) return;
+      if(out.length && /^[»”)]/.test(s)){ out[out.length-1] += ' ' + s; return }
+      out.push(s);
+    });
+    return out;
+  }
+  function render(book, startIdx){
+    loader.hidden = true; bar.hidden = false; noteEl.hidden = false; forgetBtn.hidden = false;
+    art.innerHTML = ''; spans = []; heads = [];
+    var chap = document.getElementById('chap'); chap.innerHTML = '';
+    var frag = document.createDocumentFragment();
+    book.forEach(function(c, ci){
+      var h = document.createElement('h2'); h.className = 'ch'; h.id = 'ch-' + ci; h.textContent = c.h;
+      frag.appendChild(h); heads.push({ el: h, first: spans.length });
+      var o = document.createElement('option'); o.value = ci; o.textContent = c.h.replace('Chapitre ', ''); chap.appendChild(o);
+      c.paras.forEach(function(pt){
+        var p = document.createElement('p');
+        splitSentences(pt).forEach(function(s, i, arr){
+          var sp = document.createElement('span'); sp.className = 's'; sp.tabIndex = 0; sp.textContent = s;
+          sp.dataset.i = spans.length; spans.push(sp); p.appendChild(sp);
+          if(i < arr.length - 1) p.appendChild(document.createTextNode(' '));
+        });
+        frag.appendChild(p);
+      });
+    });
+    art.appendChild(frag);
+    buildGlosses();
+    player.reset(startIdx || 0);
+    layout();
+  }
+
+  // ---------- Glosses ----------
+  var mq = window.matchMedia('(min-width: 1000px)');
+  function isLetter(c){ return !!c && /[A-Za-zÀ-ÿœŒ-]/.test(c) }
+  function wrapKey(sp, key){
+    var k = key.toLowerCase();
+    var w = document.createTreeWalker(sp, NodeFilter.SHOW_TEXT, null), n;
+    while((n = w.nextNode())){
+      var low = n.data.toLowerCase(), at = -1, from = 0;
+      while((at = low.indexOf(k, from)) !== -1){
+        if(!isLetter(low.charAt(at - 1))) break;
+        from = at + 1;
+      }
+      if(at === -1) continue;
+      var mid = n.splitText(at); mid.splitText(key.length);
+      var m = document.createElement('span'); m.className = 'vt';
+      mid.parentNode.replaceChild(m, mid); m.appendChild(mid);
+      return m;
+    }
+    return null;
+  }
+  function buildGlosses(){
+    notes = [];
+    V.forEach(function(e, n){
+      var mark = null, k = e[3].toLowerCase();
+      for(var i=0;i<spans.length && !mark;i++){
+        if(spans[i].textContent.toLowerCase().indexOf(k) !== -1) mark = wrapKey(spans[i], e[3]);
+      }
+      if(!mark) return;
+      var p = mark.closest('p'), box = p._gloss;
+      if(!box){ box = document.createElement('div'); box.className = 'gloss'; p.parentNode.insertBefore(box, p.nextSibling); p._gloss = box }
+      var note = document.createElement('div'); note.className = 'gn';
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'say'; b.id = 'say-' + n;
+      b.textContent = '▶'; b.setAttribute('aria-label', 'Écouter « ' + e[0] + ' »');
+      if(!window.speechSynthesis) b.disabled = true;
+      b.addEventListener('click', function(ev){ ev.stopPropagation(); player.say(e[0].replace(/, -e$/, '').replace(/\s*\(.*\)/, '')) });
+      var txt = document.createElement('div');
+      var t = document.createElement('div'); t.className = 't'; t.textContent = e[0];
+      var g = document.createElement('span'); g.className = 'g'; g.textContent = e[1]; t.appendChild(g);
+      var en = document.createElement('div'); en.className = 'en'; en.textContent = e[2];
+      txt.appendChild(t); txt.appendChild(en); note.appendChild(b); note.appendChild(txt);
+      box.appendChild(note); note._mark = mark;
+      function hot(on){ mark.classList.toggle('hot', on); note.classList.toggle('hot', on) }
+      [mark, note].forEach(function(el){
+        el.addEventListener('mouseenter', function(){ hot(true) });
+        el.addEventListener('mouseleave', function(){ hot(false) });
+      });
+      notes.push(note);
+    });
+    var head = document.createElement('p'); head.className = 'kicker mhead'; head.textContent = 'Lexique · ' + notes.length + ' mots';
+    art.insertBefore(head, art.firstChild);
+  }
+  function layout(){
+    if(bar.hidden) return;
+    var wide = mq.matches;
+    document.body.classList.toggle('wide', wide);
+    art.style.minHeight = '';
+    if(!wide){ notes.forEach(function(n){ n.style.top = '' }); return }
+    var top0 = art.getBoundingClientRect().top, last = -Infinity;
+    notes.forEach(function(n){
+      var y = n._mark.getBoundingClientRect().top - top0 - 3;
+      y = Math.max(y, last + 10);
+      n.style.top = y + 'px';
+      last = y + n.offsetHeight;
+    });
+    if(last > art.offsetHeight) art.style.minHeight = last + 'px';
+  }
+  var raf = 0;
+  function queue(){ cancelAnimationFrame(raf); raf = requestAnimationFrame(layout) }
+  window.addEventListener('resize', queue);
+  if(mq.addEventListener) mq.addEventListener('change', queue);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(queue);
+  window.addEventListener('load', queue);
+
+  // ---------- Player ----------
+  var player = (function(){
+    var synth = window.speechSynthesis;
+    var playBtn = document.getElementById('play'), playIcon = document.getElementById('playIcon'), playLbl = document.getElementById('playLbl');
+    var rateIn = document.getElementById('rate'), rateOut = document.getElementById('rateOut');
+    var voiceSel = document.getElementById('voice'), fill = document.getElementById('progFill'), chapSel = document.getElementById('chap');
+    var idx = 0, playing = false, voices = [], token = 0;
+
+    var savedRate = parseFloat(load('rubio-rate'));
+    if(savedRate >= 0.6 && savedRate <= 1.4) rateIn.value = savedRate;
+    function showRate(){ rateOut.textContent = (+rateIn.value).toFixed(2).replace('.', ',') + '×' }
+    showRate();
+
+    function fillVoices(){
+      if(!synth) return;
+      var all = synth.getVoices();
+      voices = all.filter(function(v){ return /^fr/i.test(v.lang) });
+      if(!voices.length && all.length) voices = all;
+      if(!voices.length) return;
+      function score(v){ return (/fr[-_]FR/i.test(v.lang) ? 0 : 1) + (/(natural|premium|enhanced|neural|google)/i.test(v.name) ? -0.5 : 0) }
+      voices.sort(function(a,b){ return score(a) - score(b) });
+      var saved = load('rubio-voice');
+      voiceSel.innerHTML = '';
+      voices.forEach(function(v, i){
+        var o = document.createElement('option');
+        o.value = v.name; o.textContent = v.name.replace(/\s*\(.*\)$/, '') + ' · ' + v.lang;
+        if(saved ? v.name === saved : i === 0) o.selected = true;
+        voiceSel.appendChild(o);
+      });
+    }
+    if(synth){ fillVoices(); if('onvoiceschanged' in synth) synth.addEventListener('voiceschanged', fillVoices) }
+    else { playBtn.disabled = true; voiceSel.disabled = true; noteEl.textContent = 'Ce navigateur ne propose pas la synthèse vocale. Essayez Chrome, Edge ou Safari.' }
+
+    function currentVoice(){
+      for(var i=0;i<voices.length;i++) if(voices[i].name === voiceSel.value) return voices[i];
+      return voices[0] || null;
+    }
+    function utter(text, rate){
+      var u = new SpeechSynthesisUtterance(text);
+      var v = currentVoice(); if(v){ u.voice = v; u.lang = v.lang } else { u.lang = 'fr-FR' }
+      u.rate = rate; return u;
+    }
+    function chapterOf(i){ var c = 0; for(var k=0;k<heads.length;k++) if(heads[k].first <= i) c = k; return c }
+    function scrollTo(el, frac){
+      var r = el.getBoundingClientRect(), barH = bar.offsetHeight;
+      if(frac == null && r.top >= barH + 20 && r.bottom <= window.innerHeight - 40) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: window.scrollY + r.top - barH - window.innerHeight * (frac == null ? 0.25 : frac), behavior: reduce ? 'auto' : 'smooth' });
+    }
+    function mark(i, noScroll){
+      spans.forEach(function(s){ s.classList.remove('on') });
+      var s = spans[i]; if(!s) return;
+      s.classList.add('on');
+      fill.style.width = (i / spans.length * 100) + '%';
+      chapSel.value = chapterOf(i);
+      if(!noScroll) scrollTo(s);
+    }
+    function setUI(){
+      playIcon.textContent = playing ? '❚❚' : '▶';
+      playLbl.textContent = playing ? 'Pause' : (idx > 0 && idx < spans.length ? 'Reprendre' : 'Écouter');
+    }
+    function speak(i){
+      if(i >= spans.length){ stop(true); return }
+      idx = i; mark(i); store(KEY_POS, String(i));
+      var my = ++token, u = utter(spans[i].textContent, +rateIn.value);
+      u.onend = function(){ if(my === token && playing) speak(idx + 1) };
+      u.onerror = function(e){ if(my === token && playing && e.error !== 'interrupted' && e.error !== 'canceled') speak(idx + 1) };
+      synth.speak(u);
+    }
+    function start(i){ token++; synth.cancel(); playing = true; setUI(); setTimeout(function(){ if(playing) speak(i) }, 60) }
+    function stop(finished){
+      playing = false; token++; if(synth) synth.cancel();
+      if(finished){ idx = 0; fill.style.width = '100%'; spans.forEach(function(s){ s.classList.remove('on') }) }
+      setUI();
+    }
+    function goto(n){ n = Math.max(0, Math.min(spans.length - 1, n)); if(playing) start(n); else { idx = n; mark(n); setUI(); store(KEY_POS, String(n)) } }
+
+    playBtn.addEventListener('click', function(){ playing ? stop(false) : start(idx >= spans.length ? 0 : idx) });
+    document.getElementById('prev').addEventListener('click', function(){ goto(idx - 1) });
+    document.getElementById('next').addEventListener('click', function(){ goto(idx + 1) });
+    chapSel.addEventListener('change', function(){
+      var h = heads[+chapSel.value]; if(!h) return;
+      if(playing) start(h.first); else { idx = h.first; mark(idx, true); setUI(); store(KEY_POS, String(idx)) }
+      scrollTo(h.el, 0.02);
+    });
+    art.addEventListener('click', function(e){ var s = e.target.closest('.s'); if(s && synth) start(+s.dataset.i) });
+    art.addEventListener('keydown', function(e){ var s = e.target.closest('.s'); if(s && e.key === 'Enter' && synth){ e.preventDefault(); start(+s.dataset.i) } });
+    rateIn.addEventListener('input', showRate);
+    rateIn.addEventListener('change', function(){ store('rubio-rate', rateIn.value); if(playing) start(idx) });
+    voiceSel.addEventListener('change', function(){ store('rubio-voice', voiceSel.value); if(playing) start(idx) });
+    document.addEventListener('keydown', function(e){
+      if(bar.hidden) return;
+      var tag = (e.target.tagName || '').toLowerCase();
+      if(tag === 'select' || tag === 'input' || tag === 'button') return;
+      if(e.key === ' '){ e.preventDefault(); playBtn.click() }
+      else if(e.key === 'ArrowRight'){ e.preventDefault(); goto(idx + 1) }
+      else if(e.key === 'ArrowLeft'){ e.preventDefault(); goto(idx - 1) }
+    });
+    var isChrome = /Chrome\//.test(navigator.userAgent) && !/Edg\//.test(navigator.userAgent);
+    if(isChrome && synth) setInterval(function(){ if(playing && synth.speaking && !synth.paused){ synth.pause(); synth.resume() } }, 10000);
+    window.addEventListener('pagehide', function(){ if(synth) synth.cancel() });
+
+    return {
+      reset: function(i){
+        stop(false); idx = Math.min(i, Math.max(0, spans.length - 1));
+        if(idx > 0){ mark(idx, true); requestAnimationFrame(function(){ requestAnimationFrame(function(){ scrollTo(spans[idx], 0.25) }) }) }
+        else fill.style.width = '0';
+        setUI();
+      },
+      say: function(text){
+        if(!synth) return;
+        if(playing) stop(false);
+        token++; synth.cancel();
+        setTimeout(function(){ synth.speak(utter(text, Math.min(+rateIn.value, 0.9))) }, 60);
+      },
+      stop: function(){ stop(false) }
+    };
+  })();
+  window.__stop = player.stop;
+
+  // ---------- Restore ----------
+  var saved = load(KEY_BOOK);
+  if(saved){
+    try{
+      var book = JSON.parse(saved);
+      render(book, parseInt(load(KEY_POS), 10) || 0);
+    }catch(e){ forget(KEY_BOOK) }
+  }
+})();
+</script>
+
+</body></html>
