@@ -1,0 +1,725 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Rubio à Munich</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap">
+<style>
+/* Layout: single reading column; a sticky listening bar under a quiet masthead. Pentelic marble ground, Aegean ink. */
+:root{
+  --bg:#f3f4f2; --paper:#fbfbfa; --fg:#1d2328; --muted:#5d6870; --rule:#d5d9d8;
+  --accent:#1f4f78; --mark:#dbe7f1; --mark-fg:#0f2e48;
+  --display:"Libre Caslon Display", "Georgia", serif;
+  --body:"Source Serif 4", "Georgia", serif;
+  --ui:"IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14191d; --paper:#1a2025; --fg:#e3e6e4; --muted:#97a2a8; --rule:#2e373d;
+  --accent:#8db8dc; --mark:#24384a; --mark-fg:#e9f2fa; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#14191d; --paper:#1a2025; --fg:#e3e6e4; --muted:#97a2a8; --rule:#2e373d;
+  --accent:#8db8dc; --mark:#24384a; --mark-fg:#e9f2fa; color-scheme:dark }
+
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:1.15rem;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:40rem;margin:0 auto;padding-block:2.5rem 5rem}
+.kicker{font-family:var(--ui);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(2rem,6vw,2.9rem);line-height:1.08;margin:.4rem 0 .8rem;text-wrap:balance}
+.meta{font-family:var(--ui);font-size:.9rem;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:1.2rem;margin-bottom:0}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);
+  border-bottom:1px solid var(--rule);padding-block:.7rem;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;font-family:var(--ui);font-size:.9rem}
+.btn{font:inherit;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:var(--paper);
+  border-radius:999px;padding:.45rem 1.1rem;cursor:pointer;display:inline-flex;align-items:center;gap:.45rem;min-width:7.2rem;justify-content:center}
+.btn.ghost{background:transparent;color:var(--accent);min-width:0;padding:.45rem .8rem}
+.btn:focus-visible,select:focus-visible,input:focus-visible,.s:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctrl{display:flex;align-items:center;gap:.4rem;color:var(--muted)}
+select{font:inherit;color:var(--fg);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:.3rem .4rem;max-width:12rem}
+input[type=range]{accent-color:var(--accent);width:6.5rem}
+.rate{font-variant-numeric:tabular-nums;color:var(--fg);min-width:2.6rem}
+.prog{flex-basis:100%;height:2px;background:var(--rule);position:relative;overflow:hidden;border-radius:2px}
+.prog i{position:absolute;inset:0 auto 0 0;width:0;background:var(--accent);transition:width .25s}
+.note{font-family:var(--ui);font-size:.85rem;color:var(--muted);margin:.9rem 0 0}
+
+article{margin-top:1.6rem}
+article p{margin:0 0 1.1em}
+article p.intro{font-style:italic;color:var(--muted)}
+.s{cursor:pointer;border-radius:3px;transition:background .15s}
+.s:hover{background:color-mix(in srgb,var(--mark) 55%,transparent)}
+.s.on{background:var(--mark);color:var(--mark-fg);box-shadow:0 0 0 2px var(--mark)}
+.vocab{margin-top:3rem;border-top:1px solid var(--rule);padding-top:1.6rem}
+.vocab h2{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,4.5vw,2.1rem);line-height:1.15;margin:.3rem 0 0;text-wrap:balance}
+.vocab .note{margin:.5rem 0 1.4rem}
+#vlist{margin:0;display:grid;grid-template-columns:1fr;gap:0}
+.v{display:grid;grid-template-columns:2rem minmax(0,1fr);column-gap:.6rem;padding-block:.85rem;border-bottom:1px solid var(--rule)}
+.v:first-child{border-top:1px solid var(--rule)}
+.say{grid-row:1 / span 3;align-self:start;width:2rem;height:2rem;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--accent);
+  font-size:.75rem;cursor:pointer;display:grid;place-items:center;margin-top:.15rem}
+.say:hover{border-color:var(--accent)}
+.say:focus-visible,.jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.v dt{font-family:var(--body);font-weight:600;font-size:1.12rem;line-height:1.35;min-width:0}
+.v dt .g{font-family:var(--ui);font-weight:400;font-size:.78rem;letter-spacing:.04em;color:var(--muted);margin-left:.4rem}
+.v dd{margin:0;min-width:0}
+.v .en{font-family:var(--ui);font-size:.95rem;line-height:1.45}
+.v .ex{font-style:italic;color:var(--muted);font-size:.98rem;line-height:1.5;margin-top:.15rem}
+.jump{font-family:var(--ui);font-style:normal;font-size:.8rem;color:var(--accent);background:none;border:0;padding:0;margin-left:.35rem;cursor:pointer;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.s.flash{background:var(--mark);color:var(--mark-fg);box-shadow:0 0 0 2px var(--mark)}
+.who{font-family:var(--ui);font-size:.74rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-right:.5rem}
+.sd{font-family:var(--ui);font-size:.82rem;font-style:normal;color:var(--muted);letter-spacing:.02em}
+h2.qa{font-family:var(--display);font-weight:400;font-size:clamp(1.5rem,4vw,1.9rem);line-height:1.2;margin:2.4rem 0 1.1rem;padding-top:1.4rem;border-top:1px solid var(--rule)}
+article{position:relative}
+.vt{text-decoration:underline dotted var(--accent);text-decoration-thickness:1.5px;text-underline-offset:3px;border-radius:2px;transition:background .15s}
+.vt.hot{background:var(--mark);color:var(--mark-fg)}
+.gloss{display:grid;gap:.55rem;margin:-.35rem 0 1.4rem;padding:.75rem .85rem;background:var(--paper);border:1px solid var(--rule);border-radius:6px}
+.gn{display:grid;grid-template-columns:1.7rem minmax(0,1fr);column-gap:.55rem;align-items:start;font-family:var(--ui);font-size:.86rem;line-height:1.38;border-radius:4px;transition:background .15s}
+.gn .t{font-family:var(--body);font-weight:600;font-size:1rem;line-height:1.3}
+.gn .g{font-family:var(--ui);font-weight:400;font-size:.72rem;letter-spacing:.04em;color:var(--muted);margin-left:.35rem}
+.gn .en{color:var(--muted)}
+.gn .say{width:1.7rem;height:1.7rem;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--accent);font-size:.62rem;cursor:pointer;display:grid;place-items:center;padding:0}
+.gn .say:hover{border-color:var(--accent)}
+.gn .say:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.gn.hot{background:var(--mark)}
+.gn.hot .en{color:var(--mark-fg)}
+.mhead{display:none}
+@media (min-width:1000px){
+  .wrap{max-width:61rem}
+  .wrap > :not(.bar){max-width:40rem}
+  body.wide .gloss{display:contents}
+  body.wide .gn{position:absolute;left:calc(100% + 2.75rem);width:17.5rem;padding:.2rem .45rem .3rem .3rem}
+  body.wide .mhead{display:block;position:absolute;left:calc(100% + 2.75rem);top:-1.9rem;width:17.5rem;padding-left:.3rem;margin:0}
+}
+@media (prefers-reduced-motion:reduce){.gn,.vt{transition:none}}
+footer{font-family:var(--ui);font-size:.82rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:1rem;margin-top:2rem}
+kbd{font-family:var(--ui);border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 .3em;font-size:.8em}
+@media (prefers-reduced-motion:reduce){.s,.prog i{transition:none}}
+@media (max-width:480px){input[type=range]{width:5rem} select{max-width:9rem}}
+</style>
+
+<div class="wrap">
+  <div class="kicker">Remarques · Munich, 14 février 2026</div>
+  <h1>Le secrétaire d’État Marco Rubio à la Conférence de Munich sur la sécurité</h1>
+  <p class="meta">Hôtel Bayerischer Hof, Munich · texte publié par le Département d’État des États-Unis · discours suivi d’un échange de questions</p>
+
+  <div class="bar" role="toolbar" aria-label="Lecture audio">
+    <button class="btn" id="play" type="button"><span id="playIcon">▶</span><span id="playLbl">Écouter</span></button>
+    <button class="btn ghost" id="prev" type="button" aria-label="Phrase précédente">⏮</button>
+    <button class="btn ghost" id="next" type="button" aria-label="Phrase suivante">⏭</button>
+    <label class="ctrl" for="rate">Vitesse <input id="rate" type="range" min="0.6" max="1.4" step="0.05" value="0.95"><span class="rate" id="rateOut">0,95×</span></label>
+    <label class="ctrl" for="voice">Voix <select id="voice"><option>Chargement…</option></select></label>
+    <div class="prog" aria-hidden="true"><i id="progFill"></i></div>
+  </div>
+  <p class="note" id="note">Touchez une phrase pour l’entendre à partir de là. Les mots soulignés en pointillé sont expliqués en marge. <kbd>Espace</kbd> lecture/pause, <kbd>←</kbd> <kbd>→</kbd> phrase par phrase.</p>
+
+  <article id="text">
+<p><span class="who">Marco Rubio</span> <span class="s">Merci beaucoup.</span> <span class="s">Nous sommes réunis aujourd’hui en tant que membres d’une alliance historique, une alliance qui a sauvé et changé le monde.</span> <span class="s">Lorsque cette conférence a débuté en 1963, elle se tenait dans un pays – en réalité, sur un continent – profondément divisé.</span> <span class="s">La ligne de démarcation entre le communisme et la liberté traversait le cœur de l’Allemagne.</span> <span class="s">Les premières barbelés du mur de Berlin avaient été érigés deux ans auparavant.</span></p>
+<p><span class="s">Quelques mois seulement avant cette première conférence, avant même que nos prédécesseurs ne se réunissent ici, à Munich, la crise des missiles de Cuba avait plongé le monde au bord de l’anéantissement nucléaire.</span> <span class="s">Alors même que la Seconde Guerre mondiale était encore vive dans les mémoires des Américains et des Européens, nous nous sommes retrouvés confrontés à une nouvelle catastrophe mondiale, potentiellement d’une nature plus apocalyptique et définitive que tout ce que l’humanité avait connu auparavant.</span> <span class="s">Lors de cette première réunion, le communisme soviétique était en pleine expansion.</span> <span class="s">Des millénaires de civilisation occidentale étaient en jeu.</span> <span class="s">La victoire était alors loin d’être acquise.</span> <span class="s">Mais nous étions animés par un but commun.</span> <span class="s">Nous étions unis non seulement par ce contre quoi nous luttions, mais aussi par ce pour quoi nous luttions.</span> <span class="s">Et ensemble, l’Europe et l’Amérique triomphèrent et un continent fut reconstruit.</span> <span class="s">Nos peuples prospérèrent.</span> <span class="s">Avec le temps, les blocs Est et Ouest furent réunis.</span> <span class="s">Une civilisation fut de nouveau constituée.</span></p>
+<p><span class="s">Ce mur infâme qui avait fendu cette nation en deux s’est effondré, emportant avec lui un empire du mal, et l’Orient et l’Occident ne firent plus qu’un.</span> <span class="s">Mais l’euphorie de ce triomphe nous a conduits à une dangereuse illusion : celle d’être entrés, je cite, « à la fin de l’histoire » ; que chaque nation serait désormais une démocratie libérale ; que les liens tissés par le seul commerce remplaceraient désormais la notion de nation ; que l’ordre mondial fondé sur des règles – une expression galvaudée – se substituerait à l’intérêt national ; et que nous vivrions désormais dans un monde sans frontières où chacun deviendrait citoyen du monde.</span></p>
+<p><span class="s">C’était une idée insensée qui ignorait la nature humaine et les leçons de plus de 5 000 ans d’histoire.</span> <span class="s">Et elle nous a coûté très cher.</span> <span class="s">Dans cette illusion, nous avons adopté une vision dogmatique du libre-échange sans entraves, tandis que certaines nations protégeaient leurs économies et subventionnaient leurs entreprises pour nous concurrencer de manière systématique : fermeture de nos usines, désindustrialisation de pans entiers de nos sociétés, délocalisation de millions d’emplois ouvriers et de classes moyennes, et perte du contrôle de nos chaînes d’approvisionnement essentielles au profit d’adversaires et de rivaux.</span></p>
+<p><span class="s">Nous avons de plus en plus délégué notre souveraineté aux institutions internationales, tandis que de nombreuses nations investissaient massivement dans des États-providence au détriment de leur capacité à se défendre.</span> <span class="s">Et ce, alors même que d’autres pays se sont lancés dans le renforcement militaire le plus rapide de toute l’histoire et n’ont pas hésité à recourir à la force pour servir leurs propres intérêts.</span> <span class="s">Pour apaiser un culte de la nature, nous nous sommes imposé des politiques énergétiques qui appauvrissent notre population, tandis que nos concurrents exploitent le pétrole, le charbon, le gaz naturel et toutes les autres ressources, non seulement pour alimenter leurs économies, mais aussi pour les utiliser comme moyen de pression sur la nôtre.</span></p>
+<p><span class="s">Dans notre quête d’un monde sans frontières, nous avons ouvert nos portes à une vague migratoire massive sans précédent qui menace la cohésion de nos sociétés, la continuité de notre culture et l’avenir de nos peuples.</span> <span class="s">Nous avons commis ces erreurs ensemble et, aujourd’hui, ensemble, nous devons à nos populations d’assumer ces faits et d’aller de l’avant, de reconstruire.</span></p>
+<p><span class="s">Sous la présidence de Donald Trump, les États-Unis d’Amérique s’engageront à nouveau dans la tâche de renouveau et de reconstruction, guidés par la vision d’un avenir aussi fier, aussi souverain et aussi dynamique que le passé de notre civilisation.</span> <span class="s">Et bien que nous soyons prêts, si nécessaire, à mener cette mission seuls, nous privilégions et espérons la mener de concert avec vous, nos amis européens.</span></p>
+<p><span class="s">Les États-Unis et l’Europe ne font qu’un.</span> <span class="s">L’Amérique a été fondée il y a 250 ans, mais ses racines plongent ici, sur ce continent, bien avant.</span> <span class="s">L’homme qui a fondé et bâti la nation qui m’a vu naître est arrivé sur nos rivages porteur des souvenirs, des traditions et de la foi chrétienne de ses ancêtres, comme un héritage sacré, un lien indissoluble entre l’ancien monde et le nouveau.</span></p>
+<p><span class="s">Nous appartenons à une seule civilisation : la civilisation occidentale.</span> <span class="s">Nous sommes liés les uns aux autres par les liens les plus profonds qui puissent unir des nations, forgés par des siècles d’histoire commune, de foi chrétienne, de culture, de patrimoine, de langue, d’ascendance et par les sacrifices consentis par nos ancêtres pour la civilisation commune dont nous sommes les héritiers.</span></p>
+<p><span class="s">Voilà pourquoi nous, Américains, pouvons parfois paraître un peu directs et pressants dans nos conseils.</span> <span class="s">Voilà pourquoi le président Trump exige sérieux et réciprocité de la part de nos amis européens.</span> <span class="s">La raison, mes amis, est simple : nous tenons beaucoup à vous.</span> <span class="s">Nous tenons beaucoup à votre avenir et au nôtre.</span> <span class="s">Et si parfois nous sommes en désaccord, c’est parce que nous sommes profondément attachés à une Europe à laquelle nous sommes liés – pas seulement économiquement, pas seulement militairement.</span> <span class="s">Nous sommes liés spirituellement et culturellement.</span> <span class="s">Nous voulons une Europe forte.</span> <span class="s" data-say="Nous croyons que l’Europe doit survivre, car les deux grandes guerres du siècle dernier nous rappellent sans cesse que, finalement, notre destin est et sera toujours lié au vôtre, car nous savons – que le sort de l’Europe ne sera jamais sans importance pour le nôtre.">Nous croyons que l’Europe doit survivre, car les deux grandes guerres du siècle dernier nous rappellent sans cesse que, finalement, notre destin est et sera toujours lié au vôtre, car nous savons – <span class="sd">(applaudissements)</span> – que le sort de l’Europe ne sera jamais sans importance pour le nôtre.</span></p>
+<p><span class="s">La sécurité nationale, sujet principal de cette conférence, ne se résume pas à une série de questions techniques : combien dépenser pour la défense, où et comment la déployer, ce sont certes des questions importantes.</span> <span class="s">Mais elles ne constituent pas la question fondamentale.</span> <span class="s">La question fondamentale à laquelle nous devons répondre d’emblée est : que défendons-nous précisément ?</span> <span class="s">Car les armées ne combattent pas pour des abstractions.</span> <span class="s">Les armées combattent pour un peuple, une nation, un mode de vie.</span> <span class="s">Et c’est cela que nous défendons : une grande civilisation qui a toutes les raisons d’être fière de son histoire, confiante en son avenir et qui aspire à toujours être maîtresse de son destin économique et politique.</span></p>
+<p><span class="s">C’est ici, en Europe, que sont nées les idées qui ont semé les graines de la liberté et changé le monde.</span> <span class="s">C’est ici, en Europe, que le monde a vu naître l’État de droit, les universités et la révolution scientifique.</span> <span class="s">C’est sur ce continent que sont nés les génies de Mozart et Beethoven, de Dante et Shakespeare, de Michel-Ange et Léonard de Vinci, des Beatles et des Rolling Stones.</span> <span class="s">Et c’est ici que les voûtes de la chapelle Sixtine et les flèches élancées de la cathédrale de Cologne témoignent non seulement de la grandeur de notre passé ou de la foi en Dieu qui a inspiré ces merveilles, mais aussi des prodiges qui nous attendent.</span> <span class="s">Ce n’est qu’en assumant pleinement notre héritage et en étant fiers de ce patrimoine commun que nous pourrons, ensemble, entreprendre d’imaginer et de façonner notre avenir économique et politique.</span></p>
+<p><span class="s">La désindustrialisation n’était pas inévitable.</span> <span class="s">C’était un choix politique délibéré, une entreprise économique menée pendant des décennies qui a dépouillé nos nations de leur richesse, de leur capacité de production et de leur indépendance.</span> <span class="s">La perte de notre souveraineté sur les chaînes d’approvisionnement n’était pas le fruit d’un système de commerce mondial prospère et sain.</span> <span class="s">C’était une erreur.</span> <span class="s">Une transformation volontaire, certes, mais insensée, de notre économie, qui nous a rendus dépendants des autres pour nos besoins et dangereusement vulnérables aux crises.</span></p>
+<p><span class="s">Les migrations de masse ne sont pas, n’ont pas été et ne sont pas une préoccupation marginale et sans importance.</span> <span class="s">Elles ont été et demeurent une crise qui transforme et déstabilise les sociétés de tout l’Occident.</span> <span class="s">Ensemble, nous pouvons réindustrialiser nos économies et reconstruire notre capacité à défendre nos populations.</span> <span class="s">Mais le travail de cette nouvelle alliance ne doit pas se limiter à la coopération militaire et à la reconquête des industries du passé.</span> <span class="s">Il doit également viser, ensemble, à promouvoir nos intérêts communs et à explorer de nouveaux horizons, à libérer notre ingéniosité, notre créativité et le dynamisme nécessaire à la construction d’un nouvel Occident au XXIe siècle.</span> <span class="s">Voyages spatiaux commerciaux et intelligence artificielle de pointe ; automatisation industrielle et production flexible ; création d’une chaîne d’approvisionnement occidentale pour les minéraux critiques, à l’abri du chantage des autres puissances ; et un effort concerté pour conquérir des parts de marché dans les économies des pays du Sud.</span> <span class="s">Ensemble, nous pouvons non seulement reprendre le contrôle de nos industries et de nos chaînes d’approvisionnement, mais aussi prospérer dans les domaines qui façonneront le XXIe siècle.</span></p>
+<p><span class="s">Mais nous devons aussi reprendre le contrôle de nos frontières nationales.</span> <span class="s">Contrôler qui entre sur notre territoire et en quel nombre, ce n’est pas de la xénophobie.</span> <span class="s">Ce n’est pas de la haine.</span> <span class="s">C’est un acte fondamental de souveraineté nationale.</span> <span class="s">Et ne pas le faire, ce n’est pas seulement manquer à l’un de nos devoirs les plus élémentaires envers notre peuple.</span> <span class="s">C’est une menace urgente pour le tissu même de nos sociétés et la survie de notre civilisation.</span></p>
+<p><span class="s">Enfin, nous ne pouvons plus faire passer le prétendu ordre mondial avant les intérêts vitaux de nos peuples et de nos nations.</span> <span class="s">Il n’est pas nécessaire d’abandonner le système de coopération internationale que nous avons mis en place, ni de démanteler les institutions mondiales de l’ancien ordre que nous avons bâties ensemble.</span> <span class="s">Mais elles doivent être réformées.</span> <span class="s">Elles doivent être reconstruites.</span></p>
+<p><span class="s">Par exemple, les Nations Unies ont encore un potentiel considérable pour œuvrer au bien commun.</span> <span class="s">Mais force est de constater qu’aujourd’hui, face aux problèmes les plus urgents, elles sont démunies et n’ont joué quasiment aucun rôle.</span> <span class="s">Elles n’ont pas pu résoudre la guerre à Gaza.</span> <span class="s">C’est le leadership américain qui a libéré les captifs des mains des barbares et instauré une trêve fragile.</span> <span class="s">Elles n’ont pas non plus résolu la guerre en Ukraine.</span> <span class="s">Il a fallu le leadership américain et le partenariat de nombreux pays présents aujourd’hui pour amener les deux camps à la table des négociations, dans l’espoir d’une paix encore hors de portée.</span></p>
+<p><span class="s">Elle était impuissante face au programme nucléaire des religieux chiites radicaux de Téhéran.</span> <span class="s">Il aurait fallu pour cela le largage de 14 bombes avec précision par des bombardiers B-2 américains.</span> <span class="s">Elle était également incapable de contrer la menace que représentait pour notre sécurité un dictateur narcoterroriste vénézuélien.</span> <span class="s">Finalement, ce sont les forces spéciales américaines qui ont permis de traduire ce fugitif en justice.</span> <span class="s">Dans un monde idéal, tous ces problèmes, et bien d’autres, seraient résolus par la diplomatie et des résolutions fermes.</span> <span class="s">Mais nous ne vivons pas dans un monde idéal, et nous ne pouvons plus permettre à ceux qui menacent ouvertement nos citoyens et mettent en péril la stabilité mondiale de se retrancher derrière des abstractions du droit international qu’ils violent eux-mêmes systématiquement.</span></p>
+<p><span class="s">C’est la voie qu’ont empruntée le président Trump et les États-Unis.</span> <span class="s">C’est la voie que nous vous invitons, ici en Europe, à suivre.</span> <span class="s">C’est une voie que nous avons déjà parcourue ensemble et que nous espérons parcourir à nouveau.</span> <span class="s">Pendant cinq siècles, avant la fin de la Seconde Guerre mondiale, l’Occident n’a cessé de s’étendre : ses missionnaires, ses pèlerins, ses soldats, ses explorateurs quittaient ses rivages pour traverser les océans, coloniser de nouveaux continents et bâtir de vastes empires s’étendant à travers le monde.</span></p>
+<p><span class="s">Mais en 1945, pour la première fois depuis l’époque de Christophe Colomb, l’Europe se contractait.</span> <span class="s">Elle était en ruines.</span> <span class="s">La moitié vivait derrière un rideau de fer et l’autre moitié semblait sur le point de subir le même sort.</span> <span class="s">Les grands empires occidentaux étaient entrés dans un déclin irrémédiable, accéléré par des révolutions communistes athées et par des soulèvements anticoloniaux qui allaient transformer le monde et imposer la faucille et le marteau rouges sur de vastes portions de la carte dans les années à venir.</span></p>
+<p><span class="s">Dans ce contexte, hier comme aujourd’hui, nombreux sont ceux qui ont cru que l’ère de la domination occidentale touchait à sa fin et que notre avenir ne serait qu’un pâle reflet de notre passé.</span> <span class="s">Mais ensemble, nos prédécesseurs ont compris que le déclin était un choix, un choix qu’ils ont refusé de faire.</span> <span class="s">C’est ce que nous avons fait ensemble par le passé, et c’est ce que le président Trump et les États-Unis veulent refaire aujourd’hui, avec vous.</span> <span class="s">C’est pourquoi nous ne voulons pas d’alliés faibles, car cela nous affaiblit.</span> <span class="s">Nous voulons des alliés capables de se défendre, afin qu’aucun adversaire ne soit jamais tenté de mettre à l’épreuve notre force collective.</span> <span class="s">C’est pourquoi nous ne voulons pas que nos alliés soient accablés par la culpabilité et la honte.</span> <span class="s">Nous voulons des alliés fiers de leur culture et de leur héritage, qui comprennent que nous sommes les héritiers d’une même grande et noble civilisation, et qui, avec nous, sont prêts et capables de la défendre.</span></p>
+<p><span class="s">C’est pourquoi nous ne voulons pas que nos alliés justifient un statu quo défaillant au lieu de s’attaquer aux solutions nécessaires pour y remédier.</span> <span class="s">Car, en Amérique, nous n’avons aucun intérêt à être les gardiens polis et ordonnés du déclin orchestré de l’Occident.</span> <span class="s">Nous ne cherchons pas la séparation, mais à revitaliser une vieille amitié et à faire renaître la plus grande civilisation de l’histoire de l’humanité.</span> <span class="s">Ce que nous voulons, c’est une alliance revigorée qui reconnaisse que ce qui a rongé nos sociétés n’est pas seulement un ensemble de mauvaises politiques, mais un malaise profond, empreint de désespoir et de complaisance.</span> <span class="s">Une alliance – l’alliance que nous souhaitons – n’est pas paralysée par la peur : peur du changement climatique, peur de la guerre, peur des nouvelles technologies.</span> <span class="s">Au contraire, nous voulons une alliance qui se projette résolument dans l’avenir.</span> <span class="s">Et notre seule crainte est celle de la honte de ne pas laisser à nos enfants des nations plus fières, plus fortes et plus prospères.</span></p>
+<p><span class="s">Une alliance prête à défendre nos peuples, à sauvegarder nos intérêts et à préserver la liberté d’action qui nous permet de forger notre propre destin – et non une alliance qui vise à instaurer un État-providence mondial et à expier les prétendus péchés des générations passées.</span> <span class="s">Une alliance qui refuse que son pouvoir soit externalisé, contraint ou subordonné à des systèmes qui la dépassent ; une alliance qui ne dépend d’aucun autre pour les besoins essentiels de sa vie nationale ; et une alliance qui ne prétend pas que notre mode de vie n’est qu’un parmi d’autres et qui ne demande pas la permission avant d’agir.</span> <span class="s">Et surtout, une alliance fondée sur la reconnaissance que nous, Occidentaux, avons hérité ensemble – un héritage unique, distinctif et irremplaçable, car c’est là, après tout, le fondement même du lien transatlantique.</span></p>
+<p><span class="s">En agissant ainsi de concert, nous ne nous contenterons pas de rétablir une politique étrangère sensée.</span> <span class="s">Nous retrouverons une vision plus claire de nous-mêmes.</span> <span class="s">Nous retrouverons notre place dans le monde et, ce faisant, nous poursuivrons et dissuaderons les forces d’anéantissement civilisationnel qui menacent aujourd’hui l’Amérique et l’Europe.</span></p>
+<p><span class="s">Alors que les gros titres annoncent la fin de l’ère transatlantique, qu’il soit clair pour tous que ce n’est ni notre but ni notre souhait – car pour nous, Américains, même si notre foyer se trouve dans l’hémisphère occidental, nous serons toujours des enfants de l’Europe.</span> <span class="sd">(Applaudissements.)</span></p>
+<p><span class="s">Notre histoire a commencé avec un explorateur italien dont l’aventure dans le grand inconnu, à la découverte d’un nouveau monde, a apporté le christianisme aux Amériques – et est devenue la légende qui a façonné l’imaginaire de notre nation pionnière.</span></p>
+<p><span class="s">Nos premières colonies furent fondées par des colons anglais, à qui nous devons non seulement la langue que nous parlons, mais aussi l’intégralité de notre système politique et juridique.</span> <span class="s">Nos frontières furent tracées par les Écossais-Irlandais – ce peuple fier et courageux des collines d’Ulster qui nous a donné Davy Crockett, Mark Twain, Teddy Roosevelt et Neil Armstrong.</span></p>
+<p><span class="s">Notre magnifique Midwest américain a été bâti par des agriculteurs et des artisans allemands qui ont transformé des plaines désertiques en une puissance agricole mondiale – et, au passage, ont considérablement amélioré la qualité de la bière américaine.</span> <span class="s">(Rires.) Notre expansion vers l’intérieur des terres a suivi les traces des trappeurs et explorateurs français dont les noms, soit dit en passant, ornent encore les panneaux de signalisation et les noms de villes dans toute la vallée du Mississippi.</span> <span class="s">Nos chevaux, nos ranchs, nos rodéos – tout le mythe du cow-boy devenu emblématique de l’Ouest américain – tout cela est né en Espagne.</span> <span class="s">Et notre ville la plus grande et la plus emblématique s’appelait Nouvelle-Amsterdam avant de devenir New York.</span></p>
+<p><span class="s">Saviez-vous que l’année de la fondation de mon pays, Lorenzo et Catalina Geroldi vivaient à Casale Monferrato, dans le royaume de Piémont-Sardaigne ?</span> <span class="s">José et Manuela Reina, quant à eux, résidaient à Séville, en Espagne.</span> <span class="s">J’ignore ce qu’ils savaient, le cas échéant, des treize colonies qui avaient conquis leur indépendance de l’Empire britannique, mais une chose est sûre : jamais ils n’auraient pu imaginer que 250 ans plus tard, l’un de leurs descendants directs serait de retour sur ce continent, aujourd’hui, en tant que chef de la diplomatie de cette jeune nation.</span> <span class="s">Et pourtant, me voici, mon propre parcours me rappelant que nos histoires et nos destins sont à jamais liés.</span></p>
+<p><span class="s">Ensemble, nous avons reconstruit un continent dévasté par deux guerres mondiales.</span> <span class="s">Lorsque le rideau de fer nous a de nouveau séparés, l’Occident libre s’est allié aux courageux dissidents qui luttaient contre la tyrannie à l’Est pour vaincre le communisme soviétique.</span> <span class="s">Nous nous sommes affrontés, puis réconciliés, puis de nouveau affrontés, puis réconciliés.</span> <span class="s">Et nous avons versé notre sang et péri côte à côte sur les champs de bataille, de Kapyong à Kandahar.</span></p>
+<p><span class="s">Et je suis ici aujourd’hui pour affirmer clairement que l’Amérique trace la voie d’un nouveau siècle de prospérité, et qu’une fois de plus, nous voulons le faire ensemble, avec vous, nos précieux alliés et nos plus vieux amis.</span> <span class="sd">(Applaudissements.)</span></p>
+<p><span class="s">Nous voulons le faire ensemble, avec une Europe fière de son patrimoine et de son histoire ; avec une Europe animée de cet esprit créateur de liberté qui a envoyé des navires vers des mers inexplorées et donné naissance à notre civilisation ; avec une Europe qui a les moyens de se défendre et la volonté de survivre.</span> <span class="s">Nous pouvons être fiers de ce que nous avons accompli ensemble au siècle dernier, mais il nous faut désormais saisir les opportunités d’un nouveau siècle – car hier est révolu, l’avenir est inéluctable et notre destin commun nous attend.</span> <span class="s">Merci.</span> <span class="sd">(Applaudissements.)</span></p>
+<h2 class="qa" id="qa">Questions et réponses</h2>
+<p><span class="who">Modérateur</span> <span class="s">Monsieur le Secrétaire, je ne suis pas certain que vous ayez perçu le soupir de soulagement qui a parcouru cette salle lorsque nous avons entendu ce que j’interpréterais comme un message rassurant, un message de partenariat.</span> <span class="s">Vous avez évoqué les relations étroites entre les États-Unis et l’Europe – cela me rappelle les déclarations faites il y a des décennies par vos prédécesseurs, lorsque le débat portait sur la question suivante : l’Amérique est-elle réellement une puissance européenne ?</span> <span class="s">L’Amérique est-elle une puissance en Europe ?</span> <span class="s">Je vous remercie d’avoir adressé ce message rassurant concernant notre partenariat.</span></p>
+<p><span class="s">Ce n’est pas la première fois que Marco Rubio participe à la Conférence de Munich sur la sécurité – il y est déjà venu à plusieurs reprises –, mais c’est la première fois qu’il intervient en tant que secrétaire d’État.</span> <span class="s">Merci encore.</span> <span class="s">Nous n’avons plus que quelques minutes pour répondre à vos questions, et si vous me le permettez, nous avons recueilli celles du public.</span> <span class="s">L’un des points essentiels hier, et aujourd’hui encore, est bien sûr la question de la gestion du conflit en Ukraine.</span> <span class="s">Nombre d’entre nous, lors des discussions de ces dernières 24 heures, avons exprimé l’impression que les Russes – pour le dire familièrement – gagnent du temps et ne sont pas réellement intéressés par un règlement constructif.</span> <span class="s">Rien n’indique qu’ils soient disposés à faire des compromis sur leurs objectifs maximalistes.</span> <span class="s">Pourriez-vous nous faire part de votre analyse de la situation actuelle et de vos perspectives d’avenir ?</span></p>
+<p><span class="who">Marco Rubio</span> <span class="s">Eh bien, je crois que nous en sommes au point où les enjeux à résoudre – et voici la bonne nouvelle, c’est que les questions auxquelles il faut s’attaquer pour mettre fin à cette guerre ont été circonscrites.</span> <span class="s">Voilà pour la bonne nouvelle.</span> <span class="s">La mauvaise nouvelle, c’est que ces questions se limitent aux plus difficiles à résoudre, et il reste encore du travail à accomplir.</span> <span class="s">Je comprends votre point de vue : la réponse est que nous ne savons pas.</span> <span class="s">Nous ne savons pas si les Russes sont sincères quant à la fin de la guerre ; ils l’affirment – et à quelles conditions ils étaient prêts à le faire, ni si nous pouvons trouver des conditions acceptables pour l’Ukraine et que la Russie acceptera systématiquement.</span> <span class="s">Mais nous allons continuer à explorer cette possibilité.</span></p>
+<p><span class="s">Entre-temps, tout continue de se dérouler.</span> <span class="s">Les États-Unis ont imposé des sanctions supplémentaires sur le pétrole russe.</span> <span class="s">Lors de nos discussions avec l’Inde, nous avons obtenu son engagement à cesser d’acheter du pétrole russe.</span> <span class="s">L’Europe a pris ses propres mesures.</span> <span class="s">Le programme PURL, dans le cadre duquel des armes américaines sont vendues pour soutenir l’effort de guerre ukrainien, se poursuit.</span> <span class="s">Tout cela continue donc.</span> <span class="s">Rien ne s’est arrêté entre-temps.</span> <span class="s">Il n’y a donc aucun gain de temps à ce niveau-là.</span></p>
+<p><span class="s">Ce à quoi nous ne pouvons pas répondre – mais que nous allons continuer d’explorer – c’est s’il existe une solution acceptable pour l’Ukraine et pour la Russie.</span> <span class="s">Et je dirais que, jusqu’à présent, cette solution reste difficile à trouver.</span> <span class="s">Nous avons progressé dans le sens où, pour la première fois depuis des années, je crois, au moins sur le plan technique, des responsables militaires des deux camps se sont rencontrés la semaine dernière, et d’autres réunions auront lieu mardi, même si les participants ne seront peut-être pas les mêmes.</span></p>
+<p><span class="s">Écoutez, nous allons continuer à tout mettre en œuvre pour contribuer à la fin de cette guerre.</span> <span class="s">Je ne pense pas qu’il y ait une seule personne ici présente qui s’oppose à un règlement négocié, pourvu que les conditions soient justes et durables.</span> <span class="s">C’est notre objectif, et nous allons persévérer dans ce sens, malgré tous les autres événements liés aux sanctions et autres.</span></p>
+<p><span class="who">Modérateur</span> <span class="s">Merci beaucoup.</span> <span class="s">Je suis certain que si nous avions eu plus de temps, de nombreuses questions auraient été posées sur l’Ukraine.</span> <span class="s">Mais permettez-moi de conclure en posant une question sur un tout autre sujet.</span> <span class="s">Le prochain intervenant, dans quelques minutes, sera le ministre des Affaires étrangères chinois.</span> <span class="s">Monsieur, lorsque vous siégeiez au Sénat, on vous considérait comme un faucon à l’égard de la Chine.</span></p>
+<p><span class="who">Marco Rubio</span> <span class="s">Eux aussi.</span></p>
+<p><span class="who">Modérateur</span> <span class="s">Et eux ?</span></p>
+<p><span class="who">Marco Rubio</span> <span class="s">Oui.</span></p>
+<p><span class="who">Modérateur</span> <span class="s">Nous savons qu’une rencontre au sommet entre le président Trump et le président Xi Jinping aura lieu dans environ deux mois.</span> <span class="s">Quelles sont vos attentes ?</span> <span class="s">Êtes-vous optimiste ?</span> <span class="s">Un accord avec la Chine est-il envisageable ?</span> <span class="s">Qu’en attendez-vous ?</span></p>
+<p><span class="who">Marco Rubio</span> <span class="s">Eh bien, je dirais ceci.</span> <span class="s">Les deux plus grandes économies mondiales, deux des plus grandes puissances de la planète, ont l’obligation de communiquer et de dialoguer avec la Chine, tout comme nombre d’entre vous, sur une base bilatérale.</span> <span class="s">Ce serait une faute géopolitique grave que de ne pas dialoguer avec la Chine.</span> <span class="s">Je dirais ceci : étant donné que nous sommes deux grands pays aux intérêts mondiaux considérables, nos intérêts nationaux divergent souvent.</span> <span class="s">Les leurs et les nôtres divergent également, et nous devons au monde de gérer au mieux cette situation, en évitant évidemment les conflits, qu’ils soient économiques ou pire encore.</span> <span class="s">C’est pourquoi il est important pour nous de communiquer avec la Chine à cet égard.</span></p>
+<p><span class="s">Sur les domaines où nos intérêts convergent, je pense que nous pouvons collaborer pour avoir un impact positif sur le monde, et nous recherchons des occasions de le faire.</span> <span class="s">Cependant, nous devons entretenir des relations avec la Chine.</span> <span class="s">Et chacun des pays représentés ici aujourd’hui devra entretenir de telles relations, en gardant toujours à l’esprit qu’aucun accord ne saurait se faire au détriment de nos intérêts nationaux.</span> <span class="s">Et, franchement, nous attendons de la Chine qu’elle agisse dans son intérêt national, comme nous attendons de tout État-nation qu’il agisse dans le sien.</span> <span class="s">L’objectif de la diplomatie est de gérer les situations où nos intérêts nationaux entrent en conflit, en espérant toujours le faire pacifiquement.</span></p>
+<p><span class="s">Je pense que nous avons également une obligation particulière, car tout ce qui se passe entre les États-Unis et la Chine en matière de commerce a des répercussions mondiales.</span> <span class="s">Nous sommes donc confrontés à des défis à long terme qui risquent de perturber nos relations avec la Chine.</span> <span class="s">Cela vaut non seulement pour les États-Unis, mais aussi pour l’ensemble du monde occidental.</span> <span class="s">Nous devons néanmoins nous efforcer de gérer au mieux ces difficultés afin d’éviter, si possible, des frictions inutiles.</span> <span class="s">Cependant, personne ne se fait d’illusions : des défis fondamentaux persistent entre nos pays, ainsi qu’entre l’Occident et la Chine, et ce, pour diverses raisons.</span> <span class="s">Nous espérons d’ailleurs collaborer avec vous sur certains de ces points.</span></p>
+<p><span class="who">Modérateur</span> <span class="s">Merci beaucoup, Monsieur le Secrétaire.</span> <span class="s">Le temps nous manque.</span> <span class="s">Je regrette de ne pouvoir répondre aux questions de tous ceux qui le souhaitaient.</span> <span class="s">Monsieur le Secrétaire d’État, merci pour ce message rassurant.</span> <span class="s">Je pense qu’il est très apprécié ici.</span> <span class="s">Applaudissons-nous !</span> <span class="sd">(Applaudissements.)</span></p>
+  </article>
+  <footer>Texte français des remarques du 14 février 2026, d’après la version publiée par le Département d’État des États-Unis. Les didascalies (applaudissements, rires) s’affichent mais ne sont pas lues. La synthèse vocale utilise les voix françaises installées sur votre appareil ; leur qualité varie selon le navigateur et le système.</footer>
+</div>
+
+<script>
+(function(){
+  var synth = window.speechSynthesis;
+  var art = document.getElementById('text');
+  var playBtn = document.getElementById('play'), playIcon = document.getElementById('playIcon'), playLbl = document.getElementById('playLbl');
+  var rateIn = document.getElementById('rate'), rateOut = document.getElementById('rateOut');
+  var voiceSel = document.getElementById('voice'), note = document.getElementById('note'), fill = document.getElementById('progFill');
+
+  var spans = Array.prototype.slice.call(art.querySelectorAll('.s'));
+  spans.forEach(function(sp, i){ sp.tabIndex = 0; sp.dataset.i = i });
+
+  var idx = 0, playing = false, voices = [], token = 0;
+  function store(k, v){ try{ localStorage.setItem(k, v) }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+
+  var savedRate = parseFloat(load('rubio-rate'));
+  if(savedRate >= 0.6 && savedRate <= 1.4) rateIn.value = savedRate;
+  function showRate(){ rateOut.textContent = (+rateIn.value).toFixed(2).replace('.', ',') + '×' }
+  showRate();
+
+  if(!synth){
+    playBtn.disabled = true; voiceSel.disabled = true;
+    note.textContent = 'Ce navigateur ne propose pas la synthèse vocale. Essayez Chrome, Edge ou Safari.';
+    return;
+  }
+
+  function fillVoices(){
+    var all = synth.getVoices();
+    voices = all.filter(function(v){ return /^fr/i.test(v.lang) });
+    if(!voices.length && all.length){ voices = all; }
+    if(!voices.length) return;
+    voices.sort(function(a,b){
+      var sa = (/fr[-_]FR/i.test(a.lang)?0:1) + (/(natural|premium|enhanced|neural|google)/i.test(a.name)?-0.5:0);
+      var sb = (/fr[-_]FR/i.test(b.lang)?0:1) + (/(natural|premium|enhanced|neural|google)/i.test(b.name)?-0.5:0);
+      return sa - sb;
+    });
+    var saved = load('rubio-voice');
+    voiceSel.innerHTML = '';
+    voices.forEach(function(v, i){
+      var o = document.createElement('option');
+      o.value = v.name; o.textContent = v.name.replace(/\s*\(.*\)$/, '') + ' · ' + v.lang;
+      if(saved ? v.name === saved : i === 0) o.selected = true;
+      voiceSel.appendChild(o);
+    });
+    if(!all.some(function(v){ return /^fr/i.test(v.lang) })){
+      note.textContent = 'Aucune voix française trouvée sur cet appareil ; la lecture utilisera une autre voix. Installez une voix française dans les réglages du système pour une meilleure prononciation.';
+    }
+  }
+  fillVoices();
+  if('onvoiceschanged' in synth) synth.addEventListener('voiceschanged', fillVoices);
+
+  function currentVoice(){
+    var n = voiceSel.value;
+    for(var i=0;i<voices.length;i++) if(voices[i].name === n) return voices[i];
+    return voices[0] || null;
+  }
+
+  function mark(i){
+    spans.forEach(function(s){ s.classList.remove('on') });
+    var s = spans[i]; if(!s) return;
+    s.classList.add('on');
+    fill.style.width = ((i) / spans.length * 100) + '%';
+    var r = s.getBoundingClientRect(), barH = document.querySelector('.bar').offsetHeight;
+    if(r.top < barH + 20 || r.bottom > window.innerHeight - 40){
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: window.scrollY + r.top - barH - window.innerHeight * 0.25, behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+
+  function setUI(){
+    playIcon.textContent = playing ? '❚❚' : '▶';
+    playLbl.textContent = playing ? 'Pause' : (idx > 0 && idx < spans.length ? 'Reprendre' : 'Écouter');
+  }
+
+  function speak(i){
+    if(i >= spans.length){ stop(true); return; }
+    idx = i; mark(i);
+    var my = ++token;
+    var u = new SpeechSynthesisUtterance(spans[i].dataset.say || spans[i].textContent);
+    var v = currentVoice(); if(v){ u.voice = v; u.lang = v.lang } else { u.lang = 'fr-FR' }
+    u.rate = +rateIn.value;
+    u.onend = function(){ if(my === token && playing) speak(idx + 1) };
+    u.onerror = function(e){ if(my === token && playing && e.error !== 'interrupted' && e.error !== 'canceled') speak(idx + 1) };
+    synth.speak(u);
+  }
+
+  function start(i){
+    token++; synth.cancel();
+    playing = true; setUI();
+    // small delay lets cancel() settle in Chrome/Safari
+    setTimeout(function(){ if(playing) speak(i) }, 60);
+  }
+  function stop(finished){
+    playing = false; token++; synth.cancel();
+    if(finished){ idx = 0; fill.style.width = '100%'; spans.forEach(function(s){ s.classList.remove('on') }) }
+    setUI();
+  }
+
+  playBtn.addEventListener('click', function(){ playing ? stop(false) : start(idx >= spans.length ? 0 : idx) });
+  document.getElementById('prev').addEventListener('click', function(){ var n = Math.max(0, idx - 1); playing ? start(n) : (idx = n, mark(n), setUI()) });
+  document.getElementById('next').addEventListener('click', function(){ var n = Math.min(spans.length - 1, idx + 1); playing ? start(n) : (idx = n, mark(n), setUI()) });
+
+  art.addEventListener('click', function(e){
+    var s = e.target.closest('.s'); if(!s) return;
+    start(+s.dataset.i);
+  });
+  art.addEventListener('keydown', function(e){
+    var s = e.target.closest('.s');
+    if(s && (e.key === 'Enter')){ e.preventDefault(); start(+s.dataset.i) }
+  });
+
+  rateIn.addEventListener('input', showRate);
+  rateIn.addEventListener('change', function(){ store('rubio-rate', rateIn.value); if(playing) start(idx) });
+  voiceSel.addEventListener('change', function(){ store('rubio-voice', voiceSel.value); if(playing) start(idx) });
+
+  document.addEventListener('keydown', function(e){
+    var tag = (e.target.tagName || '').toLowerCase();
+    if(tag === 'select' || tag === 'input' || tag === 'button') return;
+    if(e.key === ' '){ e.preventDefault(); playBtn.click() }
+    else if(e.key === 'ArrowRight'){ e.preventDefault(); document.getElementById('next').click() }
+    else if(e.key === 'ArrowLeft'){ e.preventDefault(); document.getElementById('prev').click() }
+  });
+
+  // Chrome stalls long sessions; keep the engine awake while playing
+  var isChrome = /Chrome\//.test(navigator.userAgent) && !/Edg\//.test(navigator.userAgent);
+  if(isChrome) setInterval(function(){ if(playing && synth.speaking && !synth.paused){ synth.pause(); synth.resume() } }, 10000);
+  window.addEventListener('pagehide', function(){ synth.cancel() });
+  window.__say = function(text){
+    if(playing) stop(false);
+    token++; synth.cancel();
+    setTimeout(function(){
+      var u = new SpeechSynthesisUtterance(text);
+      var v = currentVoice(); if(v){ u.voice = v; u.lang = v.lang } else { u.lang = 'fr-FR' }
+      u.rate = Math.min(+rateIn.value, 0.9);
+      synth.speak(u);
+    }, 60);
+  };
+  setUI();
+})();
+</script>
+<script>
+(function(){
+  // [terme, catégorie, sens, mot à chercher dans le texte, extrait]
+  var V = [
+[
+"la ligne de démarcation",
+"n. f.",
+"dividing line",
+"ligne de démarcation",
+"la ligne de démarcation entre le communisme et la liberté"
+],
+[
+"les barbelés",
+"n. m. pl.",
+"barbed wire",
+"barbelés",
+"les premières barbelés du mur de Berlin"
+],
+[
+"l’anéantissement",
+"n. m.",
+"annihilation",
+"anéantissement nucléaire",
+"au bord de l’anéantissement nucléaire"
+],
+[
+"être en jeu",
+"loc. v.",
+"to be at stake",
+"en jeu",
+"des millénaires de civilisation occidentale étaient en jeu"
+],
+[
+"loin d’être acquis",
+"loc.",
+"far from assured",
+"loin d’être",
+"la victoire était alors loin d’être acquise"
+],
+[
+"infâme",
+"adj.",
+"infamous, vile",
+"infâme",
+"ce mur infâme"
+],
+[
+"fendre",
+"v. tr.",
+"to split, cleave",
+"fendu",
+"qui avait fendu cette nation en deux"
+],
+[
+"galvaudé, -e",
+"adj.",
+"hackneyed, overused",
+"galvaudée",
+"une expression galvaudée"
+],
+[
+"se substituer à",
+"v. pron.",
+"to take the place of",
+"substituerait",
+"se substituerait à l’intérêt national"
+],
+[
+"insensé, -e",
+"adj.",
+"senseless, foolish",
+"insensée",
+"une idée insensée"
+],
+[
+"sans entraves",
+"loc. adj.",
+"unfettered",
+"sans entraves",
+"du libre-échange sans entraves"
+],
+[
+"des pans entiers",
+"n. m. pl.",
+"whole swaths, entire sections",
+"pans entiers",
+"désindustrialisation de pans entiers de nos sociétés"
+],
+[
+"l’État-providence",
+"n. m.",
+"the welfare state",
+"États-providence",
+"investissaient massivement dans des États-providence"
+],
+[
+"au détriment de",
+"loc. prép.",
+"at the expense of",
+"au détriment de",
+"au détriment de leur capacité à se défendre"
+],
+[
+"apaiser",
+"v. tr.",
+"to appease, placate",
+"apaiser",
+"pour apaiser un culte de la nature"
+],
+[
+"un moyen de pression",
+"n. m.",
+"leverage, a means of pressure",
+"moyen de pression",
+"comme moyen de pression sur la nôtre"
+],
+[
+"aller de l’avant",
+"loc. v.",
+"to move forward",
+"aller de l’avant",
+"assumer ces faits et aller de l’avant"
+],
+[
+"de concert",
+"loc. adv.",
+"together, in concert",
+"de concert",
+"la mener de concert avec vous"
+],
+[
+"indissoluble",
+"adj.",
+"unbreakable, indissoluble",
+"indissoluble",
+"un lien indissoluble entre l’ancien monde et le nouveau"
+],
+[
+"l’ascendance",
+"n. f.",
+"ancestry, descent",
+"ascendance",
+"de langue, d’ascendance"
+],
+[
+"tenir à",
+"v. tr. ind.",
+"to care deeply about",
+"tenons beaucoup à",
+"nous tenons beaucoup à vous"
+],
+[
+"d’emblée",
+"loc. adv.",
+"from the outset, right away",
+"d’emblée",
+"à laquelle nous devons répondre d’emblée"
+],
+[
+"élancé, -e",
+"adj.",
+"slender, soaring",
+"flèches élancées",
+"les flèches élancées de la cathédrale de Cologne"
+],
+[
+"dépouiller",
+"v. tr.",
+"to strip, despoil",
+"dépouillé",
+"qui a dépouillé nos nations de leur richesse"
+],
+[
+"le chantage",
+"n. m.",
+"blackmail",
+"chantage",
+"à l’abri du chantage des autres puissances"
+],
+[
+"le tissu (social)",
+"n. m.",
+"the (social) fabric",
+"tissu même",
+"le tissu même de nos sociétés"
+],
+[
+"démanteler",
+"v. tr.",
+"to dismantle",
+"démanteler",
+"ni de démanteler les institutions mondiales"
+],
+[
+"force est de constater",
+"loc.",
+"one has to admit",
+"force est de constater",
+"force est de constater qu’aujourd’hui…"
+],
+[
+"démuni, -e",
+"adj.",
+"helpless, ill-equipped",
+"démunies",
+"elles sont démunies"
+],
+[
+"une trêve",
+"n. f.",
+"a truce",
+"trêve fragile",
+"instauré une trêve fragile"
+],
+[
+"hors de portée",
+"loc.",
+"out of reach",
+"hors de portée",
+"une paix encore hors de portée"
+],
+[
+"le largage",
+"n. m.",
+"the dropping (of bombs)",
+"largage",
+"le largage de 14 bombes avec précision"
+],
+[
+"se retrancher derrière",
+"v. pron.",
+"to hide behind, take refuge behind",
+"retrancher derrière",
+"se retrancher derrière des abstractions du droit international"
+],
+[
+"le rideau de fer",
+"n. m.",
+"the Iron Curtain",
+"rideau de fer",
+"la moitié vivait derrière un rideau de fer"
+],
+[
+"irrémédiable",
+"adj.",
+"irreversible, beyond remedy",
+"irrémédiable",
+"un déclin irrémédiable"
+],
+[
+"la faucille et le marteau",
+"n.",
+"the hammer and sickle",
+"faucille",
+"la faucille et le marteau rouges"
+],
+[
+"un pâle reflet",
+"n. m.",
+"a pale reflection",
+"pâle reflet",
+"un pâle reflet de notre passé"
+],
+[
+"accablé, -e",
+"adj.",
+"weighed down, overwhelmed",
+"accablés",
+"accablés par la culpabilité et la honte"
+],
+[
+"défaillant, -e",
+"adj.",
+"failing, faltering",
+"défaillant",
+"un statu quo défaillant"
+],
+[
+"ronger",
+"v. tr.",
+"to eat away at, gnaw",
+"rongé",
+"ce qui a rongé nos sociétés"
+],
+[
+"empreint, -e de",
+"adj.",
+"imbued with, marked by",
+"empreint de",
+"empreint de désespoir et de complaisance"
+],
+[
+"expier",
+"v. tr.",
+"to atone for",
+"expier",
+"expier les prétendus péchés des générations passées"
+],
+[
+"soit dit en passant",
+"loc.",
+"incidentally, by the way",
+"soit dit en passant",
+"dont les noms, soit dit en passant, ornent encore…"
+],
+[
+"le cas échéant",
+"loc. adv.",
+"if any, where applicable",
+"le cas échéant",
+"ce qu’ils savaient, le cas échéant, des treize colonies"
+],
+[
+"inéluctable",
+"adj.",
+"inevitable, inescapable",
+"inéluctable",
+"l’avenir est inéluctable"
+],
+[
+"gagner du temps",
+"loc. v.",
+"to play for time, stall",
+"gagnent du temps",
+"les Russes… gagnent du temps"
+],
+[
+"circonscrire",
+"v. tr.",
+"to narrow down, delimit",
+"circonscrites",
+"les questions… ont été circonscrites"
+],
+[
+"un faucon",
+"n. m.",
+"a hawk (hard-liner)",
+"faucon",
+"on vous considérait comme un faucon à l’égard de la Chine"
+]
+];
+  var art = document.getElementById('text');
+  var spans = Array.prototype.slice.call(art.querySelectorAll('.s'));
+  var mq = window.matchMedia('(min-width: 1000px)');
+  var notes = [];
+  function wrapKey(sp, key){
+    var k = key.toLowerCase();
+    var w = document.createTreeWalker(sp, NodeFilter.SHOW_TEXT, null), n;
+    while((n = w.nextNode())){
+      var at = n.data.toLowerCase().indexOf(k);
+      if(at === -1) continue;
+      var mid = n.splitText(at); mid.splitText(key.length);
+      var m = document.createElement('span'); m.className = 'vt';
+      mid.parentNode.replaceChild(m, mid); m.appendChild(mid);
+      return m;
+    }
+    return null;
+  }
+  V.forEach(function(e, n){
+    var mark = null;
+    for(var i=0;i<spans.length && !mark;i++){
+      if(spans[i].textContent.toLowerCase().indexOf(e[3].toLowerCase()) !== -1) mark = wrapKey(spans[i], e[3]);
+    }
+    if(!mark) return;
+    var p = mark.closest('p');
+    var box = p._gloss;
+    if(!box){
+      box = document.createElement('div'); box.className = 'gloss';
+      p.parentNode.insertBefore(box, p.nextSibling); p._gloss = box;
+    }
+    var note = document.createElement('div'); note.className = 'gn';
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'say'; b.id = 'say-' + n;
+    b.textContent = '▶'; b.setAttribute('aria-label', 'Écouter « ' + e[0] + ' »');
+    if(!window.speechSynthesis) b.disabled = true;
+    b.addEventListener('click', function(ev){ ev.stopPropagation(); if(window.__say) window.__say(e[0].replace(/, -e( de)?$/, '$1').replace(/\s*\(.*\)/, '')) });
+    var txt = document.createElement('div');
+    var t = document.createElement('div'); t.className = 't'; t.textContent = e[0];
+    var g = document.createElement('span'); g.className = 'g'; g.textContent = e[1]; t.appendChild(g);
+    var en = document.createElement('div'); en.className = 'en'; en.textContent = e[2];
+    txt.appendChild(t); txt.appendChild(en);
+    note.appendChild(b); note.appendChild(txt);
+    box.appendChild(note);
+    note._mark = mark;
+    function hot(on){ mark.classList.toggle('hot', on); note.classList.toggle('hot', on) }
+    [mark, note].forEach(function(el){
+      el.addEventListener('mouseenter', function(){ hot(true) });
+      el.addEventListener('mouseleave', function(){ hot(false) });
+    });
+    notes.push(note);
+  });
+
+  var head = document.createElement('p'); head.className = 'kicker mhead'; head.textContent = 'Lexique · ' + notes.length + ' mots';
+  art.insertBefore(head, art.firstChild);
+
+  function layout(){
+    var wide = mq.matches;
+    document.body.classList.toggle('wide', wide);
+    art.style.minHeight = '';
+    if(!wide){ notes.forEach(function(n){ n.style.top = '' }); return; }
+    var top0 = art.getBoundingClientRect().top, last = -Infinity;
+    notes.slice().sort(function(a,b){ return a._mark.getBoundingClientRect().top - b._mark.getBoundingClientRect().top })
+      .forEach(function(n){
+        var y = n._mark.getBoundingClientRect().top - top0 - 3;
+        y = Math.max(y, last + 10);
+        n.style.top = y + 'px';
+        last = y + n.offsetHeight;
+      });
+    if(last > art.offsetHeight) art.style.minHeight = last + 'px';
+  }
+  var raf = 0;
+  function queue(){ cancelAnimationFrame(raf); raf = requestAnimationFrame(layout) }
+  layout();
+  window.addEventListener('resize', queue);
+  if(mq.addEventListener) mq.addEventListener('change', queue);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(queue);
+  window.addEventListener('load', queue);
+})();
+</script>
+
+</body></html>
