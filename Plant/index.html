@@ -1,0 +1,672 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Plant Families</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: herbarium index — a sticky family strip over a column of specimen sheets, two across on wide screens */
+:root{
+  --ground:#eef1ec; --sheet:#f8faf6; --ink:#1b2a22; --muted:#5b6b60; --line:#cdd5cb; --accent:#2f6b4f; --accent-soft:#dde9e0;
+  --display:"Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#111714; --sheet:#18201b; --ink:#e3eae4; --muted:#9aaa9f; --line:#2c3830; --accent:#86c9a5; --accent-soft:#1f3229; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#111714; --sheet:#18201b; --ink:#e3eae4; --muted:#9aaa9f; --line:#2c3830; --accent:#86c9a5; --accent-soft:#1f3229; color-scheme:dark}
+
+body{background:var(--ground);color:var(--ink);font:16px/1.55 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+header{padding-block:40px 20px}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font:600 clamp(40px,7vw,68px)/1 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{max-width:62ch;color:var(--muted);margin:0}
+
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+nav a{flex:none;font:500 12px/1 var(--mono);color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:var(--sheet)}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+
+main .wrap{padding-block:8px 56px}
+.group{padding-top:30px;scroll-margin-top:60px}
+.group-head{display:flex;align-items:baseline;justify-content:space-between;gap:6px 16px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:18px}
+.group-head h2{font:600 clamp(30px,5vw,40px)/1 var(--display);margin:0;text-wrap:balance}
+.group-head span{font:400 12px/1.4 var(--mono);color:var(--muted);letter-spacing:.04em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:18px}
+.grid.small{grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}
+
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:22px 22px 18px;display:flex;flex-direction:column;gap:12px;min-width:0;scroll-margin-top:70px}
+.sheet.compact{padding:16px 18px 12px;gap:10px}
+.sheet.compact h3{font-size:24px}
+.sheet.compact .latin{font-size:19px}
+.top{display:flex;align-items:baseline;gap:14px}
+.num{font:500 13px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+.names{min-width:0}
+.sheet h3{font:600 30px/1.05 var(--display);margin:0;text-wrap:balance}
+.latin{font:italic 500 21px/1.2 var(--display);color:var(--accent)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font:400 12px/1.4 var(--mono);color:var(--muted);border-block:1px dashed var(--line);padding-block:8px}
+.meta b{font-weight:500;color:var(--ink)}
+.desc{margin:0}
+.marks{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.marks li{font-size:13px;background:var(--accent-soft);color:var(--ink);border-radius:3px;padding:3px 8px}
+.plants{list-style:none;margin:4px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0 14px}
+.plants li{border-top:1px solid var(--line);min-width:0}
+.plants a{display:block;padding:8px 0 9px;text-decoration:none;color:var(--ink)}
+.plants a:hover .pn,.plants a:focus-visible .pn{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.plants a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pn{display:block;font-weight:600;font-size:15px;line-height:1.25}
+.pn::after{content:" ↗";font-weight:400;color:var(--muted);font-size:12px}
+.bi{display:block;font:italic 500 16px/1.2 var(--display);color:var(--muted);overflow-wrap:anywhere}
+
+.open{margin-top:2px;align-self:flex-start;font:600 14px/1 var(--body);color:var(--accent);background:none;border:1px solid var(--accent);border-radius:999px;padding:9px 14px;cursor:pointer}
+.open:hover,.open:focus-visible{background:var(--accent);color:var(--sheet);outline:none}
+.sheet{cursor:pointer;transition:border-color .15s}
+.sheet:hover{border-color:var(--accent)}
+.sheet h3:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* Family detail view */
+.detail{position:fixed;inset:0;z-index:20;background:var(--ground);overflow-y:auto;overscroll-behavior:contain}
+.dbar{position:sticky;top:0;z-index:2;background:var(--ground);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.dbar .wrap{display:flex;align-items:center;gap:8px;padding-block:10px}
+.dbar .crumb{flex:1;min-width:0;font:500 12px/1.2 var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dbtn{font:600 14px/1 var(--body);color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:999px;padding:9px 13px;cursor:pointer;flex:none}
+.dbtn:hover,.dbtn:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+.dbtn:disabled{opacity:.4;cursor:default}
+.dhead{padding-block:30px 6px;display:flex;flex-direction:column;gap:8px}
+.dhead h2{font:600 clamp(40px,7vw,64px)/1 var(--display);margin:0;text-wrap:balance}
+.dhead .latin{font-size:clamp(24px,3.4vw,30px)}
+.dcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:28px;padding-block:18px 8px}
+@media (max-width:820px){.dcols{grid-template-columns:minmax(0,1fr)}}
+.prose{display:flex;flex-direction:column;gap:14px;max-width:66ch}
+.prose p{margin:0}
+.prose h4,.aside h4{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:8px 0 0}
+.aside{display:flex;flex-direction:column;gap:12px;align-self:start;background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:18px}
+.aside dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px}
+.aside dt{font:400 12px/1.6 var(--mono);color:var(--muted)}
+.aside dd{margin:0}
+.mhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px;margin:30px 0 18px}
+.mhead h3{font:600 32px/1 var(--display);margin:0}
+.mhead span{font:400 12px/1.4 var(--mono);color:var(--muted)}
+.members{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px;padding-bottom:56px}
+.mcard{background:var(--sheet);border:1px solid var(--line);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.frame{display:grid;place-items:center;aspect-ratio:4/3;max-width:100%;background:var(--accent-soft);color:var(--accent);text-decoration:none;position:relative;overflow:hidden}
+.frame img{width:100%;height:100%;object-fit:cover;display:block}
+.frame .glyph{font:italic 600 72px/1 var(--display);opacity:.85}
+.frame .cap{position:absolute;left:10px;right:10px;bottom:8px;font:500 11px/1.2 var(--mono);color:var(--muted)}
+.frame:hover .cap,.frame:focus-visible .cap{color:var(--accent)}
+.frame:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.mtext{padding:12px 14px 14px;display:flex;flex-direction:column;gap:3px}
+.mtext .pn{font-size:16px}
+.mtext .pn::after{content:none}
+.mtext .bi{font-size:17px}
+.mtext p{margin:6px 0 0;font-size:14px;line-height:1.45;color:var(--ink)}
+body.locked{overflow:hidden}
+
+footer{color:var(--muted);font-size:13px;padding-block:0 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<header class="wrap">
+  <div class="eyebrow">51 families · arranged by APG IV phylogeny</div>
+  <h1>Plant <em>Families</em></h1>
+</header>
+
+<nav aria-label="Families"><div class="wrap" id="idx"></div></nav>
+<main><div class="wrap" id="sheets"></div></main>
+<footer class="wrap">Species and genus counts are rounded estimates from current accepted classifications; they shift as botanists revise the groups. Plant photos are the lead images of each plant's English Wikipedia article, from Wikimedia Commons; tap a photo to open the article, where the file's author and license are credited.</footer>
+
+<div class="detail" id="detail" role="dialog" aria-modal="true" aria-labelledby="dTitle" hidden>
+  <div class="dbar"><div class="wrap">
+    <button class="dbtn" id="dClose" type="button">← All families</button>
+    <span class="crumb" id="dCrumb"></span>
+    <button class="dbtn" id="dPrev" type="button" aria-label="Previous family">‹</button>
+    <button class="dbtn" id="dNext" type="button" aria-label="Next family">›</button>
+  </div></div>
+  <div class="wrap" id="dBody"></div>
+</div>
+
+<script>
+const W = s => "https://en.wikipedia.org/wiki/" + s;
+const SMALL = -1;
+const F = [{"g":0,"c":"Pine family","l":"Pinaceae","o":"Pinales","n":"~11 genera · ~230 spp.","d":"Resinous conifers with needle leaves and woody seed cones, dominant across northern and mountain forests. Needles grow singly or in bundles, and how they sit on the twig is the quickest way to tell the genera apart.","m":["Needle leaves","Woody seed cones","Resin","Evergreen (larch excepted)"],"p":[["Scots pine","Pinus sylvestris","Pinus_sylvestris"],["Ponderosa pine","Pinus ponderosa","Pinus_ponderosa"],["Douglas-fir","Pseudotsuga menziesii","Douglas_fir"],["Sitka spruce","Picea sitchensis","Picea_sitchensis"],["Western hemlock","Tsuga heterophylla","Tsuga_heterophylla"],["European larch","Larix decidua","Larix_decidua"],["Cedar of Lebanon","Cedrus libani","Cedrus_libani"]]},
+{"g":0,"c":"Cypress family","l":"Cupressaceae","o":"Pinales","n":"~30 genera · ~140 spp.","d":"Conifers with tiny overlapping scale leaves or short flat needles, and small cones that turn berry-like in junipers. The family holds both the tallest and the most massive living trees, the coast redwood and the giant sequoia.","m":["Scale leaves","Small cones","Fibrous, peeling bark","Aromatic, rot-resistant wood"],"p":[["Coast redwood","Sequoia sempervirens","Sequoia_sempervirens"],["Giant sequoia","Sequoiadendron giganteum","Sequoiadendron_giganteum"],["Western red cedar","Thuja plicata","Thuja_plicata"],["Common juniper","Juniperus communis","Juniperus_communis"],["Italian cypress","Cupressus sempervirens","Cupressus_sempervirens"],["Dawn redwood","Metasequoia glyptostroboides","Metasequoia"],["Hinoki cypress","Chamaecyparis obtusa","Chamaecyparis_obtusa"]]},
+{"c":"Magnolia family","l":"Magnoliaceae","o":"Magnoliales","n":"2 genera · ~300 spp.","d":"An ancient lineage whose flowers predate bees and were adapted to beetle pollination. Petals and sepals blur into tepals arranged in a spiral around a cone-like centre, which ripens into an aggregate of red-seeded follicles.","m":["Large spiral flowers","Undifferentiated tepals","Cone-like fruit","Stipule scars ring the twig"],"p":[["Southern magnolia","Magnolia grandiflora","Magnolia_grandiflora"],["Saucer magnolia","Magnolia × soulangeana","Magnolia_×_soulangeana"],["Star magnolia","Magnolia stellata","Magnolia_stellata"],["Sweetbay","Magnolia virginiana","Magnolia_virginiana"],["Tulip tree","Liriodendron tulipifera","Liriodendron_tulipifera"],["Champak","Magnolia champaca","Magnolia_champaca"]],"g":1},
+{"g":1,"c":"Laurel family","l":"Lauraceae","o":"Laurales","n":"~50 genera · ~2,800 spp.","d":"Aromatic evergreen trees and shrubs, mostly tropical, with leathery leaves full of oil cells. Their anthers open by small hinged flaps, a feature found in very few other families.","m":["Aromatic leaves","Leathery evergreen leaves","Flap-opening anthers","One-seeded fruit"],"p":[["Avocado","Persea americana","Avocado"],["Cinnamon","Cinnamomum verum","Cinnamomum_verum"],["Bay laurel","Laurus nobilis","Laurus_nobilis"],["Sassafras","Sassafras albidum","Sassafras_albidum"],["Camphor tree","Cinnamomum camphora","Cinnamomum_camphora"],["California bay","Umbellularia californica","Umbellularia"]]},
+{"g":1,"c":"Pepper family","l":"Piperaceae","o":"Piperales","n":"~5 genera · ~3,600 spp.","d":"Black, white and green pepper are all the fruit of one tropical vine, picked and processed differently.","p":[["Black pepper","Piper nigrum","Black_pepper"],["Kava","Piper methysticum","Kava"],["Betel","Piper betle","Betel"],["Peperomia","Peperomia spp.","Peperomia"]],"m":["Tiny petal-less flowers","Slender flower spikes","Aromatic leaves","Swollen stem joints"]},
+{"g":2,"c":"Arum family","l":"Araceae","o":"Alismatales","n":"~140 genera · ~4,000 spp.","d":"Known by the spadix, a fleshy spike of tiny flowers, wrapped in a leaf-like spathe. Most contain needle-like calcium oxalate crystals, which is why taro must be cooked and many houseplants are toxic to pets.","m":["Spadix and spathe","Calcium oxalate crystals","Large net-veined leaves","Tropical climbers"],"p":[["Taro","Colocasia esculenta","Taro"],["Monstera","Monstera deliciosa","Monstera_deliciosa"],["Philodendron","Philodendron spp.","Philodendron"],["Calla lily","Zantedeschia aethiopica","Zantedeschia_aethiopica"],["Peace lily","Spathiphyllum spp.","Spathiphyllum"],["Western skunk cabbage","Lysichiton americanus","Lysichiton_americanus"]]},
+{"c":"Lily family — tulips","l":"Liliaceae","tag":"Tulipa","o":"Liliales","n":"~15 genera · ~700 spp.","d":"Once a catch-all for any bulb with six petals, the family is now narrowed to true lilies, tulips and their close kin. They are bulbous perennials of temperate Eurasia and North America with large, showy flowers built in threes.","m":["True bulbs","Six showy tepals","Parts in threes","Six stamens"],"p":[["Tulip","Tulipa spp.","Tulip"],["Easter lily","Lilium longiflorum","Lilium_longiflorum"],["Tiger lily","Lilium lancifolium","Lilium_lancifolium"],["Snake's head fritillary","Fritillaria meleagris","Fritillaria_meleagris"],["Trout lily","Erythronium spp.","Erythronium"],["Mariposa lily","Calochortus spp.","Calochortus"]],"g":2},
+{"c":"Orchid family","l":"Orchidaceae","o":"Asparagales","n":"~880 genera · ~28,000 spp.","d":"Possibly the largest plant family, found on every continent except Antarctica. One petal is modified into a lip, and the stamens and style are fused into a single column. Seeds are dust-fine and need a fungal partner to germinate.","m":["Lip (labellum)","Fused column","Dust-like seeds","Often epiphytic"],"p":[["Vanilla","Vanilla planifolia","Vanilla_planifolia"],["Moth orchid","Phalaenopsis spp.","Phalaenopsis"],["Cattleya","Cattleya spp.","Cattleya"],["Dendrobium","Dendrobium spp.","Dendrobium"],["Cymbidium","Cymbidium spp.","Cymbidium"],["Lady's slipper","Cypripedium spp.","Cypripedium"]],"g":2},
+{"g":2,"c":"Iris family","l":"Iridaceae","o":"Asparagales","n":"~70 genera · ~2,200 spp.","d":"Perennials from rhizomes, bulbs or corms, with flat sword-shaped leaves arranged in a fan. The flowers have three stamens, which sets them apart from lilies and amaryllids with six.","m":["Fan of sword leaves","Three stamens","Corms or rhizomes","Showy falls and standards"],"p":[["Bearded iris","Iris germanica","Iris_germanica"],["Saffron crocus","Crocus sativus","Crocus_sativus"],["Gladiolus","Gladiolus spp.","Gladiolus"],["Freesia","Freesia spp.","Freesia"],["Crocosmia","Crocosmia spp.","Crocosmia"]]},
+{"c":"Amaryllis family — onions","l":"Amaryllidaceae","tag":"Allium","o":"Asparagales","n":"~75 genera · ~1,600 spp.","d":"Bulb-forming perennials with strap-like leaves and flowers held in an umbel atop a leafless stalk. The genus Allium alone holds about a thousand species, and crushing any of them releases sulfur compounds that give the familiar bite and tears.","m":["Bulbs","Umbel on a bare scape","Sulfurous smell","Hollow or flat leaves"],"p":[["Onion","Allium cepa","Onion"],["Garlic","Allium sativum","Garlic"],["Leek","Allium ampeloprasum","Leek"],["Shallot","Allium cepa var. aggregatum","Shallot"],["Chives","Allium schoenoprasum","Chives"],["Ramps","Allium tricoccum","Allium_tricoccum"]],"g":2},
+{"c":"Amaryllis family — ornamentals","l":"Amaryllidaceae","tag":"cont.","o":"Asparagales","n":"same family","d":"The other half of the family has no onion smell and is grown for its flowers. Many are winter- or spring-blooming bulbs, and most contain toxic alkaloids such as lycorine, which is why deer and rodents leave daffodils alone.","m":["Showy six-tepaled flowers","Spring bulbs","Toxic alkaloids","Corona in daffodils"],"p":[["Daffodil","Narcissus pseudonarcissus","Narcissus_pseudonarcissus"],["Snowdrop","Galanthus nivalis","Galanthus_nivalis"],["Amaryllis","Hippeastrum spp.","Hippeastrum"],["Agapanthus","Agapanthus spp.","Agapanthus"],["Clivia","Clivia miniata","Clivia_miniata"],["Crinum lily","Crinum spp.","Crinum"]],"g":2},
+{"g":2,"c":"Asparagus family","l":"Asparagaceae","o":"Asparagales","n":"~140 genera · ~3,000 spp.","d":"A broad family assembled by modern classification from several older ones. It unites asparagus spears, desert agaves and yuccas, shade-garden hostas and spring bulbs such as hyacinth.","m":["Parts in threes","Rosettes or bulbs","Six tepals","Often fleshy leaves"],"p":[["Asparagus","Asparagus officinalis","Asparagus"],["Blue agave","Agave tequilana","Agave_tequilana"],["Yucca","Yucca spp.","Yucca"],["Hosta","Hosta spp.","Hosta"],["Hyacinth","Hyacinthus orientalis","Hyacinthus_orientalis"],["Lily of the valley","Convallaria majalis","Lily_of_the_valley"],["Snake plant","Dracaena trifasciata","Dracaena_trifasciata"]]},
+{"c":"Palm family","l":"Arecaceae","o":"Arecales","n":"~180 genera · ~2,600 spp.","d":"Palms grow from a single terminal bud and never add girth the way true trees do, so the trunk is roughly as thick at the top as at the base. Leaves are either feather-like (pinnate) or fan-shaped (palmate).","m":["Single growing point","Pinnate or fan leaves","Unbranched trunk","Large flower clusters"],"p":[["Coconut","Cocos nucifera","Coconut"],["Date palm","Phoenix dactylifera","Date_palm"],["Oil palm","Elaeis guineensis","Elaeis_guineensis"],["Areca palm","Areca catechu","Areca_catechu"],["Açaí","Euterpe oleracea","Euterpe_oleracea"],["Royal palm","Roystonea regia","Roystonea_regia"],["Rattan","Calamus spp.","Rattan"]],"g":2},
+{"g":2,"c":"Pineapple family","l":"Bromeliaceae","o":"Poales","n":"~75 genera · ~3,600 spp.","d":"Almost entirely American. Many grow as epiphytes, with rosettes of stiff leaves forming a central tank that holds water. A pineapple is a multiple fruit fused from about a hundred flowers.","m":["Leaf rosettes","Water-holding tanks","Epiphytes","Absorbent leaf scales"],"p":[["Pineapple","Ananas comosus","Pineapple"],["Spanish moss","Tillandsia usneoides","Spanish_moss"],["Air plants","Tillandsia spp.","Tillandsia"],["Guzmania","Guzmania spp.","Guzmania"],["Urn plant","Aechmea fasciata","Aechmea_fasciata"]]},
+{"c":"Grass family","l":"Poaceae","o":"Poales","n":"~780 genera · ~12,000 spp.","d":"The family that feeds civilisation. Grasses have hollow, jointed stems, long parallel-veined leaves that grow from the base, and wind-pollinated flowers packed into spikelets; the grain is a single-seeded fruit called a caryopsis.","m":["Hollow jointed stems","Spikelets","Wind pollination","Grain (caryopsis)"],"p":[["Wheat","Triticum aestivum","Wheat"],["Rice","Oryza sativa","Rice"],["Maize","Zea mays","Maize"],["Barley","Hordeum vulgare","Barley"],["Oats","Avena sativa","Oat"],["Sorghum","Sorghum bicolor","Sorghum_bicolor"],["Sugarcane","Saccharum officinarum","Saccharum_officinarum"],["Bamboo","Bambusoideae","Bamboo"]],"g":2},
+{"g":2,"c":"Banana family","l":"Musaceae","o":"Zingiberales","n":"3 genera · ~80 spp.","d":"Giant herbs rather than trees: the trunk is a pseudostem of tightly rolled leaf sheaths, and each stem fruits once and dies back. Cultivated bananas are seedless hybrids grown from suckers.","m":["Pseudostem","Huge paddle leaves","Fruits once, then dies","Seedless cultivars"],"p":[["Cavendish banana","Musa acuminata","Musa_acuminata"],["Plantain","Musa × paradisiaca","Cooking_banana"],["Abacá","Musa textilis","Abacá"],["Ethiopian banana","Ensete ventricosum","Ensete_ventricosum"],["Japanese fibre banana","Musa basjoo","Musa_basjoo"]]},
+{"c":"Ginger family","l":"Zingiberaceae","o":"Zingiberales","n":"~50 genera · ~1,600 spp.","d":"Tropical herbs that grow from fleshy, aromatic rhizomes, sending up leafy pseudostems of wrapped leaf sheaths. The rhizomes and seeds supply some of the world's most valuable spices.","m":["Aromatic rhizomes","Leaf-sheath pseudostems","Two-ranked leaves","Showy bracts"],"p":[["Ginger","Zingiber officinale","Ginger"],["Turmeric","Curcuma longa","Turmeric"],["Green cardamom","Elettaria cardamomum","Elettaria_cardamomum"],["Galangal","Alpinia galanga","Alpinia_galanga"],["Torch ginger","Etlingera elatior","Etlingera_elatior"],["Grains of paradise","Aframomum melegueta","Aframomum_melegueta"]],"g":2},
+{"g":3,"c":"Poppy family","l":"Papaveraceae","o":"Ranunculales","n":"~44 genera · ~775 spp.","d":"Herbs whose crumpled petals unfold as the two sepals drop away, and many of which bleed coloured latex. Bleeding hearts, once a separate family, are now included.","m":["Coloured latex","Two falling sepals","Crumpled petals","Seed capsules"],"p":[["Corn poppy","Papaver rhoeas","Papaver_rhoeas"],["Opium poppy","Papaver somniferum","Papaver_somniferum"],["California poppy","Eschscholzia californica","Eschscholzia_californica"],["Bleeding heart","Lamprocapnos spectabilis","Lamprocapnos"],["Bloodroot","Sanguinaria canadensis","Sanguinaria"]]},
+{"g":3,"c":"Buttercup family","l":"Ranunculaceae","o":"Ranunculales","n":"~60 genera · ~2,500 spp.","d":"An early-branching lineage whose flowers keep primitive traits: many separate stamens and pistils, often arranged in spirals, and sepals that frequently do the work of petals. Nearly all are toxic.","m":["Many stamens and pistils","Showy sepals","Divided leaves","Toxic"],"p":[["Meadow buttercup","Ranunculus acris","Ranunculus_acris"],["Clematis","Clematis spp.","Clematis"],["Delphinium","Delphinium spp.","Delphinium"],["Columbine","Aquilegia spp.","Aquilegia"],["Hellebore","Helleborus spp.","Helleborus"],["Anemone","Anemone spp.","Anemone"],["Monkshood","Aconitum napellus","Aconitum_napellus"]]},
+{"g":4,"c":"Buckwheat family","l":"Polygonaceae","o":"Caryophyllales","n":"~50 genera · ~1,200 spp.","d":"Herbs with swollen stem joints wrapped in a papery sheath called an ocrea. Many are sour with oxalic acid, which gives rhubarb and sorrel their tang and makes rhubarb leaves toxic.","m":["Papery sheath at nodes","Swollen joints","Sour oxalic acid","Three-sided seeds"],"p":[["Buckwheat","Fagopyrum esculentum","Buckwheat"],["Rhubarb","Rheum rhabarbarum","Rhubarb"],["Garden sorrel","Rumex acetosa","Rumex_acetosa"],["Japanese knotweed","Reynoutria japonica","Reynoutria_japonica"],["Sea grape","Coccoloba uvifera","Coccoloba_uvifera"]]},
+{"g":4,"c":"Amaranth family","l":"Amaranthaceae","o":"Caryophyllales","n":"~180 genera · ~2,000 spp.","d":"Now includes the former goosefoot family, so it spans leafy greens, root crops and pseudo-grains. Many tolerate salty or dry soil, and the tiny flowers have no showy petals.","m":["Tiny petal-less flowers","Salt tolerance","Betalain pigments","Edible leaves and seeds"],"p":[["Spinach","Spinacia oleracea","Spinach"],["Beet","Beta vulgaris","Beetroot"],["Swiss chard","Beta vulgaris subsp. vulgaris","Chard"],["Quinoa","Chenopodium quinoa","Quinoa"],["Amaranth","Amaranthus spp.","Amaranth"],["Lamb's quarters","Chenopodium album","Chenopodium_album"]]},
+{"g":4,"c":"Cactus family","l":"Cactaceae","o":"Caryophyllales","n":"~130 genera · ~1,800 spp.","d":"Native to the Americas, with a single species reaching Africa and Asia. Cacti store water in swollen stems, and their spines grow from areoles, cushion-like pads that are the family's defining mark.","m":["Areoles","Spines for leaves","Water-storing stems","Night-opening pores"],"p":[["Saguaro","Carnegiea gigantea","Saguaro"],["Prickly pear","Opuntia spp.","Opuntia"],["Dragon fruit","Selenicereus undatus","Selenicereus_undatus"],["Christmas cactus","Schlumbergera spp.","Schlumbergera"],["Golden barrel","Kroenleinia grusonii","Kroenleinia_grusonii"]]},
+{"g":5,"c":"Grape family","l":"Vitaceae","o":"Vitales","n":"~16 genera · ~950 spp.","d":"Woody climbers that grip with tendrils growing opposite the leaves. The fruit is a berry in hanging clusters, and a single species, Vitis vinifera, underlies nearly all the world's wine.","m":["Tendrils opposite leaves","Berry clusters","Woody vines","Lobed or compound leaves"],"p":[["Wine grape","Vitis vinifera","Vitis_vinifera"],["Fox grape","Vitis labrusca","Vitis_labrusca"],["Muscadine","Vitis rotundifolia","Vitis_rotundifolia"],["Virginia creeper","Parthenocissus quinquefolia","Parthenocissus_quinquefolia"],["Boston ivy","Parthenocissus tricuspidata","Parthenocissus_tricuspidata"]]},
+{"c":"Pea family","l":"Fabaceae","o":"Fabales","n":"~770 genera · ~19,500 spp.","d":"The legumes. Their fruit is a pod that splits along two seams, and most host nitrogen-fixing bacteria in root nodules, which is why farmers rotate beans and clover to feed the soil. Pea-like flowers have a banner, two wings and a keel.","m":["Pods (legumes)","Root nodules fix nitrogen","Banner–wing–keel flowers","Compound leaves"],"p":[["Garden pea","Pisum sativum","Pea"],["Common bean","Phaseolus vulgaris","Phaseolus_vulgaris"],["Soybean","Glycine max","Soybean"],["Peanut","Arachis hypogaea","Peanut"],["Chickpea","Cicer arietinum","Chickpea"],["Lentil","Lens culinaris","Lentil"],["Tamarind","Tamarindus indica","Tamarind"],["Wisteria","Wisteria spp.","Wisteria"],["Eastern redbud","Cercis canadensis","Cercis_canadensis"]],"g":5},
+{"c":"Rose family","l":"Rosaceae","o":"Rosales","n":"~90 genera · ~4,800 spp.","d":"Five petals around a ring of many stamens is the family signature. It gives the temperate world most of its orchard fruit in three forms: pomes such as apples, drupes such as cherries, and aggregate fruits such as raspberries.","m":["Five petals","Many stamens","Stipules at leaf base","Pome, drupe or aggregate fruit"],"p":[["Rose","Rosa spp.","Rose"],["Apple","Malus domestica","Apple"],["Pear","Pyrus communis","Pyrus_communis"],["Sweet cherry","Prunus avium","Prunus_avium"],["Peach","Prunus persica","Peach"],["Almond","Prunus amygdalus","Almond"],["Strawberry","Fragaria × ananassa","Garden_strawberry"],["Raspberry","Rubus idaeus","Rubus_idaeus"]],"g":5},
+{"g":5,"c":"Hemp family","l":"Cannabaceae","o":"Rosales","n":"~10 genera · ~170 spp.","d":"Hops and hemp share the family with hackberry trees, added by modern classification.","p":[["Hops","Humulus lupulus","Humulus_lupulus"],["Cannabis / hemp","Cannabis sativa","Cannabis_sativa"],["Common hackberry","Celtis occidentalis","Celtis_occidentalis"]],"m":["Often lobed leaves","Male and female plants","Wind pollination","Resin glands"]},
+{"c":"Fig family","l":"Moraceae","o":"Rosales","n":"~38 genera · ~1,100 spp.","d":"Trees, shrubs and vines that bleed milky latex when cut. Figs turn the flower cluster inside out into a hollow syconium, pollinated only by tiny fig wasps; breadfruit and jackfruit fuse whole flower heads into one large multiple fruit.","m":["Milky latex","Multiple fruits","Syconium in figs","Fig-wasp pollination"],"p":[["Fig","Ficus carica","Common_fig"],["White mulberry","Morus alba","Morus_alba"],["Breadfruit","Artocarpus altilis","Breadfruit"],["Jackfruit","Artocarpus heterophyllus","Jackfruit"],["Osage orange","Maclura pomifera","Maclura_pomifera"],["Banyan","Ficus benghalensis","Ficus_benghalensis"],["Fiddle-leaf fig","Ficus lyrata","Ficus_lyrata"]],"g":5},
+{"c":"Gourd family","l":"Cucurbitaceae","o":"Cucurbitales","n":"~95 genera · ~1,000 spp.","d":"Fast-growing, frost-tender vines that climb with coiled tendrils. Male and female flowers are usually separate, and the fruit is a pepo, a berry with a hard or leathery rind that ranges from a pickling cucumber to a 1,000-kilogram pumpkin.","m":["Coiling tendrils","Separate male/female flowers","Pepo fruit","Rough, lobed leaves"],"p":[["Cucumber","Cucumis sativus","Cucumber"],["Melon","Cucumis melo","Cucumis_melo"],["Watermelon","Citrullus lanatus","Watermelon"],["Pumpkin","Cucurbita spp.","Pumpkin"],["Zucchini","Cucurbita pepo","Zucchini"],["Bitter melon","Momordica charantia","Momordica_charantia"],["Luffa","Luffa aegyptiaca","Luffa_aegyptiaca"],["Chayote","Sechium edule","Chayote"]],"g":5},
+{"g":5,"c":"Beech family","l":"Fagaceae","o":"Fagales","n":"~8 genera · ~1,000 spp.","d":"Hardwood trees whose nuts sit in a cup or spiny husk called a cupule: the acorn cap, the beech burr, the chestnut's prickly case. Oaks alone number about 500 species and anchor much of the Northern Hemisphere's forest.","m":["Nuts in a cupule","Catkins","Hard, durable wood","Alternate leaves"],"p":[["English oak","Quercus robur","Quercus_robur"],["Oregon white oak","Quercus garryana","Quercus_garryana"],["Cork oak","Quercus suber","Quercus_suber"],["European beech","Fagus sylvatica","Fagus_sylvatica"],["American beech","Fagus grandifolia","Fagus_grandifolia"],["Sweet chestnut","Castanea sativa","Castanea_sativa"]]},
+{"g":5,"c":"Walnut family","l":"Juglandaceae","o":"Fagales","n":"~9 genera · ~60 spp.","d":"Large trees with pinnately compound leaves and nuts enclosed in a fleshy or woody husk. Walnut roots and husks release juglone, a compound that stunts many plants growing beneath them.","m":["Pinnate leaves","Husked nuts","Chambered pith in walnuts","Juglone"],"p":[["English walnut","Juglans regia","Juglans_regia"],["Black walnut","Juglans nigra","Juglans_nigra"],["Pecan","Carya illinoinensis","Pecan"],["Shagbark hickory","Carya ovata","Carya_ovata"]]},
+{"g":5,"c":"Birch family","l":"Betulaceae","o":"Fagales","n":"6 genera · ~170 spp.","d":"Wind-pollinated trees and shrubs that hang their pollen in long catkins in late winter. Birches and alders are pioneers that colonise open or disturbed ground, and alders enrich it by fixing nitrogen with root bacteria.","m":["Hanging catkins","Toothed leaves","Small winged nutlets","Pioneer trees"],"p":[["Paper birch","Betula papyrifera","Betula_papyrifera"],["Silver birch","Betula pendula","Betula_pendula"],["Red alder","Alnus rubra","Alnus_rubra"],["Hazelnut","Corylus avellana","Corylus_avellana"],["Hornbeam","Carpinus betulus","Carpinus_betulus"],["Hop-hornbeam","Ostrya virginiana","Ostrya_virginiana"]]},
+{"g":5,"c":"Willow family","l":"Salicaceae","o":"Malpighiales","n":"~55 genera · ~1,200 spp.","d":"Fast-growing trees of wet ground, with male and female catkins on separate trees and seeds carried off on cottony fluff. Willow bark contains salicin, the compound that led chemists to aspirin.","m":["Catkins on separate trees","Cottony seeds","Salicin in bark","Streamside habitat"],"p":[["Weeping willow","Salix babylonica","Salix_babylonica"],["Pussy willow","Salix discolor","Salix_discolor"],["Quaking aspen","Populus tremuloides","Populus_tremuloides"],["Black cottonwood","Populus trichocarpa","Populus_trichocarpa"],["Black poplar","Populus nigra","Populus_nigra"]]},
+{"g":5,"c":"Spurge family","l":"Euphorbiaceae","o":"Malpighiales","n":"~220 genera · ~6,500 spp.","d":"Wildly varied, from herbs and trees to cactus-like succulents, but most share a milky and often caustic latex. The flowers are tiny; a poinsettia's red display is made of bracts, not petals.","m":["Milky latex","Reduced flowers","Three-lobed fruit","Many toxic"],"p":[["Cassava","Manihot esculenta","Cassava"],["Rubber tree","Hevea brasiliensis","Hevea_brasiliensis"],["Castor bean","Ricinus communis","Ricinus"],["Poinsettia","Euphorbia pulcherrima","Poinsettia"],["Crown of thorns","Euphorbia milii","Euphorbia_milii"],["Candlenut","Aleurites moluccanus","Aleurites_moluccanus"]]},
+{"g":6,"c":"Myrtle family","l":"Myrtaceae","o":"Myrtales","n":"~130 genera · ~5,800 spp.","d":"Woody plants with oil glands in their leaves and flowers dominated by a brush of stamens. Concentrated in Australia and tropical America, the family runs from eucalyptus forests to the spice trees of the Moluccas.","m":["Oil-dotted leaves","Stamen-brush flowers","Aromatic","Woody capsules or berries"],"p":[["Eucalyptus","Eucalyptus spp.","Eucalyptus"],["Clove","Syzygium aromaticum","Clove"],["Guava","Psidium guajava","Psidium_guajava"],["Allspice","Pimenta dioica","Allspice"],["Feijoa","Acca sellowiana","Feijoa"],["Tea tree","Melaleuca alternifolia","Melaleuca_alternifolia"]]},
+{"g":6,"c":"Loosestrife family","l":"Lythraceae","o":"Myrtales","n":"~30 genera · ~620 spp.","d":"The pomegranate, once given its own family, now sits here with crape myrtle and henna.","p":[["Pomegranate","Punica granatum","Pomegranate"],["Crape myrtle","Lagerstroemia indica","Lagerstroemia_indica"],["Henna","Lawsonia inermis","Henna"],["Purple loosestrife","Lythrum salicaria","Lythrum_salicaria"]],"m":["Crumpled petals","Calyx tube","Opposite leaves","Many stamens"]},
+{"c":"Mustard family","l":"Brassicaceae","o":"Brassicales","n":"~340 genera · ~3,700 spp.","d":"Four petals in the shape of a cross gave the family its old name, Cruciferae. Its members contain glucosinolates, the source of the sharp heat in mustard, horseradish and wasabi. A single species, Brassica oleracea, was bred into cabbage, broccoli, kale and more.","m":["Four cross-shaped petals","Six stamens (4 long, 2 short)","Pungent glucosinolates","Silique pods"],"p":[["Cabbage","Brassica oleracea","Cabbage"],["Broccoli","B. oleracea var. italica","Broccoli"],["Kale","B. oleracea var. sabellica","Kale"],["Bok choy","Brassica rapa subsp. chinensis","Bok_choy"],["Radish","Raphanus sativus","Radish"],["Arugula","Eruca vesicaria","Eruca_vesicaria"],["Wasabi","Eutrema japonicum","Wasabi"],["Horseradish","Armoracia rusticana","Horseradish"]],"g":6},
+{"g":6,"c":"Papaya family","l":"Caricaceae","o":"Brassicales","n":"6 genera · ~35 spp.","d":"Soft-wooded tropical trees. Papaya latex contains papain, the enzyme used to tenderise meat.","p":[["Papaya","Carica papaya","Papaya"],["Mountain papaya","Vasconcellea pubescens","Vasconcellea_pubescens"],["Babaco","Vasconcellea × heilbornii","Babaco"]],"m":["Soft, hollow stems","Large palmate leaves","Milky latex","Male and female plants"]},
+{"c":"Mallow family","l":"Malvaceae","o":"Malvales","n":"~240 genera · ~4,200 spp.","d":"Classic mallows carry their stamens fused into a central column around the style. Modern classification also folds in lindens, cacao, cola and baobab. Mucilaginous sap is common, which is why okra turns soups silky.","m":["Staminal column","Five petals","Mucilaginous sap","Star-shaped hairs"],"p":[["Hibiscus","Hibiscus rosa-sinensis","Hibiscus_rosa-sinensis"],["Okra","Abelmoschus esculentus","Okra"],["Cotton","Gossypium hirsutum","Gossypium_hirsutum"],["Cacao","Theobroma cacao","Theobroma_cacao"],["Durian","Durio zibethinus","Durio_zibethinus"],["Baobab","Adansonia digitata","Adansonia_digitata"],["Linden","Tilia spp.","Tilia"],["Hollyhock","Alcea rosea","Alcea_rosea"]],"g":6},
+{"c":"Cashew family","l":"Anacardiaceae","o":"Sapindales","n":"~80 genera · ~800 spp.","d":"Mostly tropical trees and shrubs with resin canals in their bark and leaves. Many carry urushiol or related irritant oils, which is why cashews are never sold in the shell and why mango skin can trigger a rash in people sensitive to poison ivy.","m":["Resinous sap","Single-seeded drupes","Irritant oils","Compound or simple leaves"],"p":[["Cashew","Anacardium occidentale","Cashew"],["Mango","Mangifera indica","Mango"],["Pistachio","Pistacia vera","Pistachio"],["Staghorn sumac","Rhus typhina","Rhus_typhina"],["Pink peppercorn","Schinus molle","Schinus_molle"],["Poison ivy","Toxicodendron radicans","Toxicodendron_radicans"]],"g":6},
+{"c":"Soapberry family","l":"Sapindaceae","o":"Sapindales","n":"~140 genera · ~1,900 spp.","d":"Named for berries rich in saponins that lather in water. The modern family absorbs the maples and horse chestnuts of temperate forests alongside tropical fruits whose sweet flesh is a fleshy aril around the seed.","m":["Saponins","Winged samaras in maples","Arillate tropical fruits","Opposite leaves in maples"],"p":[["Sugar maple","Acer saccharum","Acer_saccharum"],["Japanese maple","Acer palmatum","Acer_palmatum"],["Bigleaf maple","Acer macrophyllum","Acer_macrophyllum"],["Horse chestnut","Aesculus hippocastanum","Aesculus_hippocastanum"],["Lychee","Litchi chinensis","Lychee"],["Rambutan","Nephelium lappaceum","Rambutan"],["Longan","Dimocarpus longan","Longan"],["Ackee","Blighia sapida","Ackee"]],"g":6},
+{"c":"Citrus family","l":"Rutaceae","o":"Sapindales","n":"~160 genera · ~2,100 spp.","d":"Hold a citrus or rue leaf to the light and you will see translucent dots: oil glands that make the whole family strongly scented. Citrus fruits are a special berry called a hesperidium, with juice sacs packed inside a leathery, oily rind.","m":["Translucent oil dots","Strong scent","Often thorny","Hesperidium fruit"],"p":[["Sweet orange","Citrus × sinensis","Orange_(fruit)"],["Lemon","Citrus × limon","Lemon"],["Grapefruit","Citrus × paradisi","Grapefruit"],["Kumquat","Citrus japonica","Kumquat"],["Yuzu","Citrus junos","Yuzu"],["Sichuan pepper","Zanthoxylum spp.","Sichuan_pepper"],["Curry leaf","Murraya koenigii","Murraya_koenigii"]],"g":6},
+{"g":7,"c":"Tea family","l":"Theaceae","o":"Ericales","n":"~9 genera · ~250 spp.","d":"Evergreen trees and shrubs, mostly of East and Southeast Asia, with glossy leathery leaves and cup-shaped flowers full of stamens. Tea is the processed leaf of a single camellia species.","m":["Glossy evergreen leaves","Many stamens","Cup-shaped flowers","Woody capsules"],"p":[["Tea","Camellia sinensis","Camellia_sinensis"],["Japanese camellia","Camellia japonica","Camellia_japonica"],["Sasanqua camellia","Camellia sasanqua","Camellia_sasanqua"],["Franklin tree","Franklinia alatamaha","Franklinia"],["Stewartia","Stewartia spp.","Stewartia"]]},
+{"g":7,"c":"Persimmon family","l":"Ebenaceae","o":"Ericales","n":"4 genera · ~770 spp.","d":"Trees prized for astringent fruit and for ebony, a dense black heartwood.","p":[["Kaki persimmon","Diospyros kaki","Diospyros_kaki"],["American persimmon","Diospyros virginiana","Diospyros_virginiana"],["Ceylon ebony","Diospyros ebenum","Diospyros_ebenum"]],"m":["Leathery leaves","Dense dark heartwood","Calyx persists on fruit","Tannin-rich fruit"]},
+{"g":7,"c":"Kiwifruit family","l":"Actinidiaceae","o":"Ericales","n":"3 genera · ~360 spp.","d":"Woody climbers of East Asia. The kiwifruit was bred in New Zealand from the Chinese gooseberry.","p":[["Kiwifruit","Actinidia deliciosa","Kiwifruit"],["Golden kiwi","Actinidia chinensis","Actinidia_chinensis"],["Hardy kiwi","Actinidia arguta","Actinidia_arguta"]],"m":["Twining woody vines","Male and female plants","Many-seeded berries","Hairy shoots"]},
+{"g":7,"c":"Heath family","l":"Ericaceae","o":"Ericales","n":"~125 genera · ~4,000 spp.","d":"Shrubs and small trees of acidic, nutrient-poor soils that rely on root fungi to feed them. Many bear urn- or bell-shaped flowers in hanging clusters, and the family fills much of the Pacific Northwest forest understory.","m":["Acid soils","Urn-shaped flowers","Evergreen leaves","Fungal root partners"],"p":[["Highbush blueberry","Vaccinium corymbosum","Vaccinium_corymbosum"],["Cranberry","Vaccinium macrocarpon","Vaccinium_macrocarpon"],["Rhododendron","Rhododendron spp.","Rhododendron"],["Azalea","Rhododendron spp.","Azalea"],["Heather","Calluna vulgaris","Calluna"],["Pacific madrone","Arbutus menziesii","Arbutus_menziesii"],["Salal","Gaultheria shallon","Gaultheria_shallon"]]},
+{"c":"Coffee family","l":"Rubiaceae","o":"Gentianales","n":"~600 genera · ~13,500 spp.","d":"One of the largest flowering-plant families, centred in the tropics. Its members share opposite leaves joined by small stipules between the leaf stalks, and many produce alkaloids, among them caffeine and quinine.","m":["Opposite leaves","Interpetiolar stipules","Tubular flowers","Alkaloids"],"p":[["Arabica coffee","Coffea arabica","Coffea_arabica"],["Robusta coffee","Coffea canephora","Coffea_canephora"],["Gardenia","Gardenia jasminoides","Gardenia_jasminoides"],["Quinine tree","Cinchona spp.","Cinchona"],["Madder","Rubia tinctorum","Rubia_tinctorum"],["Ixora","Ixora coccinea","Ixora_coccinea"],["Noni","Morinda citrifolia","Morinda_citrifolia"]],"g":7},
+{"g":7,"c":"Morning glory family","l":"Convolvulaceae","o":"Solanales","n":"~60 genera · ~1,650 spp.","d":"Mostly twining vines with funnel-shaped flowers that often open for a single morning. Close relatives of the nightshades, the family also includes dodder, a leafless parasite that winds around its hosts.","m":["Twining stems","Funnel flowers","Milky sap","Kin of nightshades"],"p":[["Sweet potato","Ipomoea batatas","Sweet_potato"],["Morning glory","Ipomoea purpurea","Ipomoea_purpurea"],["Water spinach","Ipomoea aquatica","Ipomoea_aquatica"],["Moonflower","Ipomoea alba","Ipomoea_alba"],["Field bindweed","Convolvulus arvensis","Convolvulus_arvensis"],["Dodder","Cuscuta spp.","Cuscuta"]]},
+{"c":"Nightshade family","l":"Solanaceae","o":"Solanales","n":"~100 genera · ~2,700 spp.","d":"Rich in alkaloids, from solanine and nicotine to atropine, so the same family gives staple foods, a drug crop and deadly poisons. Flowers have five fused petals, often star-shaped with the anthers forming a cone at the centre.","m":["Five fused petals","Anther cone","Berries or capsules","Alkaloids"],"p":[["Tomato","Solanum lycopersicum","Tomato"],["Potato","Solanum tuberosum","Potato"],["Eggplant","Solanum melongena","Eggplant"],["Peppers","Capsicum annuum","Capsicum_annuum"],["Tomatillo","Physalis philadelphica","Tomatillo"],["Tobacco","Nicotiana tabacum","Nicotiana_tabacum"],["Petunia","Petunia spp.","Petunia"],["Deadly nightshade","Atropa belladonna","Atropa_belladonna"]],"g":7},
+{"g":7,"c":"Olive family","l":"Oleaceae","o":"Lamiales","n":"~25 genera · ~700 spp.","d":"Trees, shrubs and vines with opposite leaves and four-lobed flowers that usually carry just two stamens. It pairs one of the oldest cultivated fruit trees with some of the most fragrant shrubs in the garden.","m":["Opposite leaves","Four-lobed flowers","Two stamens","Often fragrant"],"p":[["Olive","Olea europaea","Olive"],["White ash","Fraxinus americana","Fraxinus_americana"],["Common lilac","Syringa vulgaris","Syringa_vulgaris"],["Common jasmine","Jasminum officinale","Jasminum_officinale"],["Forsythia","Forsythia spp.","Forsythia"],["Privet","Ligustrum spp.","Ligustrum"]]},
+{"c":"Mint family","l":"Lamiaceae","o":"Lamiales","n":"~236 genera · ~7,000 spp.","d":"Roll a stem between your fingers: if it is square, the leaves are opposite and it smells of oil, you are almost certainly holding a mint. The two-lipped flowers attract bees, and most of the Mediterranean herb garden belongs here.","m":["Square stems","Opposite leaves","Two-lipped flowers","Aromatic glands"],"p":[["Basil","Ocimum basilicum","Basil"],["Peppermint","Mentha × piperita","Peppermint"],["Rosemary","Salvia rosmarinus","Rosemary"],["Sage","Salvia officinalis","Salvia_officinalis"],["Thyme","Thymus vulgaris","Thymus_vulgaris"],["Oregano","Origanum vulgare","Oregano"],["Lavender","Lavandula angustifolia","Lavandula_angustifolia"],["Shiso","Perilla frutescens","Perilla_frutescens"],["Teak","Tectona grandis","Teak"]],"g":7},
+{"c":"Carrot family","l":"Apiaceae","o":"Apiales","n":"~430 genera · ~3,800 spp.","d":"Aromatic herbs with hollow stems, finely divided leaves and flat-topped compound umbels of tiny flowers. The family feeds us roots, stalks, leaves and seeds, yet also includes some of the most poisonous plants in the temperate world.","m":["Compound umbels","Hollow ribbed stems","Aromatic oils","Paired dry seeds"],"p":[["Carrot","Daucus carota subsp. sativus","Carrot"],["Celery","Apium graveolens","Celery"],["Parsley","Petroselinum crispum","Parsley"],["Fennel","Foeniculum vulgare","Fennel"],["Dill","Anethum graveolens","Dill"],["Coriander","Coriandrum sativum","Coriander"],["Cumin","Cuminum cyminum","Cumin"],["Poison hemlock","Conium maculatum","Conium_maculatum"]],"g":7},
+{"c":"Sunflower family","l":"Asteraceae","o":"Asterales","n":"~1,600 genera · ~32,000 spp.","d":"What looks like one flower is a composite head of many: tubular disc florets in the centre, often ringed by strap-shaped ray florets. It rivals the orchids as the largest plant family, and ranges from salad greens to weeds to cut flowers.","m":["Composite flower heads","Disc and ray florets","Bracts below the head","Wind-borne seeds"],"p":[["Sunflower","Helianthus annuus","Common_sunflower"],["Lettuce","Lactuca sativa","Lettuce"],["Globe artichoke","Cynara cardunculus var. scolymus","Artichoke"],["Dandelion","Taraxacum officinale","Taraxacum_officinale"],["Chrysanthemum","Chrysanthemum spp.","Chrysanthemum"],["Dahlia","Dahlia spp.","Dahlia"],["Zinnia","Zinnia spp.","Zinnia"],["Chamomile","Matricaria chamomilla","Matricaria_chamomilla"],["Common daisy","Bellis perennis","Bellis_perennis"]],"g":7}];
+const G = [["gymnosperms","Conifers","Gymnosperms · Pinales"],
+["magnoliids","Magnoliids","Magnoliales · Laurales · Piperales"],
+["monocots","Monocots","Alismatales · Liliales · Asparagales · Arecales · Poales · Zingiberales"],
+["early-eudicots","Early-diverging eudicots","Ranunculales"],
+["caryophyllales","Caryophyllales","Superasterids"],
+["fabids","Rosids: fabids","Vitales · Fabales · Rosales · Cucurbitales · Fagales · Malpighiales"],
+["malvids","Rosids: malvids","Myrtales · Brassicales · Malvales · Sapindales"],
+["asterids","Asterids","Ericales · Gentianales · Solanales · Lamiales · Apiales · Asterales"]];
+/* Extended family text, keyed by sheet number */
+const X = {"1":{"a":"The largest conifer family, almost entirely in the Northern Hemisphere. Needles are borne singly (fir, spruce, hemlock), in bundles of two to five (pine), or in tufts on short shoots (larch, cedar). Seed cones are woody, and each scale carries two winged seeds.","b":"Resin ducts run through wood and needles, sealing wounds and deterring insects. Quick genus clues: firs hold upright cones that fall apart on the tree; spruces have sharp needles on peg-like stalks; Douglas-fir cones show three-pointed bracts between the scales.","u":"Provides most of the world's softwood lumber and pulp, plus turpentine, rosin, pine nuts and Christmas trees."},
+"2":{"a":"Conifers found on every continent except Antarctica. Most have tiny scale leaves pressed against the twig, though redwoods and swamp cypress have short flat needles. Cones are small, with woody or leathery scales; in junipers the scales fuse into a fleshy, berry-like cone.","b":"The family holds record trees: the coast redwood, over 115 metres tall; the giant sequoia, the most massive living tree; and the Patagonian cypress, which lives more than 3,500 years. Many have fibrous bark and aromatic wood that resists decay.","u":"Cedar shingles, fence posts and closet linings come from this family, and juniper berries flavour gin. Many are hedges and ornamental conifers."},
+"3":{"a":"Magnolias belong to the magnoliids, a lineage that branched off before monocots and eudicots split. Fossils of the family go back about 100 million years. Flowers are large and bisexual, with tepals, stamens and carpels set in spirals along an elongated axis.","b":"The flowers evolved before bees and are pollinated mainly by beetles, which chew the flower parts, so the carpels are tough. The fruit is a cone-like aggregate that splits to dangle bright red seeds on silk threads. A ring-shaped stipule scar around each twig node is a reliable field mark.","u":"Prized ornamental trees across temperate regions. Tulip tree is a valuable timber, and champak flowers are used in perfume and temple offerings in South Asia."},
+"4":{"a":"Mostly evergreen trees and shrubs of tropical and warm temperate forests, especially in Southeast Asia and tropical America. Leaves are leathery and often release a spicy scent when crushed, from oil cells in the tissue.","b":"Flowers are small with parts in threes, and the anthers open by little hinged valves. The fruit is a one-seeded berry or drupe. The laurel forests of the Canary Islands and Madeira are remnants of a forest type once widespread in Europe.","u":"Avocado, cinnamon and bay leaves; camphor from the camphor tree; sassafras once flavoured root beer."},
+"5":{"a":"Herbs, shrubs and climbing vines of the tropics. Flowers are tiny and petal-less, packed into slender spikes, and leaves are often heart-shaped and aromatic.","b":"Piper is a huge genus of about 2,000 species, many of them understory shrubs pollinated by small insects and dispersed by bats.","u":"Black pepper was a foundation of the spice trade and is still the most traded spice."},
+"6":{"a":"Herbs, climbers and aquatic plants concentrated in tropical forests. The inflorescence is a spadix, a fleshy spike crowded with tiny flowers, cupped by a spathe that may be leafy or brightly coloured.","b":"Many produce heat during flowering and foul smells to lure pollinators; titan arum has one of the largest inflorescences of any plant. Calcium oxalate crystals make raw tissue irritating.","u":"Taro and other corms feed much of the tropics. Monstera, philodendron and peace lily are popular houseplants, and the tiny duckweeds belong here too."},
+"7":{"a":"For two centuries Liliaceae held thousands of species, from onions to asparagus. DNA studies broke it up, and the family now holds about 15 genera, chiefly lilies, tulips, fritillaries and their kin. They are perennials from bulbs, with parallel-veined leaves and flowers built in threes: six tepals, six stamens and a three-part ovary.","b":"Most grow in temperate Northern Hemisphere regions with cold winters, often in mountain meadows and steppe. Many have spotted or chequered tepals and a nectary at the base of each tepal.","u":"Tulips drove the first recorded speculative bubble, in the 1630s Netherlands, and tulips and lilies remain top cut flowers and bulbs. All parts of true lilies are highly toxic to cats."},
+"8":{"a":"With around 28,000 species, orchids rival the daisies as the largest flowering plant family. Each flower has three sepals and three petals, one petal modified into the lip, which often serves as a landing pad or trap. Stamens and style fuse into a single column, and pollen is packed into waxy pollinia that stick to visiting insects.","b":"Seeds are dust-fine and carry no food reserve, so they germinate only with a mycorrhizal fungus. Many tropical orchids are epiphytes with aerial roots coated in spongy velamen. Some flowers mimic female insects to attract males as pollinators.","u":"Vanilla is the one major food crop and the second most expensive spice after saffron. Moth orchids are among the best-selling potted plants worldwide."},
+"9":{"a":"Perennials from rhizomes, bulbs or corms, with flat sword-shaped leaves in fans. Flowers have three stamens and an inferior ovary, which separates them from the lilies.","b":"Iris flowers have three drooping falls, three upright standards and petal-like style branches. The family is diverse in southern Africa, home to gladiolus, freesia and crocosmia. Saffron is the dried stigmas of a sterile crocus.","u":"Saffron, the costliest spice by weight, and many garden flowers. Orris root from iris is a perfume fixative."},
+"10":{"a":"Modern classification splits Amaryllidaceae into three subfamilies, and the onions form one of them, Allioideae. Alliums grow from bulbs or rhizomes, with leaves that are either hollow tubes, as in onion and chives, or flat blades, as in garlic and leek. The small six-tepaled flowers gather in a ball- or dome-shaped umbel, often wrapped in a papery spathe before they open.","b":"The defining chemistry is sulfur. When cells are damaged, the enzyme alliinase turns odourless precursors into pungent compounds; in onion, one of them is the vapour that makes eyes water. Wild species range across the Northern Hemisphere, from Central Asian steppe to North American woodland.","u":"Onion and garlic are among the oldest cultivated plants, grown in Egypt and Mesopotamia for at least 5,000 years. Ornamental alliums such as Allium giganteum add tall purple globes to summer borders."},
+"11":{"a":"The subfamily Amaryllidoideae holds the showy bulbs: daffodils, snowdrops, amaryllis and their relatives. Flowers sit on a leafless stalk and usually have six tepals over an inferior ovary. Daffodils add a corona, the trumpet or cup at the centre. Agapanthus, from southern Africa, forms its own small subfamily.","b":"The group is concentrated in South Africa, the Mediterranean and South America. Nearly all species make Amaryllidaceae alkaloids. One of them, galantamine, first isolated from snowdrops, is prescribed for Alzheimer's disease.","u":"Daffodils and snowdrops are among the most planted spring bulbs in temperate gardens, and Hippeastrum bulbs, sold under the name amaryllis, are a staple winter houseplant."},
+"12":{"a":"APG classification expanded this family to include agaves, hyacinths, hostas and other former lily relatives. Members vary widely: spring bulbs, succulent rosettes, woody yuccas and climbing asparagus ferns.","b":"Flowers usually have six tepals. Leaves can be reduced to scales, as in asparagus, whose feathery fronds are actually flattened stems called cladodes.","u":"Asparagus spears, agave for tequila and sisal fibre, and yucca, hosta, hyacinth and snake plant in gardens and homes."},
+"13":{"a":"Palms are monocots that grow from a single terminal bud, the heart of palm; if it dies, the stem usually dies. Trunks lack the cambium that lets other trees thicken, so they reach full width before growing upward. Leaves are either pinnate (feather palms) or palmate (fan palms), and in Raphia they exceed 20 metres.","b":"Most species are tropical, with a few reaching warm temperate zones. Flowers are small, borne in large branched clusters that can hold thousands of flowers. The talipot palm flowers once, after decades, and then dies.","u":"Coconut, dates and oil palm feed millions, and palm oil is the most produced vegetable oil. Palms also supply rattan, carnauba wax, thatch and sago."},
+"14":{"a":"Almost entirely American, from the southern United States to Patagonia, with one species in West Africa. Many grow as epiphytes or on rock, forming rosettes of stiff leaves.","b":"In tank bromeliads the leaf bases form a cup that holds rainwater, home to frogs and insects. Leaves are covered in absorbent scales; in Tillandsia these scales take over the work of roots.","u":"Pineapple is the main crop. Others are houseplants, and Spanish moss drapes trees across the American South."},
+"15":{"a":"Grasses cover about a fifth of the planet's land. Stems are usually hollow between solid joints, and each leaf wraps the stem in a sheath before splaying into a blade. Growth comes from the base, so grasses survive grazing and mowing that would kill most plants.","b":"Flowers are reduced to essentials and packed into spikelets for wind pollination. Many tropical grasses, including maize and sugarcane, use C4 photosynthesis, which is more efficient in heat and strong light. Bamboos are woody grasses, and some grow close to a metre a day.","u":"Rice, wheat and maize together supply roughly half of human calories. Grasses also feed most livestock and provide sugar, building bamboo and the world's lawns."},
+"16":{"a":"Large herbaceous plants of tropical Africa and Asia. The pseudostem is built from overlapping leaf sheaths, while the true stem stays underground as a rhizome. Leaves are enormous and often shred along their veins in wind.","b":"Flowers emerge from the top on a hanging inflorescence with purple bracts. Wild bananas are full of hard seeds; edible bananas are sterile triploids. The Cavendish dominates exports and is threatened by Panama disease.","u":"Bananas and plantains are staple foods for millions, and abacá gives Manila hemp fibre."},
+"17":{"a":"Perennial herbs of the tropics, especially Southeast Asia. They grow from fleshy branching rhizomes, and what looks like a stem is a pseudostem of rolled leaf bases arranged in two rows. Flowers are short-lived, often hidden among colourful bracts, with one sterile stamen forming a showy lip.","b":"Rhizomes, seeds and leaves are packed with aromatic oils and resins, such as gingerols in ginger and curcumin in turmeric. The family shares the order Zingiberales with bananas, cannas and heliconias.","u":"Ginger, turmeric and cardamom are major spices, and cardamom is among the most expensive by weight. Torch ginger and others are grown for their flowers."},
+"18":{"a":"Herbs, mostly of temperate Northern Hemisphere regions. The two sepals fall as the flower opens, releasing crumpled petals. Many species have coloured latex: white in opium poppy, orange-red in bloodroot.","b":"Fruits are capsules that scatter seed through pores like a salt shaker. The bleeding heart subfamily has unusual flattened, spurred flowers.","u":"Opium poppy yields morphine and codeine as well as edible seed, and the corn poppy is a remembrance symbol."},
+"19":{"a":"Mostly herbs of temperate Northern Hemisphere regions. Flowers often have many separate stamens and pistils in spirals, an early-branching trait among eudicots, and sepals often do the work of petals.","b":"Leaves are usually divided or lobed. Many members contain protoanemonin or aconitine; monkshood is among the most poisonous European plants. Fruits are achenes or follicles.","u":"Garden perennials and climbers, plus nigella seed, used as a spice in South Asian and Middle Eastern cooking."},
+"20":{"a":"Herbs, shrubs and some trees, best known by the ocrea, a papery sheath around the stem at each leaf base. Stems often have swollen joints, which gave the family its name, meaning many knees.","b":"Flowers are small with persistent tepals, and fruits are three-sided or lens-shaped achenes. Oxalic acid gives many species a sour taste. Some, like Japanese knotweed, are notorious invaders.","u":"Buckwheat for soba noodles and galettes, rhubarb stalks for pies, and sorrel leaves for sauces."},
+"21":{"a":"Modern classification folded the goosefoots (Chenopodiaceae) into this family. Members range from herbs to shrubs, and many thrive in salty, dry or disturbed ground. Flowers are tiny, greenish and lack true petals, often massed in spikes.","b":"Many species use betalain pigments instead of anthocyanins, which gives beets their red and yellow. Several use C4 photosynthesis and grow vigorously in heat. Spinach and chard leaves accumulate oxalates.","u":"Spinach, beets, chard and sugar beet, a major sugar source, plus the grains quinoa and amaranth from the Andes and Mesoamerica."},
+"22":{"a":"Succulents of the Americas, adapted to dry habitats. Leaves are reduced to spines, and photosynthesis happens in the green stems, which store water.","b":"Areoles are cushion-like buds from which spines, flowers and branches grow. Cacti open their pores at night to save water, a pathway called CAM photosynthesis. Not all live in deserts; Christmas cactus and Rhipsalis are rainforest epiphytes.","u":"Prickly pear fruits and pads (nopales), dragon fruit, and many ornamentals."},
+"23":{"a":"Climbing plants with tendrils opposite the leaves, mostly in tropical and warm temperate regions. Flowers are small and greenish in clusters, and in grapes the petals fall together as a cap.","b":"Fruits are juicy berries. Grapes were domesticated from wild Vitis vinifera in the Caucasus region about 8,000 years ago. American species supplied the rootstocks that saved European vineyards from the phylloxera aphid in the late 1800s.","u":"Wine, table grapes and raisins; Virginia creeper and Boston ivy cover walls."},
+"24":{"a":"The third-largest plant family, ranging from clover to rainforest giants. Its fruit is the legume, a pod that splits along two seams. Leaves are usually compound, and many fold up at night.","b":"Flowers take three main forms: pea-like with a banner, two wings and a keel; mimosa-like puffs of stamens; and open, irregular flowers such as redbud and tamarind. Most legumes host Rhizobium bacteria in root nodules that fix nitrogen from the air.","u":"Second only to grasses as a food source: beans, peas, lentils, soy and peanuts supply protein worldwide. Clover and alfalfa feed livestock and enrich soil."},
+"25":{"a":"Flowers usually have five petals, five sepals and many stamens set around a cup-shaped base called a hypanthium. Leaves are alternate with stipules at the base, and many species carry thorns or prickles.","b":"Fruit structure varies more than in almost any family: pomes in apples and pears, where the flesh grows from the receptacle; drupes in cherries, peaches and almonds; clusters of drupelets in raspberries; and strawberries, where each tiny seed on the surface is a true fruit on a swollen receptacle.","u":"Supplies most temperate orchard fruits and berries, almonds, and the rose, the world's best-selling cut flower."},
+"26":{"a":"Herbs, climbing vines and trees, often with palmately lobed leaves.","b":"Hops and cannabis bear male and female flowers on separate plants; only female plants are grown for cones or flowers.","u":"Hops flavour and preserve beer, and hemp gives fibre and seed oil."},
+"27":{"a":"Mostly tropical trees, shrubs and climbers, united by white latex in their tissues and tiny flowers packed into dense heads. In figs, a stipule scar circles the twig at each node.","b":"Ficus, with about 850 species, is one of the largest woody genera. Each fig species depends on its own fig wasp to pollinate flowers hidden inside the syconium, a partnership tens of millions of years old. Strangler figs start as seedlings high on other trees and send roots down to the ground.","u":"Supplies figs, mulberries, breadfruit and jackfruit. White mulberry leaves feed silkworms, and several figs are popular houseplants and sacred trees."},
+"28":{"a":"Mostly annual vines of warm climates that climb with spring-like tendrils and spread broad, rough, lobed leaves. Most species bear separate male and female flowers, often on one plant; the female flower sits on a tiny swollen fruit that is visible before it opens.","b":"The fruit is a pepo, a berry with a firm rind. Cucurbits were domesticated independently in several regions: squashes in the Americas, cucumber in South Asia, melons and watermelons in Africa and Asia. Bitter cucurbitacins protect wild forms and occasionally reappear in garden plants.","u":"One of the most important vegetable families; squash was among the first crops domesticated in the Americas. Bottle gourds and luffa provide containers and sponges."},
+"29":{"a":"Trees and shrubs of Northern Hemisphere forests. Male flowers hang in wind-pollinated catkins, and each nut sits in a cupule: a scaly cap in oaks, a spiny husk enclosing two or three nuts in beech and chestnut.","b":"Oaks hybridise freely and dominate forests from Mexico to China. Many species mast, producing heavy acorn crops in the same year across a region, which overwhelms seed-eating animals. Tannins make oak bark useful for tanning leather and acorns bitter.","u":"Oak timber for barrels, ships and furniture; cork from cork oak bark; chestnuts and beechnuts as food."},
+"30":{"a":"Deciduous trees of temperate and subtropical forests with large pinnately compound leaves. Male flowers hang in catkins; female flowers are few. Split a walnut twig lengthwise and the pith is divided into chambers.","b":"Juglone in walnut tissues inhibits many neighbours, including tomatoes and apples. The nut sits inside a husk that stays fleshy in walnuts and splits into four in hickories.","u":"Walnuts and pecans are major nut crops. Black walnut and hickory are prized timbers, hickory for tool handles and smoking meat."},
+"31":{"a":"Deciduous trees and shrubs of cool Northern Hemisphere regions. Leaves are simple, alternate and toothed. Separate male and female catkins grow on the same plant, and the hanging male catkins shed pollen before the leaves open.","b":"Birch and alder fruits are small winged nutlets; hazel and hornbeam bear nuts wrapped in leafy bracts. Alders carry Frankia bacteria in root nodules, so they enrich poor soil. Birch pollen is a major spring allergen in northern Europe.","u":"Birch bark served Indigenous peoples for canoes and containers, hazelnuts are a major nut crop, and alder wood is used to smoke fish."},
+"32":{"a":"Willows and poplars are fast-growing trees of riverbanks and wet ground. Male and female catkins appear on separate trees, often before the leaves. The tiny seeds ride on cottony hairs that drift in early summer.","b":"DNA studies expanded the family to include many tropical shrubs formerly placed elsewhere. Willow bark contains salicin, which the body converts to salicylic acid; it led chemists to synthesise aspirin in 1897.","u":"Used for basket weaving, cricket bats, pulpwood and biomass, and willows are planted to stabilise riverbanks."},
+"33":{"a":"One of the most varied families, from small weeds to large trees and succulents that resemble cacti. Many produce white latex that irritates skin and eyes.","b":"In Euphorbia, each apparent flower is a cyathium: a cup holding one female and several male flowers, often framed by colourful bracts or glands. Fruits are usually three-lobed capsules that burst open.","u":"Cassava feeds hundreds of millions, natural rubber comes from Hevea, and castor oil from castor bean. Poinsettias are a holiday staple."},
+"34":{"a":"Woody plants from shrubs to some of the tallest flowering trees. Leaves are usually opposite, entire and dotted with oil glands. Flowers are dominated by many showy stamens, and the petals are often small or drop early.","b":"Most diverse in Australia, where eucalypts dominate forests, and in tropical America. Eucalyptus regnans is the tallest flowering plant, over 100 metres. Many species are adapted to fire and resprout from swollen woody bases called lignotubers.","u":"Cloves and allspice, guava and feijoa, eucalyptus timber and oil, and tea tree oil."},
+"35":{"a":"Herbs, shrubs and trees worldwide, often with crinkled petals.","b":"Pomegranate and the water chestnut genus Trapa were both merged into this family by DNA studies.","u":"Pomegranate, henna dye and crape myrtle ornamentals."},
+"36":{"a":"The older name, Cruciferae, refers to the four petals arranged in a cross. Flowers have six stamens, four long and two short, and the fruit is a silique, a pod with a central membrane that splits from the bottom up. Most are herbs of temperate regions.","b":"Glucosinolates and the enzyme myrosinase are stored apart in the cells; chewing mixes them and releases mustard oils, the heat in wasabi and horseradish. Arabidopsis thaliana, a small weed in this family, is the main model organism of plant biology.","u":"Brassica oleracea alone was bred into cabbage, kale, broccoli, cauliflower, Brussels sprouts and kohlrabi. The family also yields canola oil and mustard condiments."},
+"37":{"a":"Small trees and shrubs of tropical America and Africa with soft, hollow stems and large palmate leaves.","b":"Papaya plants can be male, female or bisexual, and growers select bisexual plants so every tree fruits.","u":"Papaya fruit and papain, the enzyme used in meat tenderisers."},
+"38":{"a":"In the classic sense the family is the mallows: hibiscus, hollyhock, okra and cotton, with five petals and the stamens fused into a tube around the style. DNA work merged in four other families, adding lindens, cacao, kola, durian and baobab. Star-shaped hairs on leaves and stems run through almost the whole group.","b":"Many members produce mucilage, the slippery sap that thickens okra stews and gave marshmallow its name; the original confection used the root of the marsh mallow, Althaea officinalis. Fibre plants are common: cotton seed hairs, jute stems, linden bark.","u":"Cotton is the world's main natural textile fibre and cacao the source of chocolate. The family also gives okra, durian, kola nuts and many ornamental flowers."},
+"39":{"a":"Mostly trees and shrubs of the tropics, with a few temperate members such as sumacs and smoke bush. Bark and leaves contain resin canals, and the sap of many species darkens in air; East Asian lacquer is the sap of the lacquer tree. Fruits are usually drupes with one seed.","b":"Many members contain urushiol or related oils that cause contact dermatitis. The cashew is a special case: the nut hangs beneath a swollen fleshy stalk, the cashew apple, and its shell is full of irritant oil, so nuts are roasted or steamed before shelling.","u":"Gives mango, one of the most widely grown tropical fruits, along with cashews, pistachios, sumac spice and pink peppercorns."},
+"40":{"a":"In the older sense the family was mostly tropical trees and vines; DNA work merged in the maples and horse chestnuts. Leaves are usually compound, and in maples and buckeyes they are opposite. Flowers are small, often with a nectar disc.","b":"Saponins in fruit and bark foam in water and were once used as soap. Tropical members such as lychee and rambutan wrap the seed in a sweet fleshy aril, while maples produce paired winged samaras that spin as they fall.","u":"Maples give timber, syrup and autumn colour; lychee, longan and rambutan are major Asian fruits; guarana adds caffeine to drinks. Ackee is Jamaica's national fruit but is toxic unless fully ripe."},
+"41":{"a":"Mostly woody plants of warm regions, recognised by pellucid dots: oil glands in leaves, bark and fruit that release a citrus, rue or anise scent. Many species are thorny. Citrus leaves look simple, but a small joint where blade meets stalk shows they descend from compound leaves.","b":"Citrus fruit is a hesperidium, a berry whose segments are filled with juice-filled hairs. Nearly all commercial citrus descends from a few ancestral species, chiefly citron, pomelo and mandarin, crossed and backcrossed over thousands of years.","u":"Citrus is one of the world's most valuable fruit crops. The family also supplies Sichuan pepper, curry leaf and essential oils used in perfume."},
+"42":{"a":"Evergreen trees and shrubs, mostly of East and Southeast Asia, with a few in the Americas. Leaves are leathery and glossy, and the cup-shaped flowers, white, pink or red, are full of stamens.","b":"Camellias bloom in winter and early spring and drop their flowers whole. Franklinia was found in Georgia by John and William Bartram in 1765 and has been extinct in the wild since the early 1800s.","u":"Tea is the most consumed drink after water. The family also gives camellia oil and many ornamental camellias."},
+"43":{"a":"Trees and shrubs of the tropics and subtropics; almost all species belong to Diospyros.","b":"Unripe persimmons are full of tannins that pucker the mouth; they soften and sweeten as they ripen.","u":"Persimmon fruit and ebony wood, used for piano keys and instrument fingerboards."},
+"44":{"a":"Climbers and shrubs, mostly in East Asia, with tendrilless twining stems.","b":"Most species are dioecious, so orchards need male plants to pollinate the females.","u":"Kiwifruit has become a global crop since the mid-20th century."},
+"45":{"a":"Mostly shrubs, some trees, on acidic, nutrient-poor soils from tundra to tropical mountains. Partnerships with ericoid mycorrhizal fungi let them draw nitrogen from poor ground. Leaves are often leathery and evergreen.","b":"Flowers are commonly bell- or urn-shaped and hang downward, with anthers that open by pores; bumblebees shake the pollen out. The family covers European heathland, fills Himalayan forests with rhododendrons, and dominates Pacific Northwest understories with salal, huckleberries and madrone.","u":"Blueberries, cranberries and lingonberries come from here, along with garden rhododendrons and azaleas and moorland heather. Nectar of some rhododendrons yields toxic honey."},
+"46":{"a":"The fourth-largest flowering plant family, ranging from small herbs to rainforest trees, with most species in the tropics. Two features identify it almost everywhere: leaves in opposite pairs or whorls, and stipules that join the leaf bases across the stem. Flowers are usually tubular with four or five lobes.","b":"Many members make alkaloids. Caffeine in coffee and quinine in cinchona bark are the best known; quinine was the main treatment for malaria for three centuries. Temperate members are mostly small herbs such as bedstraws and sweet woodruff.","u":"Coffee is among the most traded agricultural commodities. The family also gave madder, a red dye used since antiquity, and many tropical ornamentals."},
+"47":{"a":"Mostly twining herbs and vines, plus some shrubs and trees, often with heart-shaped leaves. Flowers are funnel-shaped, with petals fused and pleated so that they unfurl in a twist.","b":"Many contain milky latex, and some morning glories make ergot alkaloids. Dodder has no chlorophyll; it coils around host plants and taps their tissue with special roots.","u":"Sweet potato is a major staple. Morning glories and moonflowers are garden climbers, and bindweed is a persistent weed."},
+"48":{"a":"Flowers have five petals fused into a star, bell or trumpet. In Solanum the stamens form a cone around the style and release pollen when bumblebees vibrate them. Fruits are berries, as in tomato and pepper, or capsules, as in tobacco and petunia.","b":"The family is chemically rich: alkaloids such as solanine in green potatoes, nicotine, atropine and scopolamine, plus capsaicin, the heat in chili. Most species come from Central and South America, which gave the rest of the world the tomato, potato and chili after 1492.","u":"Potato and tomato rank among the world's top food crops. The family also gives tobacco, medicinal drugs and bedding flowers such as petunia."},
+"49":{"a":"Trees, shrubs and climbers worldwide. Leaves are opposite, and flowers usually have four lobes and two stamens. Fruits vary: drupes in olive and privet, winged samaras in ash, capsules in lilac and forsythia.","b":"Many are fragrant; jasmine and osmanthus are perfume staples. Ash trees in North America and Europe are being devastated by the emerald ash borer beetle and the ash dieback fungus.","u":"Olive oil is a Mediterranean staple, ash wood makes tool handles and baseball bats, and lilac, jasmine and forsythia fill gardens."},
+"50":{"a":"Square stems, opposite leaves and two-lipped flowers make the mint family one of the easiest to recognise. Leaves and stems carry glandular hairs that release aromatic oils such as menthol, thymol and carvacrol when brushed.","b":"The flower is a tube with an upper hood and a lower landing lip, built for bees. The fruit splits into four small nutlets. Most members are herbs or shrubs, concentrated around the Mediterranean, but teak shows the family also includes large tropical trees.","u":"Supplies most culinary herbs plus lavender and patchouli oils. Many are long-flowering bee plants, and teak is a prized hardwood."},
+"51":{"a":"The family's older name, Umbelliferae, describes its flower heads: many small stalks radiating from one point like the ribs of an umbrella, often with a second tier of smaller umbels at their tips. Stems are usually hollow and ribbed, leaves are cut into fine segments, and each fruit splits into two one-seeded halves, which are what we buy as cumin or coriander seed.","b":"Oil ducts run through the whole plant and give the family its smells. The same chemistry turns dangerous in a few members: poison hemlock carries coniine and water hemlock carries cicutoxin, so wild umbellifers should never be eaten without certain identification.","u":"Supplies root vegetables, stalk and leaf vegetables, fresh herbs and seed spices. Umbellifers are also key nectar plants for the small wasps and hoverflies that prey on garden pests."},
+"52":{"a":"The older name, Compositae, comes from the flower head: dozens to hundreds of small florets on a shared base, ringed by bracts. Disc florets fill the centre, and ray florets, each with a single long strap, form what look like petals. Dandelions have only strap florets; thistles have only disc florets.","b":"Fruits are one-seeded achenes, often topped by a pappus of hairs for wind dispersal. Many members store inulin rather than starch. The family grows on every continent except Antarctica and includes many of the world's weeds.","u":"Gives lettuce, artichokes, sunflower oil and seeds, chicory, tarragon and chamomile, plus a long list of garden flowers. Ragweed is a leading cause of hay fever."}};
+/* One-line member notes, keyed by Wikipedia slug */
+const N = {"Onion":"The most widely grown allium; the bulb is layers of fleshy leaf bases.",
+"Garlic":"Grown from cloves; most cultivars rarely set seed.",
+"Leek":"Grown for a long white shaft of leaf sheaths, blanched by hilling soil.",
+"Shallot":"Clusters of small bulbs, milder and sweeter than onion.",
+"Chives":"Hollow grass-like leaves and edible mauve flower heads.",
+"Allium_tricoccum":"Wild ramp of eastern North American woods, foraged in early spring.",
+"Narcissus_pseudonarcissus":"Wild daffodil of western Europe, parent of many garden cultivars.",
+"Galanthus_nivalis":"Nodding white flowers, often through late-winter snow.",
+"Hippeastrum":"South American bulbs forced for winter bloom.",
+"Agapanthus":"Southern African perennial with globes of blue or white flowers.",
+"Clivia_miniata":"Shade-loving South African plant with orange trumpet clusters.",
+"Crinum":"Large tropical bulbs with fragrant lily-like flowers.",
+"Carrot":"Domesticated in Central Asia; orange cultivars spread from the Netherlands.",
+"Celery":"Bred from a bitter marsh plant; celeriac is the same species.",
+"Parsley":"Curly and flat-leaf forms; Hamburg parsley is grown for its root.",
+"Fennel":"Florence fennel forms a swollen bulb; the seed is a spice.",
+"Dill":"Feathery leaves and seed for pickling and Nordic cooking.",
+"Coriander":"Leaves (cilantro) and seeds taste completely different.",
+"Cumin":"Seed spice central to Indian, Middle Eastern and Mexican food.",
+"Conium_maculatum":"Purple-blotched stems; the poison linked to Socrates' death.",
+"Cashew":"The nut hangs beneath a juicy stalk called the cashew apple.",
+"Mango":"Domesticated in South Asia; hundreds of cultivars.",
+"Pistachio":"Desert tree whose shells split open as the nut ripens.",
+"Rhus_typhina":"Velvety twigs like deer antlers and fuzzy red fruit spikes.",
+"Schinus_molle":"South American tree; its pink berries are sold as peppercorns.",
+"Toxicodendron_radicans":"Leaves of three; urushiol in every part causes a rash.",
+"Orange_(fruit)":"A pomelo–mandarin hybrid and the most grown citrus.",
+"Lemon":"A cross of citron and bitter orange, prized for acidity.",
+"Grapefruit":"Arose in Barbados in the 1700s from pomelo and sweet orange.",
+"Kumquat":"Small citrus eaten whole: sweet peel, tart flesh.",
+"Yuzu":"Aromatic East Asian citrus used for zest and juice.",
+"Sichuan_pepper":"Dried husks cause a tingling, numbing sensation.",
+"Murraya_koenigii":"Fragrant leaves used fresh in South Indian cooking.",
+"Coffea_arabica":"About 60% of world coffee; native to the Ethiopian highlands.",
+"Coffea_canephora":"Hardier and higher in caffeine; used in espresso blends and instant coffee.",
+"Gardenia_jasminoides":"Glossy shrub with intensely fragrant white flowers.",
+"Cinchona":"Andean trees whose bark yields quinine.",
+"Rubia_tinctorum":"Roots give alizarin, the red of Turkey red cloth.",
+"Ixora_coccinea":"Tropical hedge shrub with dense red flower clusters.",
+"Morinda_citrifolia":"Pacific tree with pungent fruit sold as juice.",
+"Common_fig":"One of the first domesticated fruits; common figs need no wasp.",
+"Morus_alba":"Its leaves are the silkworm's food.",
+"Breadfruit":"Starchy Pacific staple; the cargo of HMS Bounty.",
+"Jackfruit":"The largest tree-borne fruit, up to about 50 kg.",
+"Maclura_pomifera":"Bumpy green fruit; dense wood once used for bows.",
+"Ficus_benghalensis":"Aerial roots grow into new trunks; India's national tree.",
+"Ficus_lyrata":"West African fig with large violin-shaped leaves.",
+"Ginger":"From tropical Asia; known only in cultivation.",
+"Turmeric":"Bright orange rhizome coloured by curcumin.",
+"Elettaria_cardamomum":"Green pods from southern India; one of the costliest spices.",
+"Alpinia_galanga":"Sharp, piney rhizome central to Thai cooking.",
+"Etlingera_elatior":"Spectacular pink flower heads; buds flavour Malaysian laksa.",
+"Aframomum_melegueta":"Peppery West African seeds once traded as a pepper substitute.",
+"Cucumber":"Domesticated in South Asia; eaten unripe.",
+"Cucumis_melo":"Includes cantaloupe and honeydew.",
+"Watermelon":"Domesticated in northeast Africa; over 90% water.",
+"Pumpkin":"Several Cucurbita species; among the oldest American crops.",
+"Zucchini":"Summer squash bred in Italy and picked young.",
+"Momordica_charantia":"Warty, very bitter fruit eaten across Asia.",
+"Luffa_aegyptiaca":"Young fruit is a vegetable; mature fibres become sponges.",
+"Chayote":"Pear-shaped, single-seeded squash from Mexico.",
+"Wheat":"Domesticated in the Fertile Crescent; most widely grown cereal by area.",
+"Rice":"Staple for more than half the world, mostly grown in flooded paddies.",
+"Maize":"Bred from teosinte in Mexico about 9,000 years ago.",
+"Barley":"One of the first cereals; the base of beer and whisky.",
+"Oat":"Cool-climate cereal that began as a weed among wheat.",
+"Sorghum_bicolor":"Drought-tolerant African grain for food, fodder and syrup.",
+"Saccharum_officinarum":"Source of most of the world's sugar.",
+"Bamboo":"Woody grasses; some flower in mass synchrony decades apart.",
+"Tulip":"Native from Central Asia to Turkey; prized in Ottoman gardens.",
+"Lilium_longiflorum":"White trumpet lily from Japan, forced for Easter.",
+"Lilium_lancifolium":"Spotted orange flowers and black bulbils in the leaf axils.",
+"Fritillaria_meleagris":"Chequered nodding bells of European water meadows.",
+"Erythronium":"Mottled leaves and nodding spring flowers in woodland.",
+"Calochortus":"Tulip-like wildflowers of western North America.",
+"Magnolia_grandiflora":"Evergreen with leathery leaves and huge white flowers.",
+"Magnolia_×_soulangeana":"Hybrid with pink-purple goblets on bare spring branches.",
+"Magnolia_stellata":"Japanese shrub with starry white flowers.",
+"Magnolia_virginiana":"Semi-evergreen tree of eastern US swamps.",
+"Liriodendron_tulipifera":"Tall eastern US tree with square-tipped leaves.",
+"Magnolia_champaca":"Fragrant yellow-orange flowers used in perfume.",
+"Hibiscus_rosa-sinensis":"Large tropical flowers; Malaysia's national flower.",
+"Okra":"Mucilaginous pods of African origin.",
+"Gossypium_hirsutum":"Upland cotton, about 90% of world production.",
+"Theobroma_cacao":"Pods grow straight from the trunk; seeds make chocolate.",
+"Durio_zibethinus":"Spiky fruit with a famously strong smell.",
+"Adansonia_digitata":"African tree that stores water in a massive trunk.",
+"Tilia":"Lindens, called limes in Britain; flowers make a calming tea.",
+"Alcea_rosea":"Tall spires of cottage-garden flowers.",
+"Basil":"Tender herb from tropical Asia with dozens of cultivars.",
+"Peppermint":"Hybrid of water mint and spearmint, rich in menthol.",
+"Rosemary":"Mediterranean shrub moved from Rosmarinus into Salvia in 2017.",
+"Salvia_officinalis":"Grey-leaved culinary sage of the Mediterranean.",
+"Thymus_vulgaris":"Small woody herb rich in thymol.",
+"Oregano":"Pungent herb rich in carvacrol.",
+"Lavandula_angustifolia":"English lavender, the main source of lavender oil.",
+"Perilla_frutescens":"Green or purple leaves used in Japanese and Korean food.",
+"Teak":"Durable hardwood from South and Southeast Asia.",
+"Cabbage":"Bred for a tight head of leaves.",
+"Broccoli":"Bred in Italy for unopened flower buds.",
+"Kale":"The leafy form closest to wild cabbage.",
+"Bok_choy":"Chinese cabbage with white stalks; a form of the turnip species.",
+"Radish":"Fast root crop; daikon is a long Asian form.",
+"Eruca_vesicaria":"Peppery salad leaf from the Mediterranean.",
+"Wasabi":"Grown in cold mountain streams; much sold wasabi is horseradish.",
+"Horseradish":"Pungent root grated as a condiment.",
+"Tomato":"Wild in the Andes, domesticated in Mexico.",
+"Potato":"Domesticated near Lake Titicaca; a top global food crop.",
+"Eggplant":"Domesticated in Asia, unlike most of its relatives.",
+"Capsicum_annuum":"Bell peppers, jalapeños and paprika are all one species.",
+"Tomatillo":"Papery husk around a tart green fruit for salsa verde.",
+"Nicotiana_tabacum":"Leaves contain nicotine; South American origin.",
+"Petunia":"South American bedding plant.",
+"Atropa_belladonna":"Highly toxic; source of atropine.",
+"Vanilla_planifolia":"Climbing orchid from Mexico; pods are cured into vanilla.",
+"Phalaenopsis":"Long-lasting flower sprays; the supermarket orchid.",
+"Cattleya":"Large fragrant corsage orchids from tropical America.",
+"Dendrobium":"Huge Asian-Pacific genus with cane-like stems.",
+"Cymbidium":"Cool-growing orchids with long-lasting spikes.",
+"Cypripedium":"Pouch-shaped lip traps bees; temperate woodland orchid.",
+"Coconut":"Every part is used, from husk fibre to sap.",
+"Date_palm":"Middle Eastern fruit palm cultivated for over 6,000 years.",
+"Elaeis_guineensis":"West African palm; source of most palm oil.",
+"Areca_catechu":"Seeds chewed with betel leaf across South and Southeast Asia.",
+"Euterpe_oleracea":"Amazonian palm with purple berries and heart of palm.",
+"Roystonea_regia":"Smooth grey trunk; Cuba's national tree.",
+"Rattan":"Climbing palms whose stems make cane furniture.",
+"Pea":"Gregor Mendel's subject for the laws of heredity.",
+"Phaseolus_vulgaris":"Kidney, pinto, black and green beans are all this species.",
+"Soybean":"East Asian bean; a major protein and oil crop.",
+"Peanut":"Flowers push into the soil, where the pods ripen.",
+"Chickpea":"Base of hummus; one of the first domesticated legumes.",
+"Lentil":"Lens-shaped seeds; the optical lens is named after them.",
+"Tamarind":"Sour-sweet pulp in brown pods; African origin.",
+"Wisteria":"Twining vine with hanging chains of flowers.",
+"Cercis_canadensis":"Pink flowers straight from the bark in early spring.",
+"Rose":"Thousands of cultivars; rose oil comes from the damask rose.",
+"Apple":"Descended from wild apples of the Tian Shan mountains.",
+"Pyrus_communis":"European pear; ripens best off the tree.",
+"Prunus_avium":"Sweet cherry; the sour cherry is Prunus cerasus.",
+"Peach":"Domesticated in China; nectarines are smooth-skinned peaches.",
+"Almond":"A drupe whose seed, not flesh, is eaten.",
+"Garden_strawberry":"Hybrid of two American species, made in 18th-century France.",
+"Rubus_idaeus":"Each berry is a cluster of tiny drupelets.",
+"Acer_saccharum":"Main source of maple syrup; brilliant autumn colour.",
+"Acer_palmatum":"Hundreds of cultivars; a centrepiece of Japanese gardens.",
+"Acer_macrophyllum":"Pacific coast maple with leaves up to 30 cm across.",
+"Aesculus_hippocastanum":"Balkan tree whose glossy seeds are conkers.",
+"Lychee":"Translucent sweet aril under a red rind.",
+"Rambutan":"Hairy-skinned relative of lychee.",
+"Longan":"Dragon-eye fruit, a smaller, musky lychee relative.",
+"Ackee":"Jamaica's national fruit, eaten with saltfish.",
+"Common_sunflower":"Young heads track the sun; North American origin.",
+"Lettuce":"Bred from wild prickly lettuce in ancient Egypt.",
+"Artichoke":"We eat the bracts and base of the unopened bud.",
+"Taraxacum_officinale":"Seeds parachute on a pappus; leaves and roots are edible.",
+"Chrysanthemum":"Imperial emblem of Japan, grown in countless forms.",
+"Dahlia":"Mexico's national flower; its tubers were once eaten.",
+"Zinnia":"Bright Mexican annual; flowered on the ISS in 2016.",
+"Matricaria_chamomilla":"Apple-scented flowers brewed as tea.",
+"Bellis_perennis":"Closes at night; the name comes from day's eye.",
+"Pinus_sylvestris":"The most widespread pine, with orange upper bark.",
+"Pinus_ponderosa":"Long needles in threes; bark smells of vanilla.",
+"Douglas_fir":"Not a true fir; a giant of Pacific Northwest forests.",
+"Picea_sitchensis":"The largest spruce, in the Pacific coast fog belt.",
+"Tsuga_heterophylla":"Drooping leader; Washington's state tree.",
+"Larix_decidua":"A deciduous conifer that turns gold in autumn.",
+"Cedrus_libani":"Tiered branches; the emblem on Lebanon's flag.",
+"Sequoia_sempervirens":"Tallest trees on Earth, on the foggy California coast.",
+"Sequoiadendron_giganteum":"The most massive tree; groves in the Sierra Nevada.",
+"Thuja_plicata":"Central to the cultures of Pacific Northwest coastal peoples.",
+"Juniperus_communis":"The most widespread conifer; berries flavour gin.",
+"Cupressus_sempervirens":"Narrow columnar cypress of the Mediterranean.",
+"Metasequoia":"Known from fossils before living trees were found in China in the 1940s.",
+"Chamaecyparis_obtusa":"Japanese cypress prized for temples and bathtubs.",
+"Quercus_robur":"Long-lived European oak; acorns on long stalks.",
+"Quercus_garryana":"The main native oak of the Pacific Northwest.",
+"Quercus_suber":"Bark stripped about every nine years for cork.",
+"Fagus_sylvatica":"Smooth grey bark; copper beech is a form of it.",
+"Fagus_grandifolia":"Holds dry leaves through winter.",
+"Castanea_sativa":"Edible chestnuts roasted in autumn.",
+"Betula_papyrifera":"White peeling bark used for canoes.",
+"Betula_pendula":"Drooping twigs; Finland's national tree.",
+"Alnus_rubra":"Pacific Northwest pioneer; wood turns red when cut.",
+"Corylus_avellana":"European hazel, source of hazelnuts.",
+"Carpinus_betulus":"Fluted grey trunk; a classic hedging tree.",
+"Ostrya_virginiana":"Hop-like fruit clusters and very hard wood.",
+"Salix_babylonica":"From northern China; long hanging branches.",
+"Salix_discolor":"Silky grey catkins in late winter.",
+"Populus_tremuloides":"Trembling leaves; forms clonal groves like Pando in Utah.",
+"Populus_trichocarpa":"The first tree to have its genome sequenced.",
+"Populus_nigra":"The Lombardy poplar is its columnar form.",
+"Juglans_regia":"Persian walnut, the main commercial walnut.",
+"Juglans_nigra":"Dark, valuable timber and strongly flavoured nuts.",
+"Pecan":"Native to the Mississippi basin.",
+"Carya_ovata":"Bark peels in long vertical strips.",
+"Olive":"Domesticated in the eastern Mediterranean; trees can live over 1,000 years.",
+"Fraxinus_americana":"Tough wood for baseball bats; threatened by emerald ash borer.",
+"Syringa_vulgaris":"Fragrant spring shrub from the Balkans.",
+"Jasminum_officinale":"White fragrant flowers for perfume and tea.",
+"Forsythia":"Yellow flowers before the leaves in early spring.",
+"Ligustrum":"Common hedging shrub, invasive in places.",
+"Vaccinium_corymbosum":"The main cultivated blueberry, from eastern North America.",
+"Vaccinium_macrocarpon":"Grown in bogs and harvested by flooding.",
+"Rhododendron":"Over 1,000 species, most diverse in the Himalaya.",
+"Azalea":"Rhododendrons with smaller, often deciduous leaves.",
+"Calluna":"Purple moorland heather of Scotland.",
+"Arbutus_menziesii":"Peeling red bark; Pacific coast evergreen.",
+"Gaultheria_shallon":"Glossy shrub with edible dark berries.",
+"Spinach":"From Persia; a quick cool-season green.",
+"Beetroot":"Same species as chard and sugar beet.",
+"Chard":"Beet bred for leaves and colourful stalks.",
+"Quinoa":"Andean pseudograin; seeds coated in bitter saponins.",
+"Amaranth":"Grain and leaf crop, sacred to the Aztecs.",
+"Chenopodium_album":"Common weed, edible like spinach.",
+"Avocado":"Mesoamerican fruit; Hass is the main cultivar.",
+"Cinnamomum_verum":"True cinnamon bark from Sri Lanka.",
+"Laurus_nobilis":"Bay leaves; laurel wreaths of ancient Greece.",
+"Sassafras_albidum":"Mitten-shaped leaves; the root once flavoured root beer.",
+"Cinnamomum_camphora":"Source of camphor; huge shade trees in East Asia.",
+"Umbellularia":"Pungent leaves; called Oregon myrtle in Oregon.",
+"Eucalyptus":"Over 700 species, nearly all Australian.",
+"Clove":"Dried flower buds from the Moluccas.",
+"Psidium_guajava":"Tropical American fruit rich in vitamin C.",
+"Allspice":"Caribbean berry that tastes of several spices.",
+"Feijoa":"South American fruit with a pineapple-mint flavour.",
+"Melaleuca_alternifolia":"Australian shrub distilled for tea tree oil.",
+"Vitis_vinifera":"The European grape behind nearly all wine.",
+"Vitis_labrusca":"The Concord grape's species, with a musky flavour.",
+"Vitis_rotundifolia":"Thick-skinned grape of the American South.",
+"Parthenocissus_quinquefolia":"Five leaflets and red autumn colour.",
+"Parthenocissus_tricuspidata":"Clings with adhesive pads; covers college walls.",
+"Buckwheat":"Not a wheat; seeds make soba and galettes.",
+"Rhubarb":"Sour stalks are eaten; the leaves are toxic.",
+"Rumex_acetosa":"Lemony leaves for soups and sauces.",
+"Reynoutria_japonica":"Aggressive invader with hollow, bamboo-like stems.",
+"Coccoloba_uvifera":"Coastal tree with grape-like fruit clusters.",
+"Sweet_potato":"Tropical American root crop, unrelated to potato.",
+"Ipomoea_purpurea":"Climbing annual with purple-blue flowers.",
+"Ipomoea_aquatica":"Hollow-stemmed leafy green of Southeast Asia.",
+"Ipomoea_alba":"White flowers that open at dusk.",
+"Convolvulus_arvensis":"Deep-rooted weed with white or pink flowers.",
+"Cuscuta":"Orange, leafless parasitic strands.",
+"Cassava":"Starchy root staple; must be processed to remove cyanide.",
+"Hevea_brasiliensis":"Amazonian tree, the source of natural rubber.",
+"Ricinus":"Seeds yield castor oil and the toxin ricin.",
+"Poinsettia":"Mexican shrub with red bracts.",
+"Euphorbia_milii":"Thorny succulent from Madagascar.",
+"Aleurites_moluccanus":"Oily nuts once burned as candles.",
+"Musa_acuminata":"Ancestor of most dessert bananas, including Cavendish.",
+"Cooking_banana":"Starchy cooking bananas, a staple in Africa.",
+"Abacá":"Fibre plant from the Philippines; Manila hemp.",
+"Ensete_ventricosum":"False banana; its stem is a staple food in Ethiopia.",
+"Musa_basjoo":"Cold-hardy ornamental banana.",
+"Pineapple":"A fruit fused from the berries of many flowers.",
+"Spanish_moss":"Not a moss; hangs from oaks in the American South.",
+"Tillandsia":"Air plants that absorb water through leaf scales.",
+"Guzmania":"Bright bract rosettes; a common houseplant.",
+"Aechmea_fasciata":"Silvery leaves and a pink flower spike.",
+"Asparagus":"Young shoots are eaten; a bed can produce for 20 years.",
+"Agave_tequilana":"Its hearts are roasted to make tequila.",
+"Yucca":"Pollinated only by yucca moths.",
+"Hosta":"East Asian shade plants grown for their leaves.",
+"Hyacinthus_orientalis":"Fragrant spring bulb from the eastern Mediterranean.",
+"Lily_of_the_valley":"Fragrant bells; all parts toxic.",
+"Dracaena_trifasciata":"Tough houseplant with upright sword leaves.",
+"Iris_germanica":"Bearded iris; rhizomes give orris root.",
+"Crocus_sativus":"Each flower yields three red stigmas of saffron.",
+"Gladiolus":"Sword lily; tall flower spikes from corms.",
+"Freesia":"Fragrant South African cut flower.",
+"Crocosmia":"Arching sprays of orange-red flowers.",
+"Taro":"Starchy corm; Hawaiian poi is made from it.",
+"Monstera_deliciosa":"Split leaves; the fruit is edible when fully ripe.",
+"Philodendron":"Climbing tropical houseplants.",
+"Zantedeschia_aethiopica":"White spathe; South African.",
+"Spathiphyllum":"White spathes; a common indoor plant.",
+"Lysichiton_americanus":"Yellow spathes in Pacific Northwest swamps in early spring.",
+"Ranunculus_acris":"Glossy yellow flowers of meadows.",
+"Clematis":"Climbing vines with large flowers and feathery seed heads.",
+"Delphinium":"Tall spires of blue flowers.",
+"Aquilegia":"Flowers with long nectar spurs.",
+"Helleborus":"Winter-flowering Christmas and Lenten roses.",
+"Anemone":"Windflowers, with spring and autumn species.",
+"Aconitum_napellus":"Hooded blue flowers; extremely toxic.",
+"Camellia_sinensis":"Leaves processed into green, black, oolong and white tea.",
+"Camellia_japonica":"Winter-blooming shrub with many cultivars.",
+"Camellia_sasanqua":"Autumn-flowering; its seed oil is used in Japan.",
+"Franklinia":"Survives only in cultivation.",
+"Stewartia":"Camellia-like flowers and peeling bark.",
+"Saguaro":"Sonoran Desert giant; arms appear after decades.",
+"Opuntia":"Flat pads and fruit; the pads are eaten as nopales.",
+"Selenicereus_undatus":"Climbing cactus that bears pink dragon fruit.",
+"Schlumbergera":"Brazilian epiphyte that flowers in winter.",
+"Kroenleinia_grusonii":"Golden-spined globe, now rare in the wild.",
+"Papaver_rhoeas":"Red field poppy, a remembrance symbol.",
+"Papaver_somniferum":"Source of opiates and poppy seed.",
+"Eschscholzia_californica":"California's state flower.",
+"Lamprocapnos":"Heart-shaped pink flowers on arching stems.",
+"Sanguinaria":"Red-orange sap; an early spring wildflower.",
+"Black_pepper":"Green, black and white pepper all come from this vine.",
+"Kava":"Pacific root brewed as a calming drink.",
+"Betel":"Leaf chewed with areca nut.",
+"Peperomia":"Small succulent-leaved houseplants.",
+"Papaya":"Fast-growing; fruits in under a year.",
+"Vasconcellea_pubescens":"Andean papaya cooked for its aroma.",
+"Babaco":"Seedless hybrid from Ecuador.",
+"Kiwifruit":"Fuzzy brown skin and green flesh.",
+"Actinidia_chinensis":"Smooth-skinned, yellow-fleshed kiwi.",
+"Actinidia_arguta":"Grape-sized smooth fruit; frost-hardy.",
+"Diospyros_kaki":"East Asian persimmon, also dried whole.",
+"Diospyros_virginiana":"Native US persimmon, sweet after frost.",
+"Diospyros_ebenum":"Black heartwood of Sri Lanka and India.",
+"Humulus_lupulus":"Female cones flavour and preserve beer.",
+"Cannabis_sativa":"Grown for fibre, seed oil and drugs.",
+"Celtis_occidentalis":"North American tree with bird-eaten berries.",
+"Pomegranate":"Leathery fruit packed with juicy seed coats.",
+"Lagerstroemia_indica":"Summer flowers and smooth peeling bark.",
+"Henna":"Leaves give a reddish dye for skin and hair.",
+"Lythrum_salicaria":"Invasive in North American wetlands."};
+/* Photos keyed by Wikipedia slug, loaded from photos.json published beside the page */
+let PHOTO = {};
+fetch("photos.json").then(r => r.ok ? r.json() : {}).then(p => {
+  PHOTO = p || {};
+  if (typeof cur !== "undefined" && cur >= 0) { const y = dEl.scrollTop; openFamily(cur); dEl.scrollTop = y; }
+}).catch(() => {});
+
+const esc = s => s.replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const pad = i => String(i+1).padStart(2,"0");
+F.forEach((f,i)=>{f.i=i; f.g=f.g||0;});
+const sheet = f => `
+<article class="sheet${f.g===SMALL?" compact":""}" id="f${f.i+1}">
+  <div class="top"><span class="num">${pad(f.i)}</span>
+    <div class="names"><h3 tabindex="0">${esc(f.c)}</h3><div class="latin">${esc(f.l)}${f.tag?` <span style="font-style:normal">(${esc(f.tag)})</span>`:""}</div></div></div>
+  <div class="meta"><span>Order <b>${esc(f.o)}</b></span><span>${esc(f.n)}</span></div>
+  <p class="desc">${esc(f.d)}</p>
+  ${f.m?`<ul class="marks" aria-label="Field marks">${f.m.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+  <ul class="plants">${f.p.map(([n,b,s])=>`<li><a href="${W(encodeURI(s))}" target="_blank" rel="noopener"><span class="pn">${esc(n)}</span><span class="bi">${esc(b)}</span></a></li>`).join("")}</ul>
+</article>`;
+document.getElementById("idx").innerHTML = G.map(([id,name],g)=>{
+  const fs=F.filter(f=>f.g===g);
+  return `<a href="#${id}">${esc(name)} · ${pad(fs[0].i)}–${pad(fs[fs.length-1].i)}</a>`;
+}).join("");
+document.getElementById("sheets").innerHTML = G.map(([id,name,sub],g)=>{
+  const fs=F.filter(f=>f.g===g);
+  return `<section class="group" id="${id}">
+    <div class="group-head"><h2>${esc(name)}</h2><span>${esc(sub)} · ${fs.length} sheets</span></div>
+    <div class="grid${g===SMALL?" small":""}">${fs.map(sheet).join("")}</div>
+  </section>`;
+}).join("");
+
+/* ---- Detail view ---- */
+const dEl = document.getElementById("detail"), dBody = document.getElementById("dBody");
+let cur = -1, lastFocus = null;
+const genus = b => (b.replace(/^[^A-Za-z]+/,"")[0] || "?").toUpperCase();
+const member = ([n,b,s]) => {
+  const url = W(encodeURI(s)), ph = PHOTO[s];
+  return `<article class="mcard">
+    <a class="frame" href="${url}" target="_blank" rel="noopener" aria-label="${esc(n)} on Wikipedia">
+      ${ph ? `<img src="${ph}" alt="${esc(n)}" loading="lazy">` : `<span class="glyph" aria-hidden="true">${esc(genus(b))}</span><span class="cap">Photo on Wikipedia ↗</span>`}
+    </a>
+    <div class="mtext"><span class="pn">${esc(n)}</span><span class="bi">${esc(b)}</span>${N[s]?`<p>${esc(N[s])}</p>`:""}</div>
+  </article>`;
+};
+function openFamily(i){
+  if(i<0||i>=F.length) return;
+  if(cur<0) lastFocus = document.activeElement;
+  cur = i; const f = F[i], x = X[i+1] || {};
+  document.getElementById("dCrumb").textContent = `${pad(i)} / ${F.length} · ${G[f.g][1]}`;
+  document.getElementById("dPrev").disabled = i===0;
+  document.getElementById("dNext").disabled = i===F.length-1;
+  dBody.innerHTML = `
+    <div class="dhead"><span class="eyebrow">Sheet ${pad(i)}</span>
+      <h2 id="dTitle">${esc(f.c)}</h2>
+      <div class="latin">${esc(f.l)}${f.tag?` <span style="font-style:normal">(${esc(f.tag)})</span>`:""}</div></div>
+    <div class="dcols">
+      <div class="prose">
+        <p>${esc(f.d)}</p>
+        ${x.a?`<h4>About the family</h4><p>${esc(x.a)}</p>`:""}
+        ${x.b?`<h4>How it works</h4><p>${esc(x.b)}</p>`:""}
+        ${x.u?`<h4>Why it matters</h4><p>${esc(x.u)}</p>`:""}
+      </div>
+      <aside class="aside">
+        <h4>At a glance</h4>
+        <dl><dt>Order</dt><dd>${esc(f.o)}</dd><dt>Size</dt><dd>${esc(f.n)}</dd><dt>Members here</dt><dd>${f.p.length}</dd></dl>
+        ${f.m?`<h4>Field marks</h4><ul class="marks">${f.m.map(m=>`<li>${esc(m)}</li>`).join("")}</ul>`:""}
+      </aside>
+    </div>
+    <div class="mhead"><h3>Members</h3><span>Tap a photo to open its Wikipedia article</span></div>
+    <div class="members">${f.p.map(member).join("")}</div>`;
+  dEl.hidden = false; document.body.classList.add("locked"); dEl.scrollTop = 0;
+  try{ history.replaceState(null,"","#f"+(i+1)); }catch(e){}
+  document.getElementById("dClose").focus({preventScroll:true});
+}
+function closeFamily(){
+  if(cur<0) return;
+  const back = document.getElementById("f"+(cur+1));
+  dEl.hidden = true; document.body.classList.remove("locked"); cur = -1;
+  try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){}
+  if(back) back.scrollIntoView({block:"start"});
+  (lastFocus && document.contains(lastFocus) ? lastFocus : back)?.focus?.({preventScroll:true});
+}
+document.getElementById("sheets").addEventListener("click", e=>{
+  if(e.target.closest("a")) return;
+  const s = e.target.closest(".sheet");
+  if(s) openFamily(+s.id.slice(1)-1);
+});
+document.getElementById("sheets").addEventListener("keydown", e=>{
+  const h = e.target.closest(".sheet h3");
+  if(h && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); openFamily(+h.closest(".sheet").id.slice(1)-1); }
+});
+document.getElementById("dClose").addEventListener("click", closeFamily);
+document.getElementById("dPrev").addEventListener("click", ()=>openFamily(cur-1));
+document.getElementById("dNext").addEventListener("click", ()=>openFamily(cur+1));
+document.addEventListener("keydown", e=>{
+  if(cur<0) return;
+  if(e.key==="Escape") closeFamily();
+  else if(e.key==="ArrowLeft" && !e.target.closest("input,textarea")) openFamily(cur-1);
+  else if(e.key==="ArrowRight" && !e.target.closest("input,textarea")) openFamily(cur+1);
+});
+const m0 = /^#f(\d+)$/.exec(location.hash);
+if(m0) openFamily(+m0[1]-1);
+</script>
+
+</body></html>
