@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Magnificent Returns</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f6f5f2; --card:#ffffff; --ink:#1b1b1f; --muted:#6b6b73; --line:#e4e2dc;
+    --up:#13804b; --down:#c4362c; --accent:#1b1b1f; --grid:rgba(0,0,0,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#121214; --card:#1b1b1f; --ink:#ececf0; --muted:#9a9aa3; --line:#2a2a30;
+           --up:#3ccf86; --down:#ff6b5e; --accent:#ececf0; --grid:rgba(255,255,255,.07); }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
+  .wrap{max-width:1280px;margin:0 auto;padding:24px 16px 48px}
+  header{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:14px}
+  h1{font-size:22px;margin:0;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px}
+  .seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;
+              padding:6px 11px;border-radius:7px;cursor:pointer}
+  .seg button.on{background:var(--accent);color:var(--bg)}
+  .toggle{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;cursor:pointer;user-select:none}
+  .icon-btn{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;
+            padding:6px 10px;font:inherit;cursor:pointer}
+  .icon-btn:disabled{opacity:.5;cursor:default}
+  .addbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+  .addbar input{width:150px;padding:7px 10px;border-radius:8px;border:1px solid var(--line);
+                background:var(--card);color:var(--ink);font:inherit;text-transform:uppercase}
+  .addbar input::placeholder{text-transform:none}
+  .addmsg{font-size:13px;color:var(--down)}
+  .addmsg.ok{color:var(--muted)}
+  .rank{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin-bottom:16px}
+  .rank div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+  .rank b{display:block;font-size:12px;color:var(--muted);font-weight:600}
+  .rank span{font-weight:700;font-variant-numeric:tabular-nums}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 8px;position:relative}
+  .card-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .tk{font-weight:800;font-size:16px}
+  .nm{color:var(--muted);font-size:12px;margin-left:6px;font-weight:500}
+  .px{font-variant-numeric:tabular-nums;font-weight:700;font-size:16px;text-align:right}
+  .chg{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;text-align:right}
+  .meta{color:var(--muted);font-size:12px;margin:2px 0 6px;display:flex;justify-content:space-between}
+  .canvas-box{position:relative;height:190px}
+  .rm{border:0;background:transparent;color:var(--muted);font-size:16px;line-height:1;cursor:pointer;
+      padding:2px 4px;margin-left:6px;border-radius:6px;opacity:.55}
+  .rm:hover{opacity:1;color:var(--down);background:var(--bg)}
+  .up{color:var(--up)} .down{color:var(--down)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;max-width:560px;margin:40px auto}
+  .panel h2{margin:0 0 8px;font-size:17px}
+  .panel p{color:var(--muted);margin:6px 0 14px}
+  .panel input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);
+               background:var(--bg);color:var(--ink);font:inherit}
+  .panel .row{display:flex;gap:8px;margin-top:10px}
+  .primary{background:var(--accent);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer}
+  .primary:disabled{opacity:.5;cursor:default}
+  .msg{margin-top:10px;font-size:13px;color:var(--down)}
+  .empty{color:var(--muted);text-align:center;padding:40px 0}
+  a{color:inherit}
+  .hidden{display:none}
+  @media (max-width:760px){ .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Magnificent Returns</h1>
+      <div class="sub" id="asof">Daily closes, split-adjusted</div>
+    </div>
+    <div class="controls hidden" id="controls">
+      <div class="seg" id="periods"></div>
+      <label class="toggle"><input type="checkbox" id="samescale"> Same % scale</label>
+      <button class="icon-btn" id="refresh" title="Fetch fresh data">Refresh</button>
+      <button class="icon-btn" id="changekey" title="Change API key">Key</button>
+    </div>
+  </header>
+
+  <div class="addbar hidden" id="addbar">
+    <input id="addinput" placeholder="Add symbol, e.g. AVGO" autocomplete="off" spellcheck="false">
+    <button class="primary" id="addbtn">Add</button>
+    <button class="icon-btn" id="resetbtn" title="Go back to the Magnificent Seven">Reset to Mag 7</button>
+    <span class="addmsg" id="addmsg"></span>
+  </div>
+
+  <div class="panel hidden" id="keypanel">
+    <h2>Connect a free data key</h2>
+    <p>Prices come from Twelve Data, which offers a free API key (800 requests/day, 8 per minute; each symbol uses 1 request and results are cached for the day). Get one at <a href="https://twelvedata.com/pricing" target="_blank" rel="noopener">twelvedata.com</a>, then paste it below. It's saved only in this browser.</p>
+    <input id="keyinput" placeholder="Twelve Data API key" autocomplete="off">
+    <div class="row"><button class="primary" id="savekey">Load charts</button></div>
+    <div class="msg" id="keymsg"></div>
+  </div>
+
+  <div id="status" class="sub"></div>
+  <div class="rank hidden" id="rank"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const MAG7 = ["AAPL","MSFT","NVDA","GOOGL","AMZN","META","TSLA"];
+const NAMES = { AAPL:"Apple", MSFT:"Microsoft", NVDA:"Nvidia", GOOGL:"Alphabet", AMZN:"Amazon", META:"Meta", TSLA:"Tesla" };
+const PERIODS = ["1M","3M","6M","YTD","1Y","3Y","5Y","10Y"];
+const KEY_STORE = "mag7.tdkey", CACHE_STORE = "mag7.cache.v2", PREF_STORE = "mag7.prefs";
+const PER_MINUTE = 8;   // Twelve Data free-tier credits per minute
+
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} },
+};
+const $ = id => document.getElementById(id);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const today = () => new Date().toISOString().slice(0,10);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+let prefs = Object.assign({period:"1Y", same:false, symbols:MAG7.slice()}, JSON.parse(store.get(PREF_STORE) || "{}"));
+if (!Array.isArray(prefs.symbols)) prefs.symbols = MAG7.slice();
+// cache: { SYM: {day, ex, pts:[{s,c}]} }
+let cache = JSON.parse(store.get(CACHE_STORE) || "{}") || {};
+let series = {};            // SYM -> [{s, d:Date, c}]  oldest -> newest
+let charts = {};
+let builtFor = "";
+let busy = false;
+
+function savePrefs(){ store.set(PREF_STORE, JSON.stringify(prefs)); }
+function saveCache(){ store.set(CACHE_STORE, JSON.stringify(cache)); }
+function hydrate(sym){
+  const e = cache[sym];
+  series[sym] = e ? e.pts.map(p => ({s:p.s, d:new Date(p.s+"T00:00:00"), c:p.c})) : null;
+}
+
+/* ---------- data ---------- */
+// Fetch up to PER_MINUTE symbols in one request. Returns {ok:{SYM:entry}, bad:{SYM:message}}.
+async function fetchChunk(key, syms){
+  const url = "https://api.twelvedata.com/time_series?symbol=" + syms.map(encodeURIComponent).join(",") +
+    "&interval=1day&outputsize=2700&order=ASC&apikey=" + encodeURIComponent(key);
+  let r;
+  try { r = await fetch(url); }
+  catch(e){
+    throw new Error("the browser blocked the request to api.twelvedata.com. If you're viewing this inside the Claude app, download the file and open it in Chrome, Safari or Firefox instead. If you already are, an ad or tracker blocker may be blocking it, so try disabling it for this page.");
+  }
+  const j = await r.json();
+  // a single-symbol request returns the series directly; a batch is keyed by symbol
+  const bySym = syms.length === 1 ? {[syms[0]]: j} : j;
+  if (syms.length > 1 && j.status === "error") throw new Error(j.message || "Data request failed");
+  const ok = {}, bad = {};
+  for (const s of syms){
+    const e = bySym[s];
+    if (e && e.status === "ok" && Array.isArray(e.values) && e.values.length){
+      ok[s] = { day: today(), ex: (e.meta && e.meta.exchange) || "",
+                pts: e.values.map(v => ({s:v.datetime.slice(0,10), c:+v.close})) };
+    } else {
+      const msg = (e && e.message) || "no data returned";
+      if (e && e.code === 401) throw new Error(msg);         // bad key: stop everything
+      if (e && e.code === 429) throw new Error("rate limit reached — " + msg);
+      bad[s] = msg;
+    }
+  }
+  return {ok, bad};
+}
+
+// Fetch many symbols, pacing chunks a minute apart to respect the free-tier limit.
+async function fetchSymbols(syms){
+  const key = store.get(KEY_STORE);
+  const bad = {};
+  for (let i = 0; i < syms.length; i += PER_MINUTE){
+    if (i > 0){
+      for (let s = 61; s > 0; s--){
+        $("status").textContent = `Loaded ${i} of ${syms.length}. Waiting ${s}s for the free-tier rate limit…`;
+        await sleep(1000);
+      }
+    }
+    $("status").textContent = `Loading prices…`;
+    const res = await fetchChunk(key, syms.slice(i, i + PER_MINUTE));
+    Object.assign(cache, res.ok);
+    Object.assign(bad, res.bad);
+    saveCache();
+    for (const s in res.ok) hydrate(s);
+    render();
+  }
+  $("status").textContent = "";
+  return bad;
+}
+
+async function load(force){
+  if (!store.get(KEY_STORE)){ showKeyPanel(); return; }
+  prefs.symbols.forEach(hydrate);
+  const need = prefs.symbols.filter(s => force || !cache[s] || cache[s].day !== today());
+  render();
+  if (!need.length) return;
+  setBusy(true);
+  try{
+    const bad = await fetchSymbols(need);
+    const names = Object.keys(bad);
+    if (names.length) $("status").textContent = "No data for " + names.join(", ") + ": " + bad[names[0]];
+  }catch(err){
+    const have = prefs.symbols.some(s => series[s]);
+    if (have){
+      $("status").textContent = "Couldn't refresh (" + err.message + "). Showing the most recent cached data.";
+    } else {
+      showKeyPanel(err.message);
+    }
+  }finally{ setBusy(false); }
+}
+
+async function addSymbol(){
+  const msg = $("addmsg");
+  const sym = $("addinput").value.trim().toUpperCase().replace(/\s+/g, "");
+  msg.className = "addmsg"; msg.textContent = "";
+  if (!sym) return;
+  if (!/^[A-Z0-9.\-:\/]{1,20}$/.test(sym)){ msg.textContent = "That doesn't look like a ticker symbol."; return; }
+  if (prefs.symbols.includes(sym)){ msg.textContent = sym + " is already on the board."; return; }
+  setBusy(true);
+  msg.className = "addmsg ok"; msg.textContent = "Looking up " + sym + "…";
+  try{
+    if (!cache[sym] || cache[sym].day !== today()){
+      const res = await fetchChunk(store.get(KEY_STORE), [sym]);
+      if (res.bad[sym]){ msg.className = "addmsg"; msg.textContent = `Couldn't add ${sym}: ${res.bad[sym]}`; return; }
+      Object.assign(cache, res.ok); saveCache();
+    }
+    hydrate(sym);
+    prefs.symbols.push(sym); savePrefs();
+    $("addinput").value = ""; msg.textContent = "";
+    render();
+  }catch(err){
+    msg.className = "addmsg"; msg.textContent = `Couldn't add ${sym}: ${err.message}`;
+  }finally{ setBusy(false); }
+}
+
+function removeSymbol(sym){
+  prefs.symbols = prefs.symbols.filter(s => s !== sym); savePrefs();
+  if (charts[sym]){ charts[sym].destroy(); delete charts[sym]; }
+  render();
+}
+
+function setBusy(b){
+  busy = b;
+  ["addbtn","refresh","resetbtn"].forEach(id => $(id).disabled = b);
+}
+
+/* ---------- period slicing ---------- */
+function startDate(period, last){
+  const d = new Date(last);
+  switch(period){
+    case "1M": d.setMonth(d.getMonth()-1); break;
+    case "3M": d.setMonth(d.getMonth()-3); break;
+    case "6M": d.setMonth(d.getMonth()-6); break;
+    case "YTD": return new Date(last.getFullYear()-1, 11, 31);  // last close of prior year is the base
+    case "1Y": d.setFullYear(d.getFullYear()-1); break;
+    case "3Y": d.setFullYear(d.getFullYear()-3); break;
+    case "5Y": d.setFullYear(d.getFullYear()-5); break;
+    case "10Y":d.setFullYear(d.getFullYear()-10); break;
+  }
+  return d;
+}
+function slice(pts, period){
+  const last = pts[pts.length-1].d;
+  const start = startDate(period, last);
+  // base = last close on or before the start date (or the first close, for younger listings)
+  let i = pts.findIndex(p => p.d > start);
+  if (i === -1) i = pts.length-1;
+  if (i > 0) i -= 1;
+  return pts.slice(i).map(p => ({...p}));
+}
+
+/* ---------- render ---------- */
+const fmtPct = v => (v>=0?"+":"") + v.toFixed(1) + "%";
+const fmtPx  = v => v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtDate = (s, long) => new Date(s+"T00:00:00").toLocaleDateString(undefined,
+  long ? {month:"short", day:"numeric", year:"numeric"} : {month:"short", year:"2-digit"});
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const domId = s => s.replace(/[^A-Za-z0-9]/g, "_");
+
+function buildControls(){
+  $("keypanel").classList.add("hidden");
+  $("controls").classList.remove("hidden");
+  $("addbar").classList.remove("hidden");
+  $("rank").classList.remove("hidden");
+  if ($("periods").childElementCount) return;
+  for (const p of PERIODS){
+    const b = document.createElement("button");
+    b.textContent = p; b.dataset.k = p;
+    b.onclick = () => { prefs.period = p; savePrefs(); render(); };
+    $("periods").appendChild(b);
+  }
+  $("samescale").checked = prefs.same;
+}
+
+function buildCards(syms){
+  Object.values(charts).forEach(c => c.destroy()); charts = {};
+  const g = $("grid"); g.innerHTML = "";
+  if (!syms.length){
+    g.innerHTML = `<div class="empty">No symbols yet. Add one above.</div>`;
+    return;
+  }
+  for (const s of syms){
+    const id = domId(s), name = NAMES[s] || (cache[s] && cache[s].ex) || "";
+    const c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML = `
+      <div class="card-head">
+        <div><span class="tk">${esc(s)}</span><span class="nm">${esc(name)}</span></div>
+        <div style="display:flex;align-items:baseline">
+          <div class="px" id="px-${id}"></div>
+          <button class="rm" title="Remove ${esc(s)}" aria-label="Remove ${esc(s)}">&times;</button>
+        </div>
+      </div>
+      <div class="meta"><span id="rng-${id}"></span><span class="chg" id="chg-${id}"></span></div>
+      <div class="canvas-box"><canvas id="cv-${id}"></canvas></div>`;
+    c.querySelector(".rm").onclick = () => removeSymbol(s);
+    g.appendChild(c);
+  }
+}
+
+function render(){
+  buildControls();
+  document.querySelectorAll("#periods button").forEach(b => b.classList.toggle("on", b.dataset.k === prefs.period));
+  const syms = prefs.symbols;
+  const sig = syms.join(",");
+  if (sig !== builtFor){ buildCards(syms); builtFor = sig; }
+
+  const sliced = {}, returns = [];
+  for (const s of syms){
+    if (!series[s] || !series[s].length) continue;
+    const sl = slice(series[s], prefs.period);
+    const base = sl[0].c;
+    sl.forEach(p => p.r = (p.c/base - 1) * 100);
+    sliced[s] = sl;
+    returns.push({t:s, r:sl[sl.length-1].r});
+  }
+
+  let yMin, yMax;
+  if (prefs.same && returns.length){
+    const all = Object.values(sliced).flat().map(p=>p.r);
+    yMin = Math.min(...all); yMax = Math.max(...all);
+    const pad = (yMax-yMin)*0.05 || 1; yMin -= pad; yMax += pad;
+  }
+
+  const lastDays = Object.values(sliced).map(sl => sl[sl.length-1].s).sort();
+  $("asof").textContent = lastDays.length
+    ? `Daily closes, split-adjusted · as of ${fmtDate(lastDays[lastDays.length-1],true)}`
+    : "Daily closes, split-adjusted";
+
+  returns.sort((a,b)=>b.r-a.r);
+  $("rank").innerHTML = returns.map((x,i) =>
+    `<div><b>${i+1}. ${esc(x.t)}</b><span class="${x.r>=0?'up':'down'}">${fmtPct(x.r)}</span></div>`).join("");
+
+  const up = css("--up"), down = css("--down"), grid = css("--grid"), muted = css("--muted");
+  const short = ["1M","3M","6M","YTD"].includes(prefs.period);
+  for (const s of syms){
+    const id = domId(s), sl = sliced[s];
+    if (!sl){ $("rng-"+id).textContent = "Loading…"; continue; }
+    const last = sl[sl.length-1], ret = last.r, color = ret>=0 ? up : down;
+    $("px-"+id).textContent = fmtPx(last.c);
+    const chg = $("chg-"+id);
+    chg.textContent = fmtPct(ret); chg.className = "chg " + (ret>=0?"up":"down");
+    $("rng-"+id).textContent = `${fmtDate(sl[0].s,true)} – ${fmtDate(last.s,true)}`;
+
+    const cfg = {
+      type:"line",
+      data:{ labels: sl.map(p=>p.s),
+        datasets:[{ data: sl.map(p=>+p.r.toFixed(3)), borderColor:color, borderWidth:1.6,
+          pointRadius:0, pointHoverRadius:3, tension:0,
+          fill:{target:{value:0}, above:color+"22", below:color+"22"} }]},
+      options:{
+        responsive:true, maintainAspectRatio:false, animation:false,
+        interaction:{mode:"index", intersect:false},
+        plugins:{ legend:{display:false},
+          tooltip:{ displayColors:false, callbacks:{
+            title: items => fmtDate(items[0].label,true),
+            label: item => `${fmtPx(sl[item.dataIndex].c)}  (${fmtPct(sl[item.dataIndex].r)})` } } },
+        scales:{
+          x:{ grid:{display:false}, ticks:{ color:muted, maxRotation:0, autoSkip:true, maxTicksLimit:5,
+                callback(v){ const d = this.getLabelForValue(v);
+                  return short ? new Date(d+"T00:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"})
+                               : fmtDate(d); } } },
+          y:{ min:yMin, max:yMax, grid:{color:grid}, border:{display:false},
+              ticks:{ color:muted, maxTicksLimit:5, callback:v => v + "%" } } } }
+    };
+    if (charts[s]) charts[s].destroy();
+    charts[s] = new Chart($("cv-"+id), cfg);
+  }
+}
+
+function showKeyPanel(err){
+  ["controls","addbar","rank"].forEach(id => $(id).classList.add("hidden"));
+  Object.values(charts).forEach(c => c.destroy()); charts = {};
+  $("grid").innerHTML = ""; builtFor = ""; $("status").textContent = "";
+  $("keypanel").classList.remove("hidden");
+  $("keyinput").value = store.get(KEY_STORE) || "";
+  $("keymsg").textContent = err ? "Couldn't load data: " + err : "";
+}
+
+/* ---------- wiring ---------- */
+$("savekey").onclick = () => {
+  const k = $("keyinput").value.trim();
+  if (!k){ $("keymsg").textContent = "Paste a key first."; return; }
+  store.set(KEY_STORE, k); load(true);
+};
+$("keyinput").addEventListener("keydown", e => { if (e.key === "Enter") $("savekey").click(); });
+$("addbtn").onclick = () => { if (!busy) addSymbol(); };
+$("addinput").addEventListener("keydown", e => { if (e.key === "Enter" && !busy) addSymbol(); });
+$("resetbtn").onclick = () => { prefs.symbols = MAG7.slice(); savePrefs(); load(false); };
+$("samescale").onchange = e => { prefs.same = e.target.checked; savePrefs(); render(); };
+$("refresh").onclick = () => { if (!busy) load(true); };
+$("changekey").onclick = () => showKeyPanel();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if (!$("controls").classList.contains("hidden")) render(); });
+
+if (typeof Chart === "undefined"){
+  $("status").textContent = "Chart library failed to load — check your internet connection.";
+} else {
+  load(false);
+}
+</script>
+</body>
+</html>
