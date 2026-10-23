@@ -91,6 +91,10 @@ footer p{margin:0 0 6px;max-width:80ch}
 .ecard h4{font:600 24px/1.1 var(--display);margin:0}
 .ecard .eages{font:400 12.5px/1.3 var(--mono);opacity:.85;font-variant-numeric:tabular-nums}
 .ecard p{margin:0;padding:14px 16px 16px}
+.elink{margin:auto 16px 14px;align-self:flex-start;font:500 13px/1.3 var(--body);color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
+.elink:hover,.elink:focus-visible{color:var(--ink);outline:none}
+.plink{align-self:flex-start;margin-top:4px;font:500 13px/1.3 var(--body);color:inherit;text-decoration:none;border-bottom:1px solid currentColor;opacity:.9}
+.plink:hover,.plink:focus-visible{opacity:1;outline:none}
 .noep{background:var(--sheet);border:1px dashed var(--line);border-radius:4px;padding:18px;margin-bottom:56px;max-width:68ch}
 .then .ehead{margin-top:24px}
 .figs{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
@@ -322,7 +326,9 @@ const FIRSTS = {
  hadean:[["Zircon","Zircon grains up to 4.4 billion years old are the oldest known pieces of Earth.","Zircon","sig"]]
 };
 let PHOTO = {};
-const WIKI = s => "https://en.wikipedia.org/wiki/" + encodeURIComponent(s);
+const WIKI = s => "https://en.wikipedia.org/wiki/" + encodeURIComponent(s.replace(/ /g,"_"));
+const EPOCH_SLUG = {"Llandovery":"Llandovery Epoch","Wenlock":"Wenlock Epoch","Ludlow":"Ludlow Epoch","Pridoli":"Pridoli Epoch","Series 2":"Cambrian Series 2"};
+const epochSlug = e => e.sub ? e.sub+" (geology)" : (EPOCH_SLUG[e.name] || e.name);
 const COMMONS = f => "https://commons.wikimedia.org/wiki/" + encodeURIComponent(f.replace(/ /g,"_")).replace(/%3A/,":");
 fetch("photos.json").then(r => r.ok ? r.json() : {}).then(p => {
   PHOTO = p || {};
@@ -397,7 +403,7 @@ function openP(i){
       <div class="tl-axis"><span>${fmtAge(p.start)}</span><span>${fmtAge(p.end)}</span></div>
       <div class="epochs">${p.ep.map((e,k)=>`<article class="ecard" id="e-${i}-${k}" style="--c:${e.color};--t:${textOn(e.color)}">
         <div class="etop">${e.sub?`<span class="sub">${esc(e.sub)}</span>`:""}<h4>${esc(e.name)}</h4><span class="eages">${esc(fmtAge(e.start))} → ${esc(fmtAge(e.end))} · ${esc(fmtDur(e.start-e.end))}</span></div>
-        <p>${esc(e.d)}</p></article>`).join("")}</div>`;
+        <p>${esc(e.d)}</p><a class="elink" href="${WIKI(epochSlug(e))}" target="_blank" rel="noopener">${esc(e.sub?e.sub+" on Wikipedia":"Read on Wikipedia")} ↗</a></article>`).join("")}</div>`;
   } else {
     eps = `<div class="ehead"><h3>Epochs</h3><span>none defined</span></div>
       <p class="noep">Epochs exist only in the Phanerozoic. Geologists divide the ${esc(p.name)} into eras${p.id==="proterozoic"?" and periods":""}, simplified away on this page, and none of them has epochs.</p>`;
@@ -416,6 +422,7 @@ function openP(i){
       <span class="eyebrow">${unit} · ${esc(ERAS[p.era].name)}</span>
       <h2 id="dTitle">${esc(p.name)}</h2>
       <span class="ages">${esc(fmtAge(p.start))} → ${esc(fmtAge(p.end))}</span>
+      <a class="plink" href="${WIKI(p.name)}" target="_blank" rel="noopener">${esc(p.name)} on Wikipedia ↗</a>
     </div></div>
     <div class="wrap">
       ${then}
