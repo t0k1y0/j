@@ -98,10 +98,10 @@ footer p{margin:0 0 6px;max-width:80ch}
 .ecard h4{font:600 24px/1.1 var(--display);margin:0}
 .ecard .eages{font:400 12.5px/1.3 var(--mono);opacity:.85;font-variant-numeric:tabular-nums}
 .ecard p{margin:0;padding:14px 16px 16px}
-.elink{margin:auto 16px 14px;align-self:flex-start;font:500 13px/1.3 var(--body);color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
-.elink:hover,.elink:focus-visible{color:var(--ink);outline:none}
-.plink{align-self:flex-start;margin-top:4px;font:500 13px/1.3 var(--body);color:inherit;text-decoration:none;border-bottom:1px solid currentColor;opacity:.9}
-.plink:hover,.plink:focus-visible{opacity:1;outline:none}
+.wl{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.14em;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent)}
+.wl::after{content:"↗";font:400 .45em/1 var(--body);vertical-align:.9em;margin-left:.2em;opacity:.7}
+.wl:hover,.wl:focus-visible{text-decoration-color:currentColor;outline:none}
+.wl:focus-visible{outline:2px solid currentColor;outline-offset:3px}
 .noep{background:var(--sheet);border:1px dashed var(--line);border-radius:4px;padding:18px;margin-bottom:56px;max-width:68ch}
 .then .ehead{margin-top:24px}
 .figs{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
@@ -405,8 +405,8 @@ function openP(i){
       <div class="etimeline" aria-hidden="true">${tl}</div>
       <div class="tl-axis"><span>${fmtAge(p.start)}</span><span>${fmtAge(p.end)}</span></div>
       <div class="epochs">${p.ep.map((e,k)=>`<article class="ecard" id="e-${i}-${k}" style="--c:${e.color};--t:${textOn(e.color)}">
-        <div class="etop">${e.sub?`<span class="sub">${esc(e.sub)}</span>`:""}<h4>${esc(e.name)}</h4><span class="eages">${esc(fmtAge(e.start))} → ${esc(fmtAge(e.end))} · ${esc(fmtDur(e.start-e.end))}</span></div>
-        <p>${esc(e.d)}</p><a class="elink" href="${WIKI(epochSlug(e))}" target="_blank" rel="noopener">${esc(e.sub?e.sub+" on Wikipedia":"Read on Wikipedia")} ↗</a></article>`).join("")}</div>`;
+        <div class="etop">${e.sub?`<span class="sub">${esc(e.sub)}</span>`:""}<h4><a class="wl" href="${WIKI(epochSlug(e))}" target="_blank" rel="noopener" title="${esc(e.sub?e.sub:e.name)} on Wikipedia">${esc(e.name)}</a></h4><span class="eages">${esc(fmtAge(e.start))} → ${esc(fmtAge(e.end))} · ${esc(fmtDur(e.start-e.end))}</span></div>
+        <p>${esc(e.d)}</p></article>`).join("")}</div>`;
   } else {
     eps = `<div class="ehead"><h3>Epochs</h3><span>none defined</span></div>
       <p class="noep">Epochs exist only in the Phanerozoic. Geologists divide the ${esc(p.name)} into eras${p.id==="proterozoic"?" and periods":""}, simplified away on this page, and none of them has epochs.</p>`;
@@ -423,9 +423,8 @@ function openP(i){
   dBody.innerHTML = `
     <div class="band" style="--c:${p.color};--t:${t}"><div class="wrap">
       <span class="eyebrow">${unit} · ${esc(ERAS[p.era].name)}</span>
-      <h2 id="dTitle">${esc(p.name)}</h2>
+      <h2 id="dTitle"><a class="wl" href="${WIKI(p.name)}" target="_blank" rel="noopener" title="${esc(p.name)} on Wikipedia">${esc(p.name)}</a></h2>
       <span class="ages">${esc(fmtAge(p.start))} → ${esc(fmtAge(p.end))}</span>
-      <a class="plink" href="${WIKI(p.name)}" target="_blank" rel="noopener">${esc(p.name)} on Wikipedia ↗</a>
     </div></div>
     <div class="wrap">
       ${then}
